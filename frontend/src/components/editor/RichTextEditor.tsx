@@ -1,13 +1,43 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { CharacterCount, Placeholder } from "@tiptap/extensions";
 import { EditorToolbar } from "@/components/editor/EditorToolbar";
+import { KeystrokeLogger } from "@/features/editor/extensions/keystrokeLogger";
+import type { KeystrokeEvent } from "@/features/editor/extensions/keystrokeLogger";
 
 const PLACEHOLDER = "Begin your intellectual exploration here...";
 
+// Folds to `false` at build time, so production never registers the logger and
+// never runs a keyup handler. The extension module itself is still bundled --
+// it is a couple of hundred bytes of dead code, not a runtime cost.
+const IS_DEV = process.env.NODE_ENV !== "production";
+
+function formatInterval(interval: number | null) {
+  return interval === null ? "first" : `+${Math.round(interval)}ms`;
+}
+
 export function RichTextEditor() {
+  // Only the count is React state. The events themselves accumulate in the
+  // extension's storage (`editor.storage.keystrokeLogger.events`), keeping the
+  // growing array out of the render path entirely.
+  const [loggedCount, setLoggedCount] = useState(0);
+
+  const handleKeystroke = useCallback((event: KeystrokeEvent) => {
+    // `console.log` rather than `console.debug` on purpose: debug maps to the
+    // Verbose level, which DevTools hides under its default log-level filter.
+    // The full event (including the serialized document) is the second argument
+    // so it stays expandable without flooding the line.
+    console.log(
+      `[keystroke] ${event.key} ${formatInterval(event.interKeyInterval)} caret=${event.caret} chars=${event.text.length}`,
+      event,
+    );
+
+    setLoggedCount((count) => count + 1);
+  }, []);
+
   const editor = useEditor({
     // The App Router prerenders this component on the server. Rendering the
     // editor during that pass produces a hydration mismatch, so the first
@@ -20,6 +50,7 @@ export function RichTextEditor() {
       StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
       Placeholder.configure({ placeholder: PLACEHOLDER }),
       CharacterCount,
+      ...(IS_DEV ? [KeystrokeLogger.configure({ onKeystroke: handleKeystroke })] : []),
     ],
 
     editorProps: {
@@ -49,6 +80,11 @@ export function RichTextEditor() {
 
       <div className="flex shrink-0 items-center justify-between border-t border-border-subtle px-4 py-2 text-xs text-foreground/50">
         <span>{(counts?.words ?? 0).toLocaleString()} words</span>
+        {IS_DEV && (
+          <span title="Keyup events written to the console (development only)">
+            {loggedCount.toLocaleString()} keyups logged
+          </span>
+        )}
         <span>{(counts?.characters ?? 0).toLocaleString()} characters</span>
       </div>
     </div>
