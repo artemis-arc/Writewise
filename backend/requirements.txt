@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+pydantic-settings
+sentence-transformers
+faiss-cpu
+google-genai
+numpy
+scikit-learn
+python-docx
+pypdf
+python-multipart

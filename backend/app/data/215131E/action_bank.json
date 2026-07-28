@@ -1,0 +1,43 @@
+{
+  "mechanics": {
+    "low": [
+      "Write one idea per sentence",
+      "Use simple Subject + Verb + Object sentences",
+      "Avoid long sentences",
+      "Check grammar before submission"
+    ],
+    "medium": [
+      "Check punctuation consistency",
+      "Improve sentence variety",
+      "Proofread before submission",
+      "Use clear sentence structure"
+    ],
+    "high": [
+      "Maintain precision in writing",
+      "Use complex sentence structures where appropriate",
+      "Focus on clarity and accuracy"
+    ]
+  },
+  "vocabulary": {
+    "low": [
+      "Provide academic glossary",
+      "Use guided examples",
+      "Replace informal words with formal equivalents",
+      "Use simple academic words"
+    ],
+    "medium": [
+      "Use varied academic vocabulary",
+      "Avoid repetition",
+      "Use task-specific academic terms",
+      "Improve word choice"
+    ],
+    "high": [
+      "Use domain-specific terminology",
+      "Use precise academic phrasing",
+      "Maintain formal academic tone"
+    ]
+  },
+  "organization": [
+    "Follow strict step-by-step structure"
+  ]
+}

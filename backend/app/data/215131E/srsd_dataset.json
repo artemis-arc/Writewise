@@ -1,0 +1,402 @@
+[
+  {
+    "content": "The best way to manage passwords is to use the same password everywhere so you do not forget it. If your password is short, it is easier to type and therefore better. Sharing passwords with trusted friends is also safe because they can help you recover your account later.",
+    "score": 1
+  },
+  {
+    "content": "If a computer has malware, delete random files from the Windows folder until the computer becomes faster. Antivirus tools are unnecessary because most malware disappears after restarting the computer once.",
+    "score": 1
+  },
+  {
+    "content": "Backups are not needed if the database server is new. Modern servers never fail, and cloud systems automatically remember all deleted data forever without configuration.",
+    "score": 1
+  },
+  {
+    "content": "If Wi-Fi is slow, the only solution is to buy a new laptop. Routers do not affect internet speed, and network settings should never be checked because they are always correct.",
+    "score": 1
+  },
+  {
+    "content": "Software updates should always be avoided because they are created only to slow down computers. Security patches are mostly fake and do not protect users from real threats.",
+    "score": 1
+  },
+  {
+    "content": "Cloud storage means files are floating in the air. Anyone can access them only by guessing the weather conditions, so encryption is not related to cloud safety.",
+    "score": 1
+  },
+  {
+    "content": "Two-factor authentication makes accounts weaker because it gives hackers two ways to enter instead of one. It is better to turn it off on banking and email accounts.",
+    "score": 1
+  },
+  {
+    "content": "Code does not need testing if the developer feels confident. Bugs only happen when users click incorrectly, so testing is mostly the user's responsibility.",
+    "score": 1
+  },
+  {
+    "content": "A firewall is a physical wall placed around a computer room. It blocks hackers by stopping them from walking near the computers, so software firewall settings do not matter.",
+    "score": 1
+  },
+  {
+    "content": "Personal data can be posted publicly if the website has a nice design. Privacy policies are only for large companies and do not apply to small apps or student projects.\n\n---",
+    "score": 1
+  },
+  {
+    "content": "Phishing emails are easy to identify because they always contain spelling mistakes. If an email has a company logo, it is safe. Users should click links first and decide later whether the website looks real.",
+    "score": 2
+  },
+  {
+    "content": "RAM permanently stores all files on a computer. Adding more RAM will always recover deleted documents and fix every storage problem.",
+    "score": 2
+  },
+  {
+    "content": "A VPN makes the internet completely anonymous and prevents all viruses. Once a VPN is enabled, users do not need antivirus software, strong passwords, or safe browsing habits.",
+    "score": 2
+  },
+  {
+    "content": "An operating system is mainly used to make the desktop look colorful. It has little role in managing memory, files, hardware, or applications.",
+    "score": 2
+  },
+  {
+    "content": "Email attachments are safe if the file name looks professional. Users can open invoice files from unknown senders because business documents cannot contain malware.",
+    "score": 2
+  },
+  {
+    "content": "Web hosting means copying a website to any computer and leaving it turned off. Visitors can still access the website because the internet will remember the pages.",
+    "score": 2
+  },
+  {
+    "content": "Indexes are used to decorate database tables. They usually make all queries slower, so every database should avoid indexes completely.",
+    "score": 2
+  },
+  {
+    "content": "Encryption is simply renaming a file with a secret-looking title. For example, changing `report.docx` to `secret_report.docx` protects the file from attackers.",
+    "score": 2
+  },
+  {
+    "content": "Git is mainly a folder backup tool. Developers should commit only once at the end of a project because frequent commits confuse the computer.",
+    "score": 2
+  },
+  {
+    "content": "Mobile phones cannot get malware because they are smaller than computers. Downloading apps from any website is safe if the app icon looks familiar.\n\n---",
+    "score": 2
+  },
+  {
+    "content": "A strong password should include some numbers. It is also good to use your birthday because it is easy to remember. Changing passwords every day is the main way to stay secure.",
+    "score": 3
+  },
+  {
+    "content": "Users should back up important files sometimes. A good method is to copy everything to a USB drive and keep it plugged into the same computer all the time.",
+    "score": 3
+  },
+  {
+    "content": "Latency means the internet is slow. It can be fixed by restarting the computer or deleting browser history. The router, server distance, and packet loss are usually not important.",
+    "score": 3
+  },
+  {
+    "content": "Cloud computing is when companies use someone else's computer. It saves money and is always more secure than local systems. There is no need to plan access control or backups.",
+    "score": 3
+  },
+  {
+    "content": "SQL injection happens when a database becomes too full. Developers can prevent it by increasing server storage and using shorter table names.",
+    "score": 3
+  },
+  {
+    "content": "Testing is done after the software is finished. The tester clicks through the app, and if the main screen opens, the software can usually be considered ready.",
+    "score": 3
+  },
+  {
+    "content": "An API is a website link that sends data. APIs are mainly used by mobile apps, and they do not need security because normal users cannot see them directly.",
+    "score": 3
+  },
+  {
+    "content": "Antivirus software checks for bad files. It should be installed once, and after that the computer will be protected permanently even if the software is never updated.",
+    "score": 3
+  },
+  {
+    "content": "Normalization means making database tables smaller. It is useful because small tables look cleaner. Too many tables are always bad, so normalization should be used only rarely.",
+    "score": 3
+  },
+  {
+    "content": "Public Wi-Fi is safe if many people are using it. Users should avoid banking only when the Wi-Fi name looks suspicious. A password-protected cafe network is always private.\n\n---",
+    "score": 3
+  },
+  {
+    "content": "Password managers help users store passwords in one place. They are useful because users do not need to remember many passwords. However, users should still write the master password in a notebook in case they forget it.",
+    "score": 4
+  },
+  {
+    "content": "A backup is a copy of important files. It is useful to save files to another drive once in a while. This can help after accidental deletion, but the backup process does not need much planning.",
+    "score": 4
+  },
+  {
+    "content": "Firewalls block unwanted network traffic. A simple firewall setup is to block unknown programs. This improves security, although it may not be necessary to review rules often.",
+    "score": 4
+  },
+  {
+    "content": "Updates can add new features and fix bugs. Users should install updates when they have time. Security updates are useful, but delaying them for a few months is usually fine.",
+    "score": 4
+  },
+  {
+    "content": "Cloud services are usually managed by professional providers. This means security is mostly handled by the provider. Customers should still use passwords, but most other settings are automatic.",
+    "score": 4
+  },
+  {
+    "content": "Phishing messages often ask users to click links or provide details. Users should check the sender name and avoid strange emails. If the message looks urgent, it is probably fake.",
+    "score": 4
+  },
+  {
+    "content": "HTML is used to build web pages, CSS is used for design, and JavaScript adds interaction. A basic website can be made using these three technologies. More advanced sites may need a database.",
+    "score": 4
+  },
+  {
+    "content": "SQL is used to get data from databases. A query can select, insert, update, or delete data. Developers should be careful with delete commands, but simple queries are usually safe.",
+    "score": 4
+  },
+  {
+    "content": "Users should lock their computers when they leave the desk. This prevents other people from opening files. It is also helpful to close applications before leaving.",
+    "score": 4
+  },
+  {
+    "content": "A router connects networks and helps devices access the internet. A switch connects devices inside a network. Both are important, but they do basically the same thing in most networks.\n\n---",
+    "score": 4
+  },
+  {
+    "content": "A strong password should be difficult to guess and should not use personal details such as names or birthdays. It is better to use a longer password with letters, numbers, and symbols. Users should avoid reusing the same password across many accounts.",
+    "score": 5
+  },
+  {
+    "content": "Backups protect data from accidental deletion, hardware failure, and ransomware. Important files should be copied to another location such as an external drive or cloud service. Users should check occasionally that the backup can be opened.",
+    "score": 5
+  },
+  {
+    "content": "Malware protection includes antivirus software, regular updates, and careful downloading. Users should avoid unknown links and suspicious attachments. If a device acts strangely, it should be scanned.",
+    "score": 5
+  },
+  {
+    "content": "A VPN encrypts traffic between the device and the VPN server. It can be useful on public Wi-Fi and for remote work. However, it does not remove the need for safe browsing or strong account security.",
+    "score": 5
+  },
+  {
+    "content": "Indexes help databases find rows faster. They are useful for columns that are searched often. Too many indexes can slow down writing data, so they should be used carefully.",
+    "score": 5
+  },
+  {
+    "content": "Software testing checks whether an application works as expected. It can include manual testing and automated testing. Testing should cover important features and common user actions.",
+    "score": 5
+  },
+  {
+    "content": "APIs should not trust all requests automatically. Developers should use authentication and validate input. Sensitive data should not be exposed in API responses unless the user is allowed to access it.",
+    "score": 5
+  },
+  {
+    "content": "Cloud storage allows users to save files on remote servers and access them through the internet. It is useful for sharing and backup. Users should manage permissions carefully to avoid exposing private files.",
+    "score": 5
+  },
+  {
+    "content": "Operating system updates fix bugs, improve performance, and patch security problems. Users should install important updates regularly. Restarting after updates may be required for changes to apply.",
+    "score": 5
+  },
+  {
+    "content": "Public Wi-Fi can expose users to security risks. Users should avoid entering sensitive information on unknown networks and use HTTPS websites. A VPN can add protection when using public networks.\n\n---",
+    "score": 5
+  },
+  {
+    "content": "Phishing is a social engineering attack that tricks users into revealing information or installing malware. Users should check sender addresses, inspect links before clicking, and avoid opening unexpected attachments. Organizations can reduce risk through awareness training and email filtering.",
+    "score": 6
+  },
+  {
+    "content": "An incident response process helps teams react to security events. Basic steps include identifying the issue, containing the affected system, removing the threat, restoring service, and documenting what happened. A written plan helps teams respond faster.",
+    "score": 6
+  },
+  {
+    "content": "Password managers help users create and store unique passwords for each account. A strong master password is important because it protects the password vault. Multi-factor authentication should be enabled for important accounts when available.",
+    "score": 6
+  },
+  {
+    "content": "Database backups should be taken regularly and stored separately from the production system. Teams should test restoration so they know backups are usable. The backup schedule should match how much data the organization can afford to lose.",
+    "score": 6
+  },
+  {
+    "content": "When troubleshooting a network issue, start by checking physical connections, Wi-Fi signal, IP address settings, DNS, and gateway reachability. Tools such as `ping`, `ipconfig`, and `tracert` can help locate the problem. Record the results before changing settings.",
+    "score": 6
+  },
+  {
+    "content": "Secure coding means writing software that reduces the chance of vulnerabilities. Developers should validate input, handle errors carefully, and avoid storing secrets in source code. Code review and testing can catch many security problems before release.",
+    "score": 6
+  },
+  {
+    "content": "Cloud security follows a shared responsibility model. The provider secures the cloud infrastructure, while the customer manages users, permissions, data, and configuration. Misconfigured storage buckets and weak access policies can still cause data exposure.",
+    "score": 6
+  },
+  {
+    "content": "Version control systems such as Git track changes to source code over time. Developers can create branches, review changes, and return to earlier versions when needed. Clear commit messages help teams understand project history.",
+    "score": 6
+  },
+  {
+    "content": "Endpoint security protects laptops, desktops, and mobile devices from threats. Common controls include antivirus, disk encryption, patching, screen locks, and device inventory. Lost or outdated endpoints can create serious security risks.",
+    "score": 6
+  },
+  {
+    "content": "Encryption converts readable data into unreadable form using a cryptographic key. It protects data in storage and during transmission. The security of encryption depends on proper key management and the use of trusted algorithms.\n\n---",
+    "score": 6
+  },
+  {
+    "content": "SQL injection occurs when untrusted input is treated as part of a database query. Developers should use parameterized queries or prepared statements instead of building SQL with string concatenation. Input validation and least-privilege database accounts add further protection.",
+    "score": 7
+  },
+  {
+    "content": "A reliable backup plan should define what data is backed up, how often backups run, where backups are stored, and who is responsible for monitoring them. The 3-2-1 rule is a useful guideline: keep three copies, on two types of media, with one copy offsite. Restore testing is essential.",
+    "score": 7
+  },
+  {
+    "content": "Network segmentation divides a network into smaller zones to limit access and reduce the spread of attacks. For example, guest Wi-Fi, employee devices, and servers can be separated. Firewall rules and VLANs are common tools for enforcing segmentation.",
+    "score": 7
+  },
+  {
+    "content": "A good API should be consistent, predictable, and well documented. Endpoints should use clear resource names, suitable HTTP methods, and meaningful status codes. Authentication, rate limiting, and input validation are important for public APIs.",
+    "score": 7
+  },
+  {
+    "content": "Patch management is the process of identifying, testing, deploying, and verifying software updates. Security patches should be prioritized based on severity and exposure. Organizations should maintain an asset inventory so they know which systems need updates.",
+    "score": 7
+  },
+  {
+    "content": "Logs help teams detect errors, suspicious activity, and performance issues. Useful logs should include timestamps, event details, system identifiers, and relevant user or process information. Logs should be protected from tampering and reviewed regularly.",
+    "score": 7
+  },
+  {
+    "content": "Multi-factor authentication improves account security by requiring more than a password. Common factors include something the user knows, has, or is. App-based prompts or hardware keys are usually stronger than SMS codes because phone numbers can be hijacked.",
+    "score": 7
+  },
+  {
+    "content": "Software requirements describe what a system should do and the constraints it must satisfy. Good requirements are clear, testable, and agreed upon by stakeholders. Poor requirements often lead to rework, missed features, and user dissatisfaction.",
+    "score": 7
+  },
+  {
+    "content": "Cloud cost control requires monitoring usage, setting budgets, and removing unused resources. Autoscaling, reserved instances, and storage lifecycle policies can reduce waste. Teams should tag resources so costs can be linked to projects or departments.",
+    "score": 7
+  },
+  {
+    "content": "Data privacy involves collecting, using, storing, and sharing personal information responsibly. Systems should collect only necessary data, restrict access, and provide retention rules. Privacy requirements should be considered during design, not added only after release.\n\n---",
+    "score": 7
+  },
+  {
+    "content": "Ransomware readiness combines prevention, detection, and recovery. Organizations should patch exposed services, restrict admin privileges, train users, and monitor for unusual file activity. Backups should be offline or immutable where possible, and restoration procedures should be tested before an emergency.",
+    "score": 8
+  },
+  {
+    "content": "A secure password policy should encourage long, unique passwords and support password managers. Forced frequent password changes are usually less helpful unless there is evidence of compromise. Multi-factor authentication should be required for privileged accounts, email, and remote access.",
+    "score": 8
+  },
+  {
+    "content": "Database performance tuning starts with measuring slow queries, checking execution plans, and understanding workload patterns. Indexes can improve read performance, but they add storage and write overhead. Query design, schema structure, caching, and hardware capacity should be considered together.",
+    "score": 8
+  },
+  {
+    "content": "Good incident documentation records the timeline, affected systems, indicators of compromise, actions taken, evidence collected, and final resolution. It supports legal, security, and operational review. After the incident, teams should identify root causes and update controls or procedures.",
+    "score": 8
+  },
+  {
+    "content": "Web applications should validate input, encode output, protect sessions, enforce authorization, and use HTTPS. Developers should avoid exposing detailed error messages to users. Security testing should include common risks such as injection, cross-site scripting, broken access control, and insecure configuration.",
+    "score": 8
+  },
+  {
+    "content": "Disaster recovery planning defines how systems will be restored after major failure. Key metrics include recovery time objective, which is how quickly service must return, and recovery point objective, which is how much data loss is acceptable. Plans should be tested through drills.",
+    "score": 8
+  },
+  {
+    "content": "Access control should follow the principle of least privilege. Users and services should receive only the permissions needed for their role. Periodic access reviews, role-based groups, and removal of inactive accounts help reduce unauthorized access.",
+    "score": 8
+  },
+  {
+    "content": "A CI/CD pipeline automates build, test, and deployment steps so teams can release software more reliably. Pipelines should fail fast when tests or security checks fail. Secrets must be stored in secure vaults or protected variables rather than committed to the repository.",
+    "score": 8
+  },
+  {
+    "content": "Data classification labels information according to sensitivity, such as public, internal, confidential, or restricted. Classification helps determine encryption, access control, retention, and sharing rules. It also helps employees understand how carefully each type of data must be handled.",
+    "score": 8
+  },
+  {
+    "content": "Endpoint hardening reduces the attack surface of user devices and servers. Common steps include removing unnecessary software, disabling unused services, enforcing disk encryption, applying patches, and limiting local administrator rights. Hardening should be documented and reviewed over time.\n\n---",
+    "score": 8
+  },
+  {
+    "content": "Zero Trust is a security model based on continuous verification rather than automatic trust inside a network. It commonly includes strong identity controls, device posture checks, least-privilege access, segmentation, and monitoring. Implementation should be phased, starting with high-risk applications and privileged access.",
+    "score": 9
+  },
+  {
+    "content": "Secure APIs require authentication, authorization, input validation, output filtering, rate limiting, and logging. Sensitive operations should verify that the caller is allowed to act on the specific resource, not just that the caller is logged in. Error responses should be useful without exposing internal details.",
+    "score": 9
+  },
+  {
+    "content": "A backup is valuable only if it can be restored. Recovery testing should verify data integrity, application consistency, required credentials, restoration time, and dependencies such as DNS or external services. Results should be documented and used to improve recovery time and recovery point objectives.",
+    "score": 9
+  },
+  {
+    "content": "Vulnerability management is a continuous process of asset discovery, scanning, risk ranking, remediation, and verification. Prioritization should consider exploitability, business criticality, internet exposure, and compensating controls. Metrics such as remediation age and coverage help track program effectiveness.",
+    "score": 9
+  },
+  {
+    "content": "A secure software development lifecycle integrates security into planning, design, coding, testing, deployment, and maintenance. Threat modeling helps teams identify likely abuse cases early. Automated checks, peer review, dependency scanning, and secure deployment practices reduce risk before production.",
+    "score": 9
+  },
+  {
+    "content": "Effective detection depends on collecting meaningful logs from endpoints, servers, identity systems, applications, and network controls. Logs should be normalized, time-synchronized, retained appropriately, and mapped to likely attack behaviors. Alerts should be tuned to reduce noise while preserving coverage of high-risk events.",
+    "score": 9
+  },
+  {
+    "content": "Cloud identity management should emphasize least privilege, strong authentication, short-lived credentials, and regular access review. Privileged roles should require multi-factor authentication and just-in-time access when possible. Service accounts and keys must be inventoried, rotated, and removed when no longer needed.",
+    "score": 9
+  },
+  {
+    "content": "Availability is improved through redundancy, monitoring, capacity planning, tested failover, and clear operational procedures. Teams should identify single points of failure and design around realistic failure modes. Service level objectives help align technical reliability with business expectations.",
+    "score": 9
+  },
+  {
+    "content": "Privacy by design means privacy is considered from the beginning of system development. Teams should minimize collection, define lawful purpose, restrict access, protect data, set retention periods, and give users appropriate transparency and control. Privacy reviews should be part of change management.",
+    "score": 9
+  },
+  {
+    "content": "Container security includes using minimal base images, scanning dependencies, avoiding privileged containers, controlling secrets, and limiting runtime permissions. Images should be built from trusted sources and kept updated. Orchestration platforms should enforce network policies, resource limits, and access controls.\n\n---",
+    "score": 9
+  },
+  {
+    "content": "A strong enterprise backup strategy defines data scope, backup frequency, retention, encryption, storage location, monitoring, ownership, and restoration testing. It should align with recovery time objectives and recovery point objectives for each critical system. Backups should be protected from ransomware through immutability, offline copies, restricted access, and regular restore drills. Documentation should include dependencies, credentials, escalation contacts, and validation steps so recovery can happen under pressure.",
+    "score": 10
+  },
+  {
+    "content": "Secure authentication architecture combines strong identity proofing, phishing-resistant multi-factor authentication, secure session handling, account recovery controls, and monitoring for suspicious sign-in behavior. Passwords should be stored using a modern adaptive hashing algorithm with unique salts. Privileged and high-risk actions should trigger additional verification. The design should also cover lockout policy, rate limiting, audit logs, and safe handling of authentication errors.",
+    "score": 10
+  },
+  {
+    "content": "Web application security should be built around clear trust boundaries, secure defaults, and continuous testing. User input must be validated according to expected type and business rules, while output should be encoded for the correct context. Authorization checks must be enforced server-side for every protected resource. Secure headers, CSRF protection, session expiration, dependency scanning, logging, and incident response procedures should support the application throughout its lifecycle.",
+    "score": 10
+  },
+  {
+    "content": "Cloud security governance defines how cloud resources are created, configured, monitored, and retired. It should include identity standards, network architecture, encryption requirements, logging, vulnerability management, cost controls, and policy enforcement. Automated guardrails can prevent risky configurations such as public storage or overly broad roles. Regular reviews should compare deployed resources against approved architecture, compliance obligations, and business ownership.",
+    "score": 10
+  },
+  {
+    "content": "A mature incident response program includes preparation, detection, triage, containment, eradication, recovery, and post-incident improvement. Roles and communication paths should be defined before an incident occurs, including legal, leadership, IT, security, and affected business units. Evidence handling must preserve integrity and support later analysis. After recovery, the team should conduct a blameless review, update controls, and track corrective actions to completion.",
+    "score": 10
+  },
+  {
+    "content": "A secure CI/CD pipeline verifies code quality, security, and deployment integrity before changes reach production. It should include automated tests, dependency scanning, secret detection, static analysis, artifact signing, approval controls, and environment-specific configuration. Build systems should use least-privilege service accounts and protected credentials. Deployment logs, rollback procedures, and separation between development and production access help reduce operational and security risk.",
+    "score": 10
+  },
+  {
+    "content": "Secure network architecture uses segmentation, controlled ingress and egress, strong identity, monitoring, and documented trust boundaries. Critical systems should not share flat networks with general user devices. Administrative access should use hardened paths such as VPN, bastion hosts, or privileged access workstations. Firewall rules should be reviewed regularly, and network telemetry should support detection of lateral movement, data exfiltration, and policy violations.",
+    "score": 10
+  },
+  {
+    "content": "Data governance establishes accountability for how information is collected, classified, stored, used, shared, retained, and deleted. It should define data owners, sensitivity labels, access rules, quality expectations, retention schedules, and approved sharing methods. Technical controls such as encryption, data loss prevention, audit logging, and access review should support the policy. Governance should be practical enough for teams to follow during normal operations.",
+    "score": 10
+  },
+  {
+    "content": "An effective vulnerability remediation workflow starts with accurate asset inventory and continuous scanning. Findings should be deduplicated, validated, and prioritized using technical severity, exploit availability, asset exposure, and business impact. Remediation owners need clear deadlines and exception processes. After fixes are deployed, teams should verify closure and use metrics such as mean time to remediate, overdue risk, and recurring findings to improve the program.",
+    "score": 10
+  },
+  {
+    "content": "IT service continuity ensures that critical services can continue or recover quickly during disruption. The program should identify essential systems, dependencies, staffing needs, communication channels, recovery priorities, and acceptable downtime. Technical measures may include redundancy, backups, failover, monitoring, and tested recovery procedures. Regular exercises should validate assumptions, reveal hidden dependencies, and keep the plan aligned with business changes.",
+    "score": 10
+  }
+]

@@ -1,0 +1,301 @@
+[
+  {
+    "id": "scenario_1",
+    "task": "Critically evaluate the impact of Artificial Intelligence on healthcare systems.",
+    "academic_level": "undergraduate",
+    "writing_profile": {
+      "writer_level": "low",
+      "mechanics_range": 42,
+      "vocabulary_range": 38,
+      "organization_range": 45
+    },
+    "task_breakdown": [
+      "Define Artificial Intelligence in healthcare (academic definition)",
+      "Describe 2 applications (e.g., diagnosis, automation)",
+      "Explain one benefit (efficiency or accuracy)",
+      "Explain one ethical issue",
+      "Compare benefit and issue",
+      "Write a simple academic conclusion"
+    ],
+    "actions": {
+      "mechanics": [
+        "Use simple Subject + Verb + Object sentences",
+        "Avoid long sentences",
+        "Check grammar before submission"
+      ],
+      "vocabulary": [
+        "Use academic words: impact, efficiency, implications, ethical concerns",
+        "Replace informal words with formal equivalents"
+      ],
+      "organization": [
+        "Use Introduction \u2192 Body \u2192 Conclusion",
+        "Write in paragraphs",
+        "Use transition words (however, therefore)"
+      ]
+    }
+  },
+  {
+    "id": "scenario_2",
+    "task": "Critically evaluate the impact of Artificial Intelligence on healthcare systems.",
+    "academic_level": "foundation",
+    "writing_profile": {
+      "writer_level": "low",
+      "mechanics_range": 30,
+      "vocabulary_range": 30,
+      "organization_range": 50
+    },
+    "task_breakdown": [
+      "What is AI?",
+      "Where is AI used?",
+      "One positive effect",
+      "One negative effect",
+      "Your opinion"
+    ],
+    "actions": {
+      "mechanics": [
+        "Use short simple sentences",
+        "Follow basic sentence structure"
+      ],
+      "vocabulary": [
+        "Use simple words",
+        "Avoid complex academic terms"
+      ],
+      "organization": [
+        "Use Intro \u2192 Points \u2192 Conclusion"
+      ]
+    }
+  },
+  {
+    "id": "scenario_3",
+    "task": "Analyze the role of social media in shaping public opinion.",
+    "academic_level": "undergraduate",
+    "writing_profile": {
+      "writer_level": "medium",
+      "mechanics_range": 50,
+      "vocabulary_range": 75,
+      "organization_range": 65
+    },
+    "task_breakdown": [
+      "Introduction (define social media)",
+      "Explain influence mechanisms",
+      "Positive effects",
+      "Negative effects",
+      "conclusion"
+    ],
+    "actions": {
+      "mechanics": [
+        "Check punctuation consistency",
+        "Proofread before submission"
+      ],
+      "vocabulary": [
+        "Use varied academic vocabulary",
+        "Avoid repetition"
+      ],
+      "organization": [
+        "Improve paragraph flow",
+        "Use linking sentences"
+      ]
+    }
+  },
+  {
+    "id": "scenario_4",
+    "task": "Evaluate the ethical implications of genetic engineering.",
+    "academic_level": "postgraduate",
+    "writing_profile": {
+      "writer_level": "high",
+      "mechanics_range": 75,
+      "vocabulary_range": 80,
+      "organization_range": 75
+    },
+    "task_breakdown": [
+      "Minimal structure only",
+      "Expect literature integration",
+      "Expect critical evaluation"
+    ],
+    "actions": {
+      "mechanics": [
+        "Maintain precision in writing"
+      ],
+      "vocabulary": [
+        "Use domain-specific terminology"
+      ],
+      "organization": [
+        "Use argument \u2192 counterargument \u2192 synthesis structure"
+      ]
+    }
+  },
+  {
+    "id": "scenario_5",
+    "task": "Discuss advantages and disadvantages of remote work.",
+    "academic_level": "undergraduate",
+    "writing_profile": {
+      "writer_level": "low",
+      "mechanics_range": 30,
+      "vocabulary_range": 40,
+      "organization_range": 50
+    },
+    "task_breakdown": [
+      "introduction",
+      "Advantages (2 points)",
+      "Disadvantages (2 points)",
+      "conclusion"
+    ],
+    "actions": {
+      "mechanics": [
+        "Avoid complex sentences",
+        "Check grammar"
+      ],
+      "vocabulary": [
+        "Replace informal words with academic ones"
+      ],
+      "organization": [
+        "Use clear paragraph structure"
+      ]
+    }
+  },
+  {
+    "id": "scenario_6",
+    "task": "Explain how climate change affects agriculture.",
+    "academic_level": "postgraduate",
+    "writing_profile": {
+      "writer_level": "high",
+      "mechanics_range": 75,
+      "vocabulary_range": 75,
+      "organization_range": 90
+    },
+    "task_breakdown": [
+      "explanation",
+      "Add case studies",
+      "Add data or examples",
+      "Discuss implications"
+    ],
+    "actions": {
+      "mechanics": [
+        "Use complex sentence structures"
+      ],
+      "vocabulary": [
+        "Use technical terms like crop yield, climatic variability"
+      ],
+      "organization": [
+        "Use cause-effect structure"
+      ]
+    }
+  },
+  {
+    "id": "scenario_7",
+    "task": "Describe your favorite movie.",
+    "academic_level": "foundation",
+    "writing_profile": {
+      "writer_level": "low",
+      "mechanics_range": 40,
+      "vocabulary_range": 50,
+      "organization_range": 50
+    },
+    "task_breakdown": [
+      "Introduce the movie",
+      "Describe characters",
+      "Explain why you like it",
+      "conclusion"
+    ],
+    "actions": {
+      "mechanics": [
+        "Use simple sentence templates"
+      ],
+      "vocabulary": [
+        "Use basic adjectives"
+      ],
+      "organization": [
+        "Follow simple structure"
+      ]
+    }
+  },
+  {
+    "id": "scenario_8",
+    "task": "Describe your daily routine.",
+    "academic_level": "undergraduate",
+    "writing_profile": {
+      "writer_level": "high",
+      "mechanics_range": 80,
+      "vocabulary_range": 75,
+      "organization_range": 90
+    },
+    "task_breakdown": [
+      "Describe routine",
+      "Reflect on productivity",
+      "Compare past and present",
+      "Provide insight"
+    ],
+    "actions": {
+      "mechanics": [
+        "No major corrections needed"
+      ],
+      "vocabulary": [
+        "Use expressive academic language"
+      ],
+      "organization": [
+        "Use reflective structure"
+      ]
+    }
+  },
+  {
+    "id": "scenario_9",
+    "task": "Analyze globalization\u2019s impact on culture.",
+    "academic_level": "undergraduate",
+    "writing_profile": {
+      "writer_level": "medium",
+      "mechanics_range": 75,
+      "vocabulary_range": 50,
+      "organization_range": 65
+    },
+    "task_breakdown": [
+      "introduction",
+      "cultural_impact",
+      "Positive effects",
+      "Negative effects",
+      "conclusion"
+    ],
+    "actions": {
+      "mechanics": [
+        "No major corrections needed"
+      ],
+      "vocabulary": [
+        "Use academic words: cultural homogenization, global integration",
+        "Reduce repetition"
+      ],
+      "organization": [
+        "Improve paragraph linking"
+      ]
+    }
+  },
+  {
+    "id": "scenario_10",
+    "task": "Synthesize perspectives on AI governance and propose a framework.",
+    "academic_level": "postgraduate",
+    "writing_profile": {
+      "writer_level": "very_low",
+      "mechanics_range": 40,
+      "vocabulary_range": 40,
+      "organization_range": 50
+    },
+    "task_breakdown": [
+      "Define AI governance (academic definition)",
+      "Present two perspectives",
+      "Explain each perspective",
+      "Compare them",
+      "Suggest a basic framework"
+    ],
+    "actions": {
+      "mechanics": [
+        "Write one idea per sentence",
+        "Strong grammar correction"
+      ],
+      "vocabulary": [
+        "Provide academic glossary",
+        "Use guided examples"
+      ],
+      "organization": [
+        "Follow strict step-by-step structure"
+      ]
+    }
+  }
+]
