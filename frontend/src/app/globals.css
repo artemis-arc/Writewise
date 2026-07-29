@@ -219,9 +219,12 @@ body {
   cursor: copy;
 }
 
-/* Tiptap's Placeholder extension decorates the empty block with `is-empty`
-   and a `data-placeholder` attribute holding the configured text. */
-.manuscript .is-empty::before {
+/* Tiptap's Placeholder extension tags every empty block with `is-empty`, and adds
+   `is-editor-empty` only when the whole document is empty. Keying off the latter
+   is what stops the prompt reappearing on each new blank line -- it should greet
+   an empty manuscript, not interrupt one being written. The `data-placeholder`
+   attribute holding the text is set on the same element. */
+.manuscript .is-editor-empty::before {
   content: attr(data-placeholder);
   float: left;
   height: 0;
