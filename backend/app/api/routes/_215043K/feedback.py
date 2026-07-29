@@ -11,7 +11,7 @@ from app.models._215043K.schemas import (
 from app.services._215043K.engine import FeedbackEngine
 from app.services._215043K.evaluator import Module4UnavailableError
 from app.services._215043K.pipeline import generate_feedback
-from app.services._215043K.profile import resolve_stage, resolve_writer_level
+from app.services._215043K.profile import resolve_writer_level
 
 router = APIRouter(prefix="/api/v1/feedback", tags=["feedback"])
 
@@ -28,12 +28,8 @@ def create_feedback(
 ) -> FeedbackResponse:
     profile = payload.writing_profile
 
-    stage = payload.stage or resolve_stage(
-        completed_milestones=payload.milestone_progress.completed,
-        total_milestones=payload.milestone_progress.total,
-        planning_cutoff=settings.feedback_planning_cutoff,
-        implementation_cutoff=settings.feedback_implementation_cutoff,
-    )
+    # Module 2 (215098G) classifies the stage; it arrives on the request already decided.
+    stage = payload.stage
     writer_level = payload.writer_level or resolve_writer_level(
         overall=profile.overall,
         low_cutoff=settings.feedback_writer_level_low_cutoff,

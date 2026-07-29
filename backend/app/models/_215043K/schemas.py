@@ -1,31 +1,18 @@
 from typing import Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field
 
 WriterLevel = Literal["low", "medium", "high"]
 WritingStage = Literal["PLANNING", "IMPLEMENTATION", "REVISION"]
 
 
 class WritingProfileScores(BaseModel):
-    """Module 2's 0-100 rubric scores for this writer, as returned by /api/v1/writing-profile."""
+    """Module 1's 0-100 rubric scores for this writer, as returned by /api/v1/writing-profile."""
 
     mechanics: float = Field(ge=0, le=100)
     vocabulary: float = Field(ge=0, le=100)
     organization: float = Field(ge=0, le=100)
     overall: float = Field(ge=0, le=100)
-
-
-class MilestoneProgress(BaseModel):
-    """How far through Module 1's task breakdown the writer is. Decides the stage."""
-
-    completed: int = Field(ge=0)
-    total: int = Field(ge=0)
-
-    @model_validator(mode="after")
-    def _completed_within_total(self) -> "MilestoneProgress":
-        if self.completed > self.total:
-            raise ValueError("completed cannot exceed total milestones.")
-        return self
 
 
 class FeedbackRequest(BaseModel):
@@ -38,11 +25,14 @@ class FeedbackRequest(BaseModel):
     content: str = ""
 
     writing_profile: WritingProfileScores
-    milestone_progress: MilestoneProgress
 
-    # Escape hatches for evaluation and for a future stage picker in the UI: supply
-    # either and it wins over the value derived from progress and scores.
-    stage: WritingStage | None = None
+    # Module 2's (215098G) stage classification. Required: this module cannot pick a
+    # knowledge base index without it, and there is nothing to fall back on. Until that
+    # classifier ships, callers send one of the three literals directly.
+    stage: WritingStage
+
+    # Escape hatch for evaluation: supply it and it wins over the value derived from
+    # Module 1's overall score.
     writer_level: WriterLevel | None = None
 
 
