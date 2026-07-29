@@ -12,11 +12,7 @@ export default function WritePage() {
     <div className="flex flex-1 flex-col overflow-hidden">
       <TopBar />
 
-      <div className="flex-1 overflow-hidden px-6 py-6">
-        <div className="mx-auto h-full w-full max-w-3xl">
-          <RichTextEditor />
-        </div>
-      </div>
+      <RichTextEditor />
     </div>
   );
 }

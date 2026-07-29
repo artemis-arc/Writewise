@@ -15,7 +15,7 @@ export function TableControls({ editor }: Readonly<TableControlsProps>) {
       role="toolbar"
       aria-label="Table"
       aria-orientation="horizontal"
-      className="flex flex-wrap items-center gap-1 border-b border-border-subtle bg-surface-muted px-3 py-2"
+      className="flex flex-wrap items-center gap-1 border-b border-border-subtle bg-surface-muted px-6 py-2"
     >
       <span className="mr-1 text-xs font-semibold tracking-wide text-brand uppercase">Table</span>
 

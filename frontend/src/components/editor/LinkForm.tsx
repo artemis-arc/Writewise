@@ -52,7 +52,7 @@ export function LinkForm({ editor, initialHref, onClose }: Readonly<LinkFormProp
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-wrap items-center gap-2 border-b border-border-subtle px-3 py-2"
+      className="flex flex-wrap items-center gap-2 border-b border-border-subtle px-6 py-2"
     >
       <label
         htmlFor={fieldId}

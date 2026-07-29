@@ -129,12 +129,14 @@ export function EditorToolbar({ editor }: Readonly<EditorToolbarProps>) {
   };
 
   return (
-    <div className="shrink-0">
+    // Spans the whole window under the TopBar now that the editor is full-bleed,
+    // so the horizontal padding matches the TopBar's rather than a card's.
+    <div className="shrink-0 bg-surface">
       <div
         role="toolbar"
         aria-label="Formatting"
         aria-orientation="horizontal"
-        className="flex flex-wrap items-center gap-1 border-b border-border-subtle px-3 py-2"
+        className="flex flex-wrap items-center gap-1 border-b border-border-subtle px-6 py-2"
       >
         <ToolbarButton
           label="Undo"

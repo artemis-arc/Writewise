@@ -106,12 +106,15 @@ export function RichTextEditor() {
   });
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border-subtle bg-surface shadow-sm">
+    // `min-h-0` lets this pane shrink inside the page's flex column, which is
+    // what confines the overflow to the scroll container below rather than
+    // pushing the status bar off-screen.
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-surface">
       {editor && <EditorToolbar editor={editor} />}
 
       <div
         className={clsx(
-          "flex-1 overflow-y-auto px-8 py-6",
+          "min-h-0 flex-1 overflow-y-auto px-8 py-6",
           // Signals that the next selection will be painted rather than just made.
           editorState?.isPainterArmed && "manuscript-painting",
         )}
@@ -119,7 +122,7 @@ export function RichTextEditor() {
         <EditorContent editor={editor} className="h-full" />
       </div>
 
-      <div className="flex shrink-0 items-center justify-between border-t border-border-subtle px-4 py-2 text-xs text-foreground/50">
+      <div className="flex shrink-0 items-center justify-between border-t border-border-subtle px-6 py-2 text-xs text-foreground/50">
         <span>{(editorState?.words ?? 0).toLocaleString()} words</span>
         {IS_DEV && (
           <span title="Keyup events written to the console (development only)">
