@@ -66,6 +66,15 @@ uvicorn app.main:app --reload
 
 Runs at `http://localhost:8000`.
 
+**One-time extra setup for the feedback-scoring module (`215051H`):** `pip install` alone isn't enough for two of its dependencies:
+
+- spaCy needs its English model downloaded separately: `python -m spacy download en_core_web_sm`
+- `language_tool_python` needs a local **Java runtime (JRE 8+)** installed, and downloads a ~260MB LanguageTool package the first time it runs. Without Java on PATH, `ClarityScorer` logs a warning at startup and the module falls back to reporting itself "not ready" (`POST /api/v1/feedback-scoring` returns `503`) instead of crashing the whole backend.
+
+(`nltk`'s tokenizer data downloads itself automatically on first use — no manual step needed there.)
+
+The trained clarity model itself (`clarity_model.json` + `clarity_calibrator.joblib`) isn't installed via pip at all — see `backend/app/data/215051H/clarity_model/README.md` for where it goes and how it's saved.
+
 **Frontend**
 
 ```bash
