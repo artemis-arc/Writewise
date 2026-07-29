@@ -1,0 +1,398 @@
+[
+  {
+    "id": "srsd_001",
+    "framework": "SRSD",
+    "stage": "PLANNING",
+    "strategy_name": "Goal Setting",
+    "description": "Students establish a clear writing goal before beginning to plan. Defining a goal helps maintain focus and provides direction throughout the writing process.",
+    "how_to_apply": "Guide the student to identify the central idea or purpose before generating supporting ideas.",
+    "feedback_example": "Identify the main idea you want to communicate before planning your supporting points."
+  },
+  {
+    "id": "srsd_002",
+    "framework": "SRSD",
+    "stage": "PLANNING",
+    "strategy_name": "Brainstorming Ideas",
+    "description": "Students generate multiple ideas related to the topic before selecting the strongest ones for development.",
+    "how_to_apply": "Encourage the student to think of several ideas before deciding which ones to include.",
+    "feedback_example": "List several possible ideas for your topic, then choose the strongest ones to develop."
+  },
+  {
+    "id": "srsd_003",
+    "framework": "SRSD",
+    "stage": "PLANNING",
+    "strategy_name": "Organising Ideas",
+    "description": "Students organise their ideas into a logical sequence before beginning the draft so that the writing follows a clear structure.",
+    "how_to_apply": "Help the student group related ideas and arrange them in a logical order.",
+    "feedback_example": "Arrange your ideas into a logical order before writing your first paragraph."
+  },
+  {
+    "id": "srsd_004",
+    "framework": "SRSD",
+    "stage": "PLANNING",
+    "strategy_name": "Identifying Purpose",
+    "description": "Students identify why they are writing and what they want the writing to achieve.",
+    "how_to_apply": "Prompt the student to clarify the purpose of the writing before planning the content.",
+    "feedback_example": "State the purpose of your writing before selecting the ideas you want to include."
+  },
+  {
+    "id": "srsd_005",
+    "framework": "SRSD",
+    "stage": "PLANNING",
+    "strategy_name": "Considering the Audience",
+    "description": "Students consider the intended audience so that the information, vocabulary, and explanations are appropriate for the reader.",
+    "how_to_apply": "Encourage the student to think about who will read the writing before planning ideas.",
+    "feedback_example": "Think about your reader before choosing the information you want to include."
+  },
+  {
+    "id": "srsd_006",
+    "framework": "SRSD",
+    "stage": "PLANNING",
+    "strategy_name": "POW Strategy",
+    "description": "The POW strategy encourages students to Pick ideas, Organise notes, and Write, providing a structured planning routine before drafting.",
+    "how_to_apply": "Guide the student to select ideas, organise them into a simple plan, and then begin writing.",
+    "feedback_example": "Choose your strongest ideas, organise them into a simple plan, and then begin writing."
+  },
+  {
+    "id": "srsd_007",
+    "framework": "SRSD",
+    "stage": "PLANNING",
+    "strategy_name": "Selecting Relevant Ideas",
+    "description": "Students evaluate brainstormed ideas and keep only those that directly support the writing goal.",
+    "how_to_apply": "Help the student remove unrelated ideas and focus on those that support the main purpose.",
+    "feedback_example": "Select the ideas that best support your main topic before starting your draft."
+  },
+  {
+    "id": "srsd_008",
+    "framework": "SRSD",
+    "stage": "PLANNING",
+    "strategy_name": "Planning Before Drafting",
+    "description": "Students create a simple plan before drafting to reduce cognitive load and improve organisation during writing.",
+    "how_to_apply": "Encourage the student to prepare a brief outline before writing complete sentences.",
+    "feedback_example": "Create a simple outline showing your main idea and supporting points before writing."
+  },
+  {
+    "id": "srsd_009",
+    "framework": "SRSD",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Following the Writing Plan",
+    "description": "Students use their planning notes as a guide while drafting to maintain focus and organisation throughout the writing process.",
+    "how_to_apply": "Encourage the student to follow the outline developed during the planning stage instead of writing ideas randomly.",
+    "feedback_example": "Follow your outline as you write so that each idea appears in a logical order."
+  },
+  {
+    "id": "srsd_010",
+    "framework": "SRSD",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Developing Supporting Ideas",
+    "description": "Students expand each main idea with relevant explanations, examples, or evidence to strengthen their writing.",
+    "how_to_apply": "Prompt the student to develop each main point with supporting information rather than listing ideas only.",
+    "feedback_example": "Add a supporting detail or example to explain your main idea more clearly."
+  },
+  {
+    "id": "srsd_011",
+    "framework": "SRSD",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Maintaining Focus",
+    "description": "Students keep every sentence focused on the central idea and avoid introducing unrelated information.",
+    "how_to_apply": "Guide the student to check whether each sentence contributes to the main purpose of the paragraph.",
+    "feedback_example": "Keep every sentence focused on your main idea and remove unrelated information."
+  },
+  {
+    "id": "srsd_012",
+    "framework": "SRSD",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "TREE Strategy",
+    "description": "The TREE strategy helps students develop persuasive writing by including a Topic sentence, Reasons, Explanations, and an Ending.",
+    "how_to_apply": "Encourage the student to include all major TREE components while drafting an argumentative paragraph.",
+    "feedback_example": "Support your main point with clear reasons and explain each one before writing your conclusion."
+  },
+  {
+    "id": "srsd_013",
+    "framework": "SRSD",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Self-Instructions",
+    "description": "Students use self-directed prompts to guide their thinking and maintain effective writing behaviours during drafting.",
+    "how_to_apply": "Encourage the student to pause during writing and remind themselves of the next writing goal.",
+    "feedback_example": "Pause after each paragraph and check whether you have achieved your writing goal before continuing."
+  },
+  {
+    "id": "srsd_014",
+    "framework": "SRSD",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Self-Monitoring During Drafting",
+    "description": "Students monitor their progress while writing to ensure that they are following their plan and meeting their writing goals.",
+    "how_to_apply": "Prompt the student to periodically review what has been written before continuing.",
+    "feedback_example": "Review your writing after each paragraph to make sure it still follows your original plan."
+  },
+  {
+    "id": "srsd_015",
+    "framework": "SRSD",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Using Transition Words",
+    "description": "Students use transitions to connect ideas and improve the flow between sentences and paragraphs.",
+    "how_to_apply": "Encourage the student to link related ideas using appropriate transition words.",
+    "feedback_example": "Add transition words to show how one idea connects to the next."
+  },
+  {
+    "id": "srsd_016",
+    "framework": "SRSD",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Paragraph Development",
+    "description": "Students develop each paragraph around a single main idea supported by related details.",
+    "how_to_apply": "Guide the student to keep each paragraph centred on one topic before moving to the next.",
+    "feedback_example": "Develop one main idea in this paragraph before introducing a new point."
+  },
+  {
+    "id": "srsd_017",
+    "framework": "SRSD",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Checking Goal Progress",
+    "description": "Students periodically compare their draft with the original writing goal to ensure they remain on track.",
+    "how_to_apply": "Encourage the student to compare the current draft with the writing goal established during planning.",
+    "feedback_example": "Compare your draft with your original writing goal to check whether you are staying focused."
+  },
+  {
+    "id": "srsd_018",
+    "framework": "SRSD",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Completing Planned Ideas",
+    "description": "Students ensure that every important idea identified during planning is fully developed before finishing the draft.",
+    "how_to_apply": "Guide the student to revisit the planning outline and confirm that every planned point has been addressed.",
+    "feedback_example": "Check your outline and make sure you have explained every planned idea before finishing your draft."
+  },
+  {
+    "id": "srsd_019",
+    "framework": "SRSD",
+    "stage": "REVISION",
+    "strategy_name": "Self-Monitoring",
+    "description": "Students monitor whether their completed writing achieves the original writing goal and effectively communicates the intended message.",
+    "how_to_apply": "Encourage the student to reread the draft and determine whether every paragraph supports the main purpose.",
+    "feedback_example": "Read through your draft again and check whether every paragraph supports your main idea."
+  },
+  {
+    "id": "srsd_020",
+    "framework": "SRSD",
+    "stage": "REVISION",
+    "strategy_name": "Self-Evaluation",
+    "description": "Students evaluate the strengths and weaknesses of their writing before making revisions.",
+    "how_to_apply": "Guide the student to identify areas that need improvement before editing the draft.",
+    "feedback_example": "Review your writing and identify one area that could be improved before making changes."
+  },
+  {
+    "id": "srsd_021",
+    "framework": "SRSD",
+    "stage": "REVISION",
+    "strategy_name": "Checking Writing Goals",
+    "description": "Students compare the completed draft with the original writing goal to determine whether the intended purpose has been achieved.",
+    "how_to_apply": "Encourage the student to compare the completed draft with the original writing plan.",
+    "feedback_example": "Compare your completed draft with your original writing goal and check whether you achieved it."
+  },
+  {
+    "id": "srsd_022",
+    "framework": "SRSD",
+    "stage": "REVISION",
+    "strategy_name": "Revising Organisation",
+    "description": "Students review the organisation of ideas and rearrange information to improve logical flow.",
+    "how_to_apply": "Guide the student to reorder ideas if they improve the overall organisation of the writing.",
+    "feedback_example": "Rearrange any ideas that would improve the logical flow of your writing."
+  },
+  {
+    "id": "srsd_023",
+    "framework": "SRSD",
+    "stage": "REVISION",
+    "strategy_name": "Improving Clarity",
+    "description": "Students revise unclear sentences so that their ideas are communicated more effectively.",
+    "how_to_apply": "Encourage the student to identify confusing sentences and rewrite them more clearly.",
+    "feedback_example": "Rewrite any unclear sentences so your ideas are easier to understand."
+  },
+  {
+    "id": "srsd_024",
+    "framework": "SRSD",
+    "stage": "REVISION",
+    "strategy_name": "Editing for Accuracy",
+    "description": "Students review grammar, punctuation, spelling, and sentence construction before completing the writing task.",
+    "how_to_apply": "Guide the student to check language accuracy after revising the content.",
+    "feedback_example": "Check your grammar, spelling, and punctuation before submitting your writing."
+  },
+  {
+    "id": "srsd_025",
+    "framework": "SRSD",
+    "stage": "REVISION",
+    "strategy_name": "Reflecting on Writing",
+    "description": "Students reflect on the writing process to identify successful strategies and areas for future improvement.",
+    "how_to_apply": "Encourage the student to think about what worked well and what could be improved for future writing tasks.",
+    "feedback_example": "Think about one thing you did well and one thing you can improve in your next piece of writing."
+  },
+  {
+    "id": "srsd_026",
+    "framework": "SRSD",
+    "stage": "REVISION",
+    "strategy_name": "Self-Reinforcement",
+    "description": "Students recognise their own progress after successfully applying writing strategies, helping to build confidence and motivation.",
+    "how_to_apply": "Encourage the student to acknowledge improvements after completing revisions.",
+    "feedback_example": "Identify one improvement you made during revision and use it as a goal for your next writing task."
+  },
+  {
+    "id": "hochman_001",
+    "framework": "Hochman",
+    "stage": "PLANNING",
+    "strategy_name": "Sentence Expansion for Idea Generation",
+    "description": "Students take a simple 'kernel' sentence and generate richer content by answering guiding questions (who, what, when, where, why, how), producing more ideas to develop before drafting.",
+    "how_to_apply": "Give the student a simple kernel sentence about their topic and prompt them to answer two or more question words to generate additional details and ideas.",
+    "feedback_example": "Take your simple sentence and answer 'who,' 'when,' and 'why' to generate more ideas before you start writing."
+  },
+  {
+    "id": "hochman_002",
+    "framework": "Hochman",
+    "stage": "PLANNING",
+    "strategy_name": "Single-Paragraph Outline",
+    "description": "Students plan a paragraph using three components in order: a topic sentence, a short list of supporting detail notes, and a concluding sentence.",
+    "how_to_apply": "Guide the student to write a topic sentence, then jot brief notes (not full sentences) for each supporting detail, then write a concluding sentence, all before drafting.",
+    "feedback_example": "Write your topic sentence first, then list your supporting details as short notes, and add a concluding sentence to complete your outline."
+  },
+  {
+    "id": "hochman_003",
+    "framework": "Hochman",
+    "stage": "PLANNING",
+    "strategy_name": "Multiple-Paragraph Outline",
+    "description": "Students plan a full essay by writing a thesis statement and then outlining the main idea and supporting details for each paragraph before drafting.",
+    "how_to_apply": "Have the student write a thesis statement, then outline the main idea and key supporting points for each paragraph, including introduction and conclusion.",
+    "feedback_example": "State your thesis first, then outline the main idea for each paragraph before you begin writing your essay."
+  },
+  {
+    "id": "hochman_004",
+    "framework": "Hochman",
+    "stage": "PLANNING",
+    "strategy_name": "Painted Essay Structure",
+    "description": "Students plan their essay by assigning a distinct color or label to each structural part — introduction/thesis, each proof paragraph, and the conclusion — to make the overall structure explicit before drafting.",
+    "how_to_apply": "Assign a color or label to each essay part (introduction, each proof paragraph, conclusion) and have the student plan content for each labeled section separately.",
+    "feedback_example": "Mark your introduction, each supporting paragraph, and your conclusion separately so you can see your essay's structure before you write."
+  },
+  {
+    "id": "hochman_005",
+    "framework": "Hochman",
+    "stage": "PLANNING",
+    "strategy_name": "Converting Sentences to Notes",
+    "description": "Students condense sentences or short passages into brief notes or keywords, practicing identification of main ideas before organizing their writing.",
+    "how_to_apply": "Give the student a sentence or short passage and have them rewrite it as brief notes or key phrases, capturing only the essential information.",
+    "feedback_example": "Reduce this sentence to a few key words that capture its main idea before you plan your paragraph."
+  },
+  {
+    "id": "hochman_006",
+    "framework": "Hochman",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Sentence Expansion",
+    "description": "Students expand a simple kernel sentence into a detailed, complete sentence by answering guiding questions such as who, what, when, where, why, and how.",
+    "how_to_apply": "Give the student a basic sentence and two or more question words; have them answer each question and combine the answers into one expanded sentence.",
+    "feedback_example": "Expand this sentence by adding who, when, and where the action happened."
+  },
+  {
+    "id": "hochman_007",
+    "framework": "Hochman",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Sentence Combining",
+    "description": "Students merge two or more short, related sentences into a single, more sophisticated sentence using a conjunction, clause, or appositive.",
+    "how_to_apply": "Give the student two related short sentences and prompt them to combine the sentences into one, using an appropriate connecting word or clause.",
+    "feedback_example": "Combine these two short sentences into one using 'and' or 'because' to show how they are connected."
+  },
+  {
+    "id": "hochman_008",
+    "framework": "Hochman",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Because/But/So Completion",
+    "description": "Students expand a base sentence three different ways by completing it with the conjunctions 'because,' 'but,' and 'so,' building logical reasoning and sentence variety.",
+    "how_to_apply": "Give the student a base sentence stem and have them complete it three times, once each with 'because,' 'but,' and 'so.'",
+    "feedback_example": "Finish this sentence three times: once using 'because,' once using 'but,' and once using 'so.'"
+  },
+  {
+    "id": "hochman_009",
+    "framework": "Hochman",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Appositive Phrases",
+    "description": "Students insert a descriptive noun phrase (an appositive) next to a noun to add extra detail and context to a sentence.",
+    "how_to_apply": "Have the student add a short descriptive phrase right after a noun in their sentence to give the reader more information about it.",
+    "feedback_example": "Add a short phrase right after this noun to describe it further, like 'the first president of the United States.'"
+  },
+  {
+    "id": "hochman_010",
+    "framework": "Hochman",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Subordinating Conjunction Starters",
+    "description": "Students practice beginning sentences with subordinating conjunctions such as 'although,' 'unless,' 'if,' or 'when' to form more complex sentences and show nuanced relationships between ideas.",
+    "how_to_apply": "Give the student a subordinating conjunction and a topic, and have them write a sentence that begins with that word.",
+    "feedback_example": "Write a sentence about this topic that starts with 'Although' or 'Unless' to show a more complex relationship between your ideas."
+  },
+  {
+    "id": "hochman_011",
+    "framework": "Hochman",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Scrambled Sentences",
+    "description": "Students rearrange a jumbled list of words into a grammatically correct, properly punctuated sentence, reinforcing correct word order.",
+    "how_to_apply": "Give the student a scrambled set of words and have them reorder the words into a complete sentence with correct capitalization and punctuation.",
+    "feedback_example": "Rearrange these words into a complete sentence with a capital letter and correct punctuation."
+  },
+  {
+    "id": "hochman_012",
+    "framework": "Hochman",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Converting Notes to Sentences",
+    "description": "Students translate brief keyword notes into complete, grammatically correct sentences, applying proper structure and punctuation.",
+    "how_to_apply": "Give the student a short list of key-word notes and have them write each one as a full, properly punctuated sentence.",
+    "feedback_example": "Turn these key words into one complete sentence, remembering to add a capital letter and end punctuation."
+  },
+  {
+    "id": "hochman_013",
+    "framework": "Hochman",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Using Transition Word Banks",
+    "description": "Students select an appropriate transition word or phrase from a functional category (addition, contrast, cause/effect, sequence, conclusion) to link ideas as they draft.",
+    "how_to_apply": "Prompt the student to choose a transition word from the appropriate category (e.g. addition, contrast, cause/effect) to connect this idea to the previous one.",
+    "feedback_example": "Add a transition word like 'for example' or 'as a result' to connect this idea to the one before it."
+  },
+  {
+    "id": "hochman_014",
+    "framework": "TWR",
+    "stage": "IMPLEMENTATION",
+    "strategy_name": "Varying Sentence Openers",
+    "description": "Students practice starting sentences with different grammatical structures — such as prepositional phrases, -ing words, or subordinate clauses — instead of always starting with the subject, to build sentence variety.",
+    "how_to_apply": "Have the student rewrite a sentence to begin with something other than the subject, such as a phrase like 'Although,' 'Despite,' or 'Suddenly.'",
+    "feedback_example": "Rewrite this sentence to begin with a word like 'Although' or 'Suddenly' instead of starting with the subject."
+  },
+  {
+    "id": "hochman_015",
+    "framework": "Hochman",
+    "stage": "REVISION",
+    "strategy_name": "Editing Checklists & Proofreading Symbols",
+    "description": "Students use a structured checklist and standard proofreading symbols to systematically check their draft for grammar, punctuation, and completeness errors.",
+    "how_to_apply": "Give the student an editing checklist covering capitalization, punctuation, and complete sentences, and have them mark needed corrections using standard proofreading symbols.",
+    "feedback_example": "Use your editing checklist to check for capitalization, punctuation, and complete sentences, marking any fixes needed."
+  },
+  {
+    "id": "hochman_016",
+    "framework": "Hochman",
+    "stage": "REVISION",
+    "strategy_name": "Correcting Fragments and Run-Ons",
+    "description": "Students identify incomplete sentences (fragments) and improperly joined sentences (run-ons) in their draft and rewrite them as complete, correctly punctuated sentences.",
+    "how_to_apply": "Guide the student to reread their draft, mark any fragments or run-on sentences, and rewrite each one as a complete, properly punctuated sentence.",
+    "feedback_example": "Check your draft for any incomplete or run-on sentences and rewrite them as complete sentences."
+  },
+  {
+    "id": "hochman_017",
+    "framework": "Hochman",
+    "stage": "REVISION",
+    "strategy_name": "Revising Repetitive Sentence Openers",
+    "description": "Students review their draft for sentences that repeatedly begin the same way and revise some of them to start with a different structure, improving flow and interest.",
+    "how_to_apply": "Have the student reread their draft, identify sentences that start the same way, and rewrite some of them with a different opening structure.",
+    "feedback_example": "Look for sentences that all start the same way and rewrite one or two with a different beginning."
+  },
+  {
+    "id": "hochman_018",
+    "framework": "Hochman",
+    "stage": "REVISION",
+    "strategy_name": "Adding Missing Transitions",
+    "description": "Students review their draft to find places where ideas are not clearly connected and insert an appropriate transition word or phrase to improve the flow between sentences or paragraphs.",
+    "how_to_apply": "Guide the student to reread their draft and add a transition word or phrase wherever the connection between two ideas is unclear.",
+    "feedback_example": "Find a place in your draft where the connection between two ideas is unclear and add a transition word to make it clearer."
+  }
+]

@@ -4,6 +4,7 @@ pydantic-settings
 sentence-transformers
 faiss-cpu
 google-genai
+httpx
 numpy
 scikit-learn
 python-docx

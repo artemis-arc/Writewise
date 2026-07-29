@@ -2,3 +2,10 @@
 __pycache__/
 *.pyc
 .env
+
+# Module 3 runtime state: rewritten on every feedback turn, so committing it would mean
+# a conflict per request. Snapshot a trained table deliberately with `git add -f`.
+app/data/215043K/q_table.json
+app/data/215043K/sessions.json
+scripts/215043K/eval_q_table.json
+scripts/215043K/eval_sessions.json

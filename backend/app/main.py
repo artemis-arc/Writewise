@@ -4,8 +4,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import health
+from app.api.routes._215043K import feedback
 from app.api.routes._215131E import task_breakdown, writing_profile
 from app.core.config import get_settings
+from app.services._215043K.engine import build_feedback_engine
 from app.services._215131E.scenario_retriever import ScenarioRetriever
 from app.services._215131E.srsd_scoring import SrsdScorer
 
@@ -16,6 +18,7 @@ async def lifespan(app: FastAPI):
     # Built once at startup so a request never pays the embedding/index/model-load cost.
     app.state.retriever = ScenarioRetriever(settings.embedding_model, settings.scenarios_path)
     app.state.srsd_scorer = SrsdScorer(settings.srsd_embedding_model, settings.srsd_checkpoint_path)
+    app.state.feedback_engine = build_feedback_engine(settings)
     yield
 
 
@@ -31,3 +34,4 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(task_breakdown.router)
 app.include_router(writing_profile.router)
+app.include_router(feedback.router)
