@@ -190,10 +190,16 @@ export function QuoteIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
   );
 }
 
+/*
+ * The alignment icons draw four lines rather than three, the way Word's do. Three
+ * full-width lines would make the justify icon indistinguishable from MenuIcon,
+ * and four ragged lines read as a paragraph instead of a menu.
+ */
+
 export function AlignLeftIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} {...props}>
-      <path d="M4 6.5h16M4 12h10M4 17.5h13" strokeLinecap="round" />
+      <path d="M4 5.5h16M4 10h9M4 14.5h13M4 19h7" strokeLinecap="round" />
     </svg>
   );
 }
@@ -201,7 +207,7 @@ export function AlignLeftIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
 export function AlignCenterIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} {...props}>
-      <path d="M4 6.5h16M7 12h10M5.5 17.5h13" strokeLinecap="round" />
+      <path d="M4 5.5h16M7.5 10h9M5.5 14.5h13M8.5 19h7" strokeLinecap="round" />
     </svg>
   );
 }
@@ -209,7 +215,7 @@ export function AlignCenterIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
 export function AlignRightIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} {...props}>
-      <path d="M4 6.5h16M10 12h10M7 17.5h13" strokeLinecap="round" />
+      <path d="M4 5.5h16M11 10h9M7 14.5h13M13 19h7" strokeLinecap="round" />
     </svg>
   );
 }
@@ -217,7 +223,7 @@ export function AlignRightIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
 export function AlignJustifyIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} {...props}>
-      <path d="M4 6.5h16M4 12h16M4 17.5h16" strokeLinecap="round" />
+      <path d="M4 5.5h16M4 10h16M4 14.5h16M4 19h16" strokeLinecap="round" />
     </svg>
   );
 }

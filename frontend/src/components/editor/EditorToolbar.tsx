@@ -58,6 +58,13 @@ const ALIGNMENTS = [
   { value: "justify", label: "Justify", Icon: AlignJustifyIcon },
 ] as const;
 
+/** The painter button is the only control with three states, so it needs three labels. */
+function painterLabel(isArmed: boolean, isSticky: boolean) {
+  if (isSticky) return "Format painter locked -- click to release";
+  if (isArmed) return "Release format painter";
+  return "Copy formatting (double-click to keep)";
+}
+
 export function EditorToolbar({ editor }: Readonly<EditorToolbarProps>) {
   const [isLinkFormOpen, setIsLinkFormOpen] = useState(false);
 
@@ -144,13 +151,7 @@ export function EditorToolbar({ editor }: Readonly<EditorToolbarProps>) {
           <RedoIcon className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
-          label={
-            state.isPainterSticky
-              ? "Format painter locked -- click to release"
-              : state.isPainterArmed
-                ? "Release format painter"
-                : "Copy formatting (double-click to keep)"
-          }
+          label={painterLabel(state.isPainterArmed, state.isPainterSticky)}
           isActive={state.isPainterArmed}
           onClick={handlePainterClick}
         >
