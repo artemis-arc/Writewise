@@ -108,7 +108,7 @@ def build_engine(settings, args) -> FeedbackEngine:
     return FeedbackEngine(
         retriever=FeedbackRetriever(
             settings.feedback_embedding_model,
-            settings.feedback_kb_path,
+            settings.feedback_gen_kb_path,
             settings.feedback_strategy_kb_path,
         ),
         agent=RLAgent(

@@ -21,9 +21,11 @@ class Settings(BaseSettings):
     srsd_checkpoint_path: Path = BASE_DIR / "data" / "215131E" / "srsd_model.pt"
     srsd_max_upload_bytes: int = 25 * 1024 * 1024  # 25MB, matching the Upload screen's stated limit
 
-    # --- Module 3: feedback generation (215043K) ---
     feedback_embedding_model: str = "all-MiniLM-L6-v2"
-    feedback_kb_path: Path = BASE_DIR / "data" / "215043K" / "feedback_kb.json"
+
+    # --- Module 3: feedback generation (215043K) ---
+    # Named feedback_gen_* to stay clear of Module 4's own feedback_kb_path below.
+    feedback_gen_kb_path: Path = BASE_DIR / "data" / "215043K" / "feedback_kb.json"
     feedback_strategy_kb_path: Path = BASE_DIR / "data" / "215043K" / "strategy_kb.json"
 
     # Learned online and written back on every turn, so unlike the other modules' data
@@ -52,6 +54,11 @@ class Settings(BaseSettings):
     module4_base_url: str = "http://localhost:8000"
     module4_evaluate_path: str = "/api/v1/feedback-evaluation"
     module4_timeout_seconds: float = 30.0
+
+    # --- Module 4: feedback scoring (215051H) ---
+    feedback_kb_path: Path = BASE_DIR / "data" / "215051H" / "feedback_kb.json"
+    clarity_semantic_model: str = "all-mpnet-base-v2"
+    clarity_model_dir: Path = BASE_DIR / "data" / "215051H" / "clarity_model"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 

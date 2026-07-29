@@ -29,7 +29,7 @@ def build_feedback_engine(settings: Settings) -> FeedbackEngine:
     return FeedbackEngine(
         retriever=FeedbackRetriever(
             embedding_model=settings.feedback_embedding_model,
-            kb_path=settings.feedback_kb_path,
+            kb_path=settings.feedback_gen_kb_path,
             strategy_kb_path=settings.feedback_strategy_kb_path,
         ),
         agent=RLAgent(

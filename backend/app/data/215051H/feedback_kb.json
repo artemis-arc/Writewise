@@ -1,0 +1,676 @@
+{
+  "metadata": {
+    "name": "writewise_feedback_scoring_kb_v3",
+    "description": "Enhanced contextual knowledge base for stage-aware feedback evaluation and scoring in AI-assisted academic writing systems",
+    "author": "M4 Feedback Scoring Module",
+    "frameworks_used": [
+      "RAG",
+      "FAISS",
+      "Few-shot Learning",
+      "Heuristic Scoring"
+    ],
+    "created_for_module": "M4 Feedback Scoring",
+    "notes": "Enhanced KB with contextual retrieval grounding, stage-aware reasoning, history consistency modeling, and clarity-aware scoring for IT undergraduate research article writing. Stage labels standardised to Title Case (Planning/Implementation/Revision) to align with the Final_feedback_clarity_score_with_improvements KB. Clarity scoring scale documented for cross-KB reference.",
+    "scoring_scale": {
+      "this_kb": "0.0-1.0 (LLM-judged, all six attributes including clarity)",
+      "external_clarity_model_kb": "0-100 (Final_feedback_clarity_score_with_improvements: Final_Clarity_Score, sum of 5 sub-features x 0-20)",
+      "conversion_note": "Multiply this_kb clarity values by 100 for rough comparability with the external clarity model's scale. Scales are not statistically equivalent; treat conversion as directional only."
+    },
+    "clarity_levels_aligned_with": "Final_feedback_clarity_score_with_improvements Clarity_Level taxonomy (Excellent, Good, Average, Poor, Very Poor). This KB currently has example coverage for 3 of those 5 levels: Excellent, Average, Very Poor."
+  },
+  "stage_definitions": {
+    "Planning": {
+      "description": "User is defining research objectives, problem statements, datasets, methodology, and project scope.",
+      "signals": [
+        "research objectives",
+        "problem statement",
+        "scope definition",
+        "dataset selection",
+        "methodology planning"
+      ]
+    },
+    "Implementation": {
+      "description": "User is describing technical implementation, workflows, models, architecture, APIs, and system functionality.",
+      "signals": [
+        "system architecture",
+        "API integration",
+        "model training",
+        "database implementation",
+        "preprocessing workflow"
+      ]
+    },
+    "Revision": {
+      "description": "User is refining readability, formatting, citations, clarity, grammar, and logical flow.",
+      "signals": [
+        "grammar correction",
+        "sentence clarity",
+        "citation formatting",
+        "logical flow",
+        "readability"
+      ]
+    }
+  },
+  "clarity_patterns": {
+    "excellent_clarity": [
+      "Describe the preprocessing workflow step by step.",
+      "Explain how JWT authentication validates user sessions.",
+      "Provide examples for each evaluation metric.",
+      "Rewrite long sentences into shorter readable statements.",
+      "Clearly explain how the recommendation engine generates outputs."
+    ],
+    "average_clarity": [
+      "Expand this section with more details.",
+      "Improve technical explanations.",
+      "Clarify the workflow further.",
+      "Add more information to this section."
+    ],
+    "very_poor_clarity": [
+      "Improve this section.",
+      "Think more.",
+      "Fix everything.",
+      "Continue working on this.",
+      "Make it better."
+    ]
+  },
+  "history_patterns": {
+    "consistent_feedback": [
+      {
+        "previous_feedback": "Define the project objectives clearly.",
+        "new_feedback": "Explain how the selected methodology supports the objectives.",
+        "score": 0.92
+      },
+      {
+        "previous_feedback": "Describe preprocessing steps.",
+        "new_feedback": "Explain how missing values were handled.",
+        "score": 0.95
+      }
+    ],
+    "inconsistent_feedback": [
+      {
+        "previous_feedback": "Finalize methodology.",
+        "new_feedback": "Fix grammar mistakes.",
+        "score": 0.2
+      },
+      {
+        "previous_feedback": "Improve citations.",
+        "new_feedback": "Redesign database schema.",
+        "score": 0.15
+      }
+    ]
+  },
+  "improvement_patterns": {
+    "high_impact": [
+      "Feedback directly resolves a writing weakness.",
+      "Feedback provides actionable next steps.",
+      "Feedback improves technical clarity.",
+      "Feedback unblocks writing progress."
+    ],
+    "low_impact": [
+      "Feedback is vague.",
+      "Feedback repeats earlier instructions.",
+      "Feedback provides no actionable value.",
+      "Feedback is unrelated to the stage."
+    ]
+  },
+  "stage_transition_patterns": {
+    "valid_transitions": [
+      "Planning -> Implementation",
+      "Implementation -> Revision",
+      "Planning -> Revision"
+    ],
+    "misaligned_feedback_examples": [
+      {
+        "current_stage": "Planning",
+        "bad_feedback": "Fix grammar mistakes.",
+        "score": 0.1
+      },
+      {
+        "current_stage": "Revision",
+        "bad_feedback": "Define research objectives.",
+        "score": 0.15
+      }
+    ]
+  },
+  "examples": {
+    "planning": [
+      {
+        "id": "P1",
+        "stage": "Planning",
+        "current_content": "The proposed system aims to predict student academic performance using supervised learning algorithms.",
+        "previous_content": "This research focuses on identifying factors affecting undergraduate academic success.",
+        "feedback": "Clearly define your research problem before selecting a machine learning model.",
+        "history_context": [
+          "Identify the core research objective.",
+          "Define the project scope clearly."
+        ],
+        "scores": {
+          "relevance": 0.95,
+          "clarity": 0.92,
+          "actionability": 0.91,
+          "stage_alignment": 0.95,
+          "improvement_impact": 0.9,
+          "consistency_with_history": 0.89
+        }
+      },
+      {
+        "id": "P2",
+        "stage": "Planning",
+        "current_content": "The literature review compares machine learning techniques used for fake news detection systems.",
+        "previous_content": "Previous studies discussed misinformation spread across social media platforms.",
+        "feedback": "Identify research gaps before defining your methodology.",
+        "history_context": [
+          "Review existing literature carefully.",
+          "Define research objectives clearly."
+        ],
+        "scores": {
+          "relevance": 0.94,
+          "clarity": 0.91,
+          "actionability": 0.92,
+          "stage_alignment": 0.95,
+          "improvement_impact": 0.91,
+          "consistency_with_history": 0.9
+        }
+      },
+      {
+        "id": "P3",
+        "stage": "Planning",
+        "current_content": "The proposed application includes user authentication, recommendation generation, and analytics dashboards.",
+        "previous_content": "The introduction chapter described AI-assisted academic support systems.",
+        "feedback": "Define measurable project objectives before implementation.",
+        "history_context": [
+          "Clearly define the project scope."
+        ],
+        "scores": {
+          "relevance": 0.93,
+          "clarity": 0.9,
+          "actionability": 0.91,
+          "stage_alignment": 0.94,
+          "improvement_impact": 0.89,
+          "consistency_with_history": 0.88
+        }
+      },
+      {
+        "id": "P4",
+        "stage": "Planning",
+        "current_content": "The methodology chapter proposes using CNN models for image classification tasks.",
+        "previous_content": "The literature review discussed deep learning techniques for image analysis.",
+        "feedback": "Select suitable datasets before training the CNN model.",
+        "history_context": [
+          "Identify appropriate machine learning approaches."
+        ],
+        "scores": {
+          "relevance": 0.92,
+          "clarity": 0.9,
+          "actionability": 0.93,
+          "stage_alignment": 0.95,
+          "improvement_impact": 0.9,
+          "consistency_with_history": 0.87
+        }
+      },
+      {
+        "id": "P5",
+        "stage": "Planning",
+        "current_content": "The proposed research analyzes cybersecurity threats affecting cloud-based learning management systems.",
+        "previous_content": "Previous studies identified phishing attacks as major educational security concerns.",
+        "feedback": "Define the exact cybersecurity threats included within the project scope.",
+        "history_context": [
+          "Clearly define the research problem."
+        ],
+        "scores": {
+          "relevance": 0.94,
+          "clarity": 0.92,
+          "actionability": 0.92,
+          "stage_alignment": 0.96,
+          "improvement_impact": 0.91,
+          "consistency_with_history": 0.9
+        }
+      },
+      {
+        "id": "P6",
+        "stage": "Planning",
+        "current_content": "The methodology section currently describes data collection but lacks evaluation procedures.",
+        "previous_content": "The prototype user interface was developed using React and Tailwind CSS.",
+        "feedback": "Start coding your backend implementation immediately.",
+        "history_context": [
+          "Define methodology clearly."
+        ],
+        "scores": {
+          "relevance": 0.3,
+          "clarity": 0.84,
+          "actionability": 0.6,
+          "stage_alignment": 0.12,
+          "improvement_impact": 0.28,
+          "consistency_with_history": 0.22
+        }
+      },
+      {
+        "id": "P7",
+        "stage": "Planning",
+        "current_content": "The objectives section explains the system goals but lacks measurable outcomes.",
+        "previous_content": "The proposal outline included introduction and methodology sections.",
+        "feedback": "Think more about your project idea.",
+        "history_context": [],
+        "scores": {
+          "relevance": 0.45,
+          "clarity": 0.58,
+          "actionability": 0.2,
+          "stage_alignment": 0.4,
+          "improvement_impact": 0.25,
+          "consistency_with_history": 0.65
+        }
+      },
+      {
+        "id": "P8",
+        "stage": "Planning",
+        "current_content": "The project scope currently includes both desktop and mobile users without identifying the target audience.",
+        "previous_content": "The final proofreading process corrected formatting inconsistencies.",
+        "feedback": "Evaluate whether mobile-specific requirements align with your research objectives.",
+        "history_context": [
+          "Define the target audience clearly."
+        ],
+        "scores": {
+          "relevance": 0.92,
+          "clarity": 0.9,
+          "actionability": 0.88,
+          "stage_alignment": 0.93,
+          "improvement_impact": 0.89,
+          "consistency_with_history": 0.8
+        }
+      },
+      {
+        "id": "P9",
+        "stage": "Planning",
+        "current_content": "Model performance will be evaluated using accuracy, recall, precision, and F1-score metrics.",
+        "previous_content": "The proposal document defined the problem statement and expected outcomes.",
+        "feedback": "Compare evaluation metrics based on your prediction task requirements.",
+        "history_context": [
+          "Identify suitable evaluation metrics."
+        ],
+        "scores": {
+          "relevance": 0.95,
+          "clarity": 0.91,
+          "actionability": 0.93,
+          "stage_alignment": 0.95,
+          "improvement_impact": 0.92,
+          "consistency_with_history": 0.89
+        }
+      },
+      {
+        "id": "P10",
+        "stage": "Planning",
+        "current_content": "The introduction chapter discusses AI-based systems but does not clearly define the research problem.",
+        "previous_content": "The architecture diagram illustrated frontend-backend communication.",
+        "feedback": "Write your conclusion section now.",
+        "history_context": [],
+        "scores": {
+          "relevance": 0.22,
+          "clarity": 0.82,
+          "actionability": 0.45,
+          "stage_alignment": 0.1,
+          "improvement_impact": 0.2,
+          "consistency_with_history": 0.18
+        }
+      }
+    ],
+    "implementation": [
+      {
+        "id": "I1",
+        "stage": "Implementation",
+        "current_content": "The backend service handles authentication, task scheduling, and API communication workflows.",
+        "previous_content": "The planning phase finalized the system requirements and architecture design.",
+        "feedback": "Explain how JWT authentication tokens are generated and validated during API requests.",
+        "history_context": [
+          "Describe backend modules clearly.",
+          "Explain API communication workflows."
+        ],
+        "scores": {
+          "relevance": 0.96,
+          "clarity": 0.94,
+          "actionability": 0.95,
+          "stage_alignment": 0.96,
+          "improvement_impact": 0.94,
+          "consistency_with_history": 0.91
+        }
+      },
+      {
+        "id": "I2",
+        "stage": "Implementation",
+        "current_content": "The preprocessing pipeline removes duplicate records and handles missing values before model training.",
+        "previous_content": "The dataset description identified the structure of collected training data.",
+        "feedback": "Describe how missing values were handled and explain why normalization techniques were applied.",
+        "history_context": [
+          "Document preprocessing steps clearly.",
+          "Explain dataset preparation workflows."
+        ],
+        "scores": {
+          "relevance": 0.95,
+          "clarity": 0.93,
+          "actionability": 0.94,
+          "stage_alignment": 0.95,
+          "improvement_impact": 0.92,
+          "consistency_with_history": 0.91
+        }
+      },
+      {
+        "id": "I3",
+        "stage": "Implementation",
+        "current_content": "The system architecture section briefly explains communication between frontend services and the recommendation engine.",
+        "previous_content": "The discussion chapter was revised to improve readability and clarity.",
+        "feedback": "Include a system architecture diagram and explain data flow between components.",
+        "history_context": [
+          "Improve technical documentation quality."
+        ],
+        "scores": {
+          "relevance": 0.93,
+          "clarity": 0.91,
+          "actionability": 0.94,
+          "stage_alignment": 0.92,
+          "improvement_impact": 0.91,
+          "consistency_with_history": 0.74
+        }
+      },
+      {
+        "id": "I4",
+        "stage": "Implementation",
+        "current_content": "Random Forest was selected as the primary model due to its ability to handle high-dimensional datasets.",
+        "previous_content": "The methodology chapter described preprocessing and feature extraction techniques.",
+        "feedback": "Compare Random Forest with alternative algorithms using accuracy and computational efficiency.",
+        "history_context": [
+          "Justify algorithm selection clearly."
+        ],
+        "scores": {
+          "relevance": 0.95,
+          "clarity": 0.92,
+          "actionability": 0.92,
+          "stage_alignment": 0.95,
+          "improvement_impact": 0.93,
+          "consistency_with_history": 0.89
+        }
+      },
+      {
+        "id": "I5",
+        "stage": "Implementation",
+        "current_content": "The API integration process enables communication between the mobile application and backend services.",
+        "previous_content": "The frontend implementation section described React-based UI components.",
+        "feedback": "Provide sequence diagrams to explain how API requests are processed between services.",
+        "history_context": [
+          "Explain API workflows clearly."
+        ],
+        "scores": {
+          "relevance": 0.94,
+          "clarity": 0.92,
+          "actionability": 0.94,
+          "stage_alignment": 0.95,
+          "improvement_impact": 0.93,
+          "consistency_with_history": 0.9
+        }
+      },
+      {
+        "id": "I6",
+        "stage": "Implementation",
+        "current_content": "The testing section currently lacks detailed explanations about system evaluation procedures.",
+        "previous_content": "The planning phase finalized research objectives and evaluation criteria.",
+        "feedback": "Fix grammar mistakes in the conclusion chapter.",
+        "history_context": [
+          "Clearly define evaluation strategies."
+        ],
+        "scores": {
+          "relevance": 0.24,
+          "clarity": 0.84,
+          "actionability": 0.48,
+          "stage_alignment": 0.12,
+          "improvement_impact": 0.2,
+          "consistency_with_history": 0.18
+        }
+      },
+      {
+        "id": "I7",
+        "stage": "Implementation",
+        "current_content": "The implementation chapter explains the authentication module but lacks technical depth regarding token validation.",
+        "previous_content": "The implementation workflow documented database design and API endpoints.",
+        "feedback": "Think more carefully about your implementation.",
+        "history_context": [],
+        "scores": {
+          "relevance": 0.42,
+          "clarity": 0.55,
+          "actionability": 0.2,
+          "stage_alignment": 0.4,
+          "improvement_impact": 0.24,
+          "consistency_with_history": 0.7
+        }
+      },
+      {
+        "id": "I8",
+        "stage": "Implementation",
+        "current_content": "The authentication module uses JWT tokens to validate user sessions and manage secure API access.",
+        "previous_content": "The revision stage corrected citation formatting inconsistencies in the references section.",
+        "feedback": "Describe the JWT validation workflow and middleware authentication process.",
+        "history_context": [
+          "Document backend authentication workflows."
+        ],
+        "scores": {
+          "relevance": 0.96,
+          "clarity": 0.94,
+          "actionability": 0.95,
+          "stage_alignment": 0.91,
+          "improvement_impact": 0.94,
+          "consistency_with_history": 0.75
+        }
+      },
+      {
+        "id": "I9",
+        "stage": "Implementation",
+        "current_content": "Database normalization techniques were applied to reduce redundancy and improve consistency.",
+        "previous_content": "The system requirements specification identified database entities and relationships.",
+        "feedback": "Include examples showing how normalization improved database efficiency.",
+        "history_context": [
+          "Explain database structures clearly."
+        ],
+        "scores": {
+          "relevance": 0.94,
+          "clarity": 0.91,
+          "actionability": 0.92,
+          "stage_alignment": 0.95,
+          "improvement_impact": 0.91,
+          "consistency_with_history": 0.88
+        }
+      },
+      {
+        "id": "I10",
+        "stage": "Implementation",
+        "current_content": "The implementation chapter explains chatbot response generation but does not discuss response latency issues.",
+        "previous_content": "The backend architecture section documented API request routing workflows.",
+        "feedback": "Improve your implementation section.",
+        "history_context": [],
+        "scores": {
+          "relevance": 0.45,
+          "clarity": 0.62,
+          "actionability": 0.25,
+          "stage_alignment": 0.42,
+          "improvement_impact": 0.3,
+          "consistency_with_history": 0.68
+        }
+      }
+    ],
+    "revision": [
+      {
+        "id": "R1",
+        "stage": "Revision",
+        "current_content": "The methodology chapter contains long technical sentences that reduce readability and clarity.",
+        "previous_content": "The implementation chapter documented preprocessing and model training workflows.",
+        "feedback": "Rewrite long technical explanations using shorter and simpler sentences.",
+        "history_context": [
+          "Improve readability of technical explanations.",
+          "Reduce sentence complexity."
+        ],
+        "scores": {
+          "relevance": 0.95,
+          "clarity": 0.95,
+          "actionability": 0.94,
+          "stage_alignment": 0.96,
+          "improvement_impact": 0.93,
+          "consistency_with_history": 0.92
+        }
+      },
+      {
+        "id": "R2",
+        "stage": "Revision",
+        "current_content": "Several sections of the paper contain repetitive explanations about evaluation metrics.",
+        "previous_content": "The implementation chapter documented model evaluation using accuracy and recall metrics.",
+        "feedback": "Combine repetitive explanations into a single concise paragraph to improve readability.",
+        "history_context": [
+          "Reduce redundancy in technical explanations.",
+          "Improve paragraph structure."
+        ],
+        "scores": {
+          "relevance": 0.94,
+          "clarity": 0.93,
+          "actionability": 0.92,
+          "stage_alignment": 0.95,
+          "improvement_impact": 0.92,
+          "consistency_with_history": 0.9
+        }
+      },
+      {
+        "id": "R3",
+        "stage": "Revision",
+        "current_content": "The conclusion chapter summarizes findings but lacks logical organization between objectives and future work.",
+        "previous_content": "The planning phase finalized research objectives and project scope.",
+        "feedback": "Separate the conclusion into findings, contributions, limitations, and future work sections.",
+        "history_context": [
+          "Improve logical flow between sections."
+        ],
+        "scores": {
+          "relevance": 0.93,
+          "clarity": 0.92,
+          "actionability": 0.94,
+          "stage_alignment": 0.9,
+          "improvement_impact": 0.91,
+          "consistency_with_history": 0.74
+        }
+      },
+      {
+        "id": "R4",
+        "stage": "Revision",
+        "current_content": "Several APA citations in the references section use inconsistent formatting styles.",
+        "previous_content": "The testing chapter documented system evaluation procedures and performance analysis.",
+        "feedback": "Apply consistent APA citation formatting across all references and in-text citations.",
+        "history_context": [
+          "Correct formatting inconsistencies."
+        ],
+        "scores": {
+          "relevance": 0.95,
+          "clarity": 0.93,
+          "actionability": 0.93,
+          "stage_alignment": 0.95,
+          "improvement_impact": 0.92,
+          "consistency_with_history": 0.8
+        }
+      },
+      {
+        "id": "R5",
+        "stage": "Revision",
+        "current_content": "The abstract exceeds the word limit and contains unnecessary background information.",
+        "previous_content": "The introduction chapter was proofread to improve readability and grammar.",
+        "feedback": "Reduce background details and focus only on objectives, methodology, and key findings.",
+        "history_context": [
+          "Improve conciseness in technical writing."
+        ],
+        "scores": {
+          "relevance": 0.94,
+          "clarity": 0.92,
+          "actionability": 0.93,
+          "stage_alignment": 0.95,
+          "improvement_impact": 0.92,
+          "consistency_with_history": 0.9
+        }
+      },
+      {
+        "id": "R6",
+        "stage": "Revision",
+        "current_content": "The results chapter contains grammatical mistakes and inconsistent sentence structures.",
+        "previous_content": "The methodology chapter finalized preprocessing and machine learning techniques.",
+        "feedback": "Start implementing additional machine learning features.",
+        "history_context": [
+          "Improve grammar and readability."
+        ],
+        "scores": {
+          "relevance": 0.18,
+          "clarity": 0.82,
+          "actionability": 0.52,
+          "stage_alignment": 0.1,
+          "improvement_impact": 0.18,
+          "consistency_with_history": 0.15
+        }
+      },
+      {
+        "id": "R7",
+        "stage": "Revision",
+        "current_content": "The literature review contains multiple long paragraphs that reduce readability and coherence.",
+        "previous_content": "Formatting inconsistencies in the references section were corrected during proofreading.",
+        "feedback": "Fix everything in this section.",
+        "history_context": [],
+        "scores": {
+          "relevance": 0.4,
+          "clarity": 0.45,
+          "actionability": 0.18,
+          "stage_alignment": 0.38,
+          "improvement_impact": 0.22,
+          "consistency_with_history": 0.7
+        }
+      },
+      {
+        "id": "R8",
+        "stage": "Revision",
+        "current_content": "The explanation of evaluation metrics contains technical terms that may confuse non-technical readers.",
+        "previous_content": "The model evaluation chapter described accuracy, precision, recall, and F1-score calculations.",
+        "feedback": "Rewrite technical metric explanations using simpler language and practical examples.",
+        "history_context": [
+          "Improve readability of technical explanations."
+        ],
+        "scores": {
+          "relevance": 0.96,
+          "clarity": 0.95,
+          "actionability": 0.94,
+          "stage_alignment": 0.96,
+          "improvement_impact": 0.94,
+          "consistency_with_history": 0.91
+        }
+      },
+      {
+        "id": "R9",
+        "stage": "Revision",
+        "current_content": "Different chapters use inconsistent heading styles and formatting structures throughout the paper.",
+        "previous_content": "The project proposal defined the expected structure and organization of the research article.",
+        "feedback": "Apply a consistent heading hierarchy and formatting style throughout the document.",
+        "history_context": [
+          "Maintain consistency across document formatting."
+        ],
+        "scores": {
+          "relevance": 0.93,
+          "clarity": 0.92,
+          "actionability": 0.91,
+          "stage_alignment": 0.95,
+          "improvement_impact": 0.9,
+          "consistency_with_history": 0.88
+        }
+      },
+      {
+        "id": "R10",
+        "stage": "Revision",
+        "current_content": "The conclusion chapter repeats implementation details that were already discussed in previous sections.",
+        "previous_content": "The final proofreading process corrected grammar and citation formatting inconsistencies.",
+        "feedback": "Improve the conclusion section.",
+        "history_context": [],
+        "scores": {
+          "relevance": 0.52,
+          "clarity": 0.68,
+          "actionability": 0.35,
+          "stage_alignment": 0.58,
+          "improvement_impact": 0.4,
+          "consistency_with_history": 0.66
+        }
+      }
+    ]
+  }
+}
