@@ -28,7 +28,8 @@ def create_feedback(
 ) -> FeedbackResponse:
     profile = payload.writing_profile
 
-    # Module 2 (215098G) classifies the stage; it arrives on the request already decided.
+    # Module 2 (215098G) classifies the stage and tracks the previous draft; both arrive
+    # on the request already decided
     stage = payload.stage
     writer_level = payload.writer_level or resolve_writer_level(
         overall=profile.overall,
