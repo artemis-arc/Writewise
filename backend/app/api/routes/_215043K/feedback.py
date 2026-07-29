@@ -35,9 +35,7 @@ def create_feedback(
         implementation_cutoff=settings.feedback_implementation_cutoff,
     )
     writer_level = payload.writer_level or resolve_writer_level(
-        mechanics=profile.mechanics,
-        vocabulary=profile.vocabulary,
-        organization=profile.organization,
+        overall=profile.overall,
         low_cutoff=settings.feedback_writer_level_low_cutoff,
         medium_cutoff=settings.feedback_writer_level_medium_cutoff,
     )

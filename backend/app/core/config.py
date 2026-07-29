@@ -45,7 +45,7 @@ class Settings(BaseSettings):
     feedback_planning_cutoff: float = 1 / 3
     feedback_implementation_cutoff: float = 2 / 3
 
-    # Mean of Module 2's three scores below which a writer is low / medium. The gaps in
+    # Module 2's overall score below which a writer is low / medium. The gaps in
     # feedback_kb.json's own examples sit at 46-57 and 65-78.
     feedback_writer_level_low_cutoff: float = 50.0
     feedback_writer_level_medium_cutoff: float = 70.0

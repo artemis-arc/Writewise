@@ -7,11 +7,12 @@ WritingStage = Literal["PLANNING", "IMPLEMENTATION", "REVISION"]
 
 
 class WritingProfileScores(BaseModel):
-    """Module 2's 0-100 rubric scores for this writer."""
+    """Module 2's 0-100 rubric scores for this writer, as returned by /api/v1/writing-profile."""
 
     mechanics: float = Field(ge=0, le=100)
     vocabulary: float = Field(ge=0, le=100)
     organization: float = Field(ge=0, le=100)
+    overall: float = Field(ge=0, le=100)
 
 
 class MilestoneProgress(BaseModel):

@@ -36,21 +36,15 @@ def resolve_stage(
     return REVISION
 
 
-def resolve_writer_level(
-    mechanics: float,
-    vocabulary: float,
-    organization: float,
-    low_cutoff: float,
-    medium_cutoff: float,
-) -> str:
+def resolve_writer_level(overall: float, low_cutoff: float, medium_cutoff: float) -> str:
     """
-    Buckets Module 2's three 0-100 scores into the low/medium/high label the knowledge
+    Buckets Module 2's overall 0-100 score into the low/medium/high label the knowledge
     base is indexed by. The defaults sit in the gaps between the bands actually present
     in feedback_kb.json, whose examples cluster at means of 36-46, 57-65 and 78-83.
+
     """
-    mean_score = (mechanics + vocabulary + organization) / 3
-    if mean_score < low_cutoff:
+    if overall < low_cutoff:
         return "low"
-    if mean_score < medium_cutoff:
+    if overall < medium_cutoff:
         return "medium"
     return "high"
