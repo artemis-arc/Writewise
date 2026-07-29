@@ -190,6 +190,77 @@ export function QuoteIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
   );
 }
 
+export function AlignLeftIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} {...props}>
+      <path d="M4 6.5h16M4 12h10M4 17.5h13" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function AlignCenterIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} {...props}>
+      <path d="M4 6.5h16M7 12h10M5.5 17.5h13" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function AlignRightIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} {...props}>
+      <path d="M4 6.5h16M10 12h10M7 17.5h13" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function AlignJustifyIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} {...props}>
+      <path d="M4 6.5h16M4 12h16M4 17.5h16" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function PaintBrushIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} {...props}>
+      <path d="M5 4h14v5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 9V4Z" strokeLinejoin="round" />
+      <path d="M10 10.5h4V14a2 2 0 0 1-4 0v-3.5Z" strokeLinejoin="round" />
+      <path d="M12 16v4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function LinkIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} {...props}>
+      <path d="M9 12h6" strokeLinecap="round" />
+      <path d="M11 8.5H8a3.5 3.5 0 0 0 0 7h3" strokeLinecap="round" />
+      <path d="M13 8.5h3a3.5 3.5 0 0 1 0 7h-3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function UnlinkIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} {...props}>
+      <path d="M11 8.5H8a3.5 3.5 0 0 0 0 7h3" strokeLinecap="round" />
+      <path d="M13 8.5h3a3.5 3.5 0 0 1 0 7h-3" strokeLinecap="round" />
+      <path d="m4.5 4.5 15 15" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function TableIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} {...props}>
+      <rect x="4" y="5" width="16" height="14" rx="1.5" />
+      <path d="M4 9.5h16M4 14.5h16M9.5 9.5V19M14.5 9.5V19" />
+    </svg>
+  );
+}
+
 export function UndoIcon(props: Readonly<SVGProps<SVGSVGElement>>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} {...props}>

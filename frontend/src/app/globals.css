@@ -148,6 +148,77 @@ body {
   text-underline-offset: 2px;
 }
 
+/*
+ * Tables. `.tableWrapper` is added by the Table extension; `.selectedCell` and
+ * `.column-resize-handle` come from prosemirror-tables, whose own stylesheet we
+ * do not import.
+ */
+.manuscript .tableWrapper {
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+
+.manuscript table {
+  width: 100%;
+  /* `fixed` is what makes the generated <colgroup> widths authoritative, which
+     is what column resizing actually manipulates. */
+  table-layout: fixed;
+  border-collapse: collapse;
+  /* Clips the resize handles, which are positioned against the cells. */
+  overflow: hidden;
+}
+
+.manuscript :is(td, th) {
+  position: relative;
+  min-width: 4rem;
+  border: 1px solid var(--border-subtle);
+  padding: 0.5rem 0.625rem;
+  vertical-align: top;
+}
+
+.manuscript th {
+  background: var(--surface-muted);
+  font-weight: 600;
+  text-align: left;
+}
+
+.manuscript :is(td, th) > p {
+  margin: 0;
+}
+
+.manuscript .selectedCell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: color-mix(in srgb, var(--brand) 18%, transparent);
+  pointer-events: none;
+}
+
+.manuscript .column-resize-handle {
+  position: absolute;
+  top: 0;
+  right: -2px;
+  bottom: -2px;
+  width: 4px;
+  z-index: 20;
+  background: var(--brand);
+  pointer-events: none;
+}
+
+/* prosemirror-tables puts this on <body> for the duration of a column drag. */
+.resize-cursor {
+  cursor: col-resize;
+}
+
+/* While the format painter holds captured formatting, the next selection applies
+   it -- the cursor has to say so. The editor needs its own rule because text
+   content resolves `cursor: auto` to a caret on its own. */
+.manuscript-painting,
+.manuscript-painting .manuscript {
+  cursor: copy;
+}
+
 /* Tiptap's Placeholder extension decorates the empty block with `is-empty`
    and a `data-placeholder` attribute holding the configured text. */
 .manuscript .is-empty::before {
