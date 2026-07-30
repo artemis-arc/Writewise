@@ -1,0 +1,902 @@
+[
+  {
+    "id": "example_001",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 40,
+        "vocabulary": 35,
+        "organization": 45
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Start by writing your topic in one sentence, then list two ideas you could explain."
+    }
+  },
+  {
+    "id": "example_002",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "Social media affects communication.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 45,
+        "vocabulary": 42,
+        "organization": 40
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Write down one positive and one negative effect of social media before deciding your main argument."
+    }
+  },
+  {
+    "id": "example_003",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "I don't know what to write about pollution.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 42,
+        "vocabulary": 39,
+        "organization": 41
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Start with one simple question about pollution, then list two possible answers you could explain."
+    }
+  },
+  {
+    "id": "example_004",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "My essay is about healthy food.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 36,
+        "vocabulary": 34,
+        "organization": 39
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Write your main idea about healthy food, then list two reasons why it is important."
+    }
+  },
+  {
+    "id": "example_005",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "Climate change",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 38,
+        "vocabulary": 40,
+        "organization": 35
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Choose one part of climate change to focus on, then list two effects you could explain."
+    }
+  },
+  {
+    "id": "example_006",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "Climate change impacts cities.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 62,
+        "vocabulary": 60,
+        "organization": 58
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "List two ways climate change affects cities, then decide which point will become your main focus."
+    }
+  },
+  {
+    "id": "example_007",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "Remote work advantages and disadvantages",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 68,
+        "vocabulary": 63,
+        "organization": 55
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Make two columns for advantages and disadvantages, then add two points under each side."
+    }
+  },
+  {
+    "id": "example_008",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "The topic is online learning.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 65,
+        "vocabulary": 60,
+        "organization": 62
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Decide whether your paragraph will focus on a benefit, a problem, or a comparison before drafting."
+    }
+  },
+  {
+    "id": "example_009",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "Social media affects students.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 62,
+        "vocabulary": 58,
+        "organization": 50
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "List three possible effects of social media on students, then choose the strongest one to explain first."
+    }
+  },
+  {
+    "id": "example_010",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "Globalization and culture",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 70,
+        "vocabulary": 55,
+        "organization": 64
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "List one positive and one negative effect of globalization on culture before choosing your main focus."
+    }
+  },
+  {
+    "id": "example_011",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 82,
+        "vocabulary": 80,
+        "organization": 78
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Draft a brief outline that includes your thesis, two supporting arguments, and possible evidence for each point."
+    }
+  },
+  {
+    "id": "example_012",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "AI in education",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 82,
+        "vocabulary": 78,
+        "organization": 84
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Identify your main argument about AI in education, then outline two supporting points."
+    }
+  },
+  {
+    "id": "example_013",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "Genetic engineering ethics",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 78,
+        "vocabulary": 82,
+        "organization": 76
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Choose one ethical issue and one opposing viewpoint to organize your argument before writing."
+    }
+  },
+  {
+    "id": "example_014",
+    "type": "example",
+    "input": {
+      "stage": "IMPLEMENTATION",
+      "content": "Technology is useful in education.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 45,
+        "vocabulary": 40,
+        "organization": 42
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Write one sentence explaining how technology helps learning, then add one example."
+    }
+  },
+  {
+    "id": "example_015",
+    "type": "example",
+    "input": {
+      "stage": "IMPLEMENTATION",
+      "content": "Exercise is important for health.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 48,
+        "vocabulary": 44,
+        "organization": 46
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Add one sentence explaining how exercise improves health, then include one real-life example."
+    }
+  },
+  {
+    "id": "example_016",
+    "type": "example",
+    "input": {
+      "stage": "IMPLEMENTATION",
+      "content": "Online learning has benefits.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 48,
+        "vocabulary": 44,
+        "organization": 41
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Add one sentence naming a specific benefit of online learning, then give one example."
+    }
+  },
+  {
+    "id": "example_017",
+    "type": "example",
+    "input": {
+      "stage": "IMPLEMENTATION",
+      "content": "Remote work has advantages.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 38,
+        "vocabulary": 42,
+        "organization": 45
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Add one sentence naming a specific advantage of remote work, then explain why it is useful."
+    }
+  },
+  {
+    "id": "example_018",
+    "type": "example",
+    "input": {
+      "stage": "IMPLEMENTATION",
+      "content": "Renewable energy reduces pollution.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 62,
+        "vocabulary": 64,
+        "organization": 60
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "After stating your claim, explain why renewable energy reduces pollution and provide one supporting example."
+    }
+  },
+  {
+    "id": "example_019",
+    "type": "example",
+    "input": {
+      "stage": "IMPLEMENTATION",
+      "content": "Students should learn financial literacy in school.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 66,
+        "vocabulary": 63,
+        "organization": 58
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Develop your argument by adding one example of how financial literacy helps students in real life."
+    }
+  },
+  {
+    "id": "example_020",
+    "type": "example",
+    "input": {
+      "stage": "IMPLEMENTATION",
+      "content": "AI improves diagnosis accuracy.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 65,
+        "vocabulary": 70,
+        "organization": 60
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Add one example or study that shows how AI improves diagnosis accuracy."
+    }
+  },
+  {
+    "id": "example_021",
+    "type": "example",
+    "input": {
+      "stage": "IMPLEMENTATION",
+      "content": "Social media influences public opinion.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 63,
+        "vocabulary": 68,
+        "organization": 59
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Add one mechanism, such as sharing or comments, to explain how social media influences public opinion."
+    }
+  },
+  {
+    "id": "example_022",
+    "type": "example",
+    "input": {
+      "stage": "IMPLEMENTATION",
+      "content": "The study shows that sleep affects memory.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 66,
+        "vocabulary": 64,
+        "organization": 58
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "After mentioning the study, add one sentence explaining how the evidence supports your point about memory."
+    }
+  },
+  {
+    "id": "example_023",
+    "type": "example",
+    "input": {
+      "stage": "IMPLEMENTATION",
+      "content": "Climate change affects agriculture.",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 78,
+        "vocabulary": 80,
+        "organization": 75
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Strengthen this paragraph by adding evidence or data that demonstrates how climate change impacts agricultural production."
+    }
+  },
+  {
+    "id": "example_024",
+    "type": "example",
+    "input": {
+      "stage": "IMPLEMENTATION",
+      "content": "Genetic engineering can help prevent disease.",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 80,
+        "vocabulary": 84,
+        "organization": 78
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Add a brief explanation of how genetic engineering prevents disease, then connect it to the ethical issue you are discussing."
+    }
+  },
+  {
+    "id": "example_025",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "This factor creates a problematic situation.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 40,
+        "vocabulary": 35,
+        "organization": 45
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Replace unclear words like 'factor' with a more specific term."
+    }
+  },
+  {
+    "id": "example_026",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "Technology changes education. It is helpful for many students.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 45,
+        "vocabulary": 42,
+        "organization": 44
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Add a transition between the two sentences so the relationship between the ideas is clearer."
+    }
+  },
+  {
+    "id": "example_027",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "AI is useful. AI is helpful. AI is good for hospitals.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 42,
+        "vocabulary": 36,
+        "organization": 48
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Remove repeated ideas and keep one clear sentence that explains how AI helps hospitals."
+    }
+  },
+  {
+    "id": "example_028",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "Remote work is good because it is good and many people like it.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 44,
+        "vocabulary": 38,
+        "organization": 43
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Replace repeated words like 'good' with more specific words that explain the actual benefit."
+    }
+  },
+  {
+    "id": "example_029",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "This is very important and it has a lot of effects and it is something we should think about.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 39,
+        "vocabulary": 37,
+        "organization": 40
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Split this long sentence into two shorter sentences and replace vague words like 'important' with a specific reason."
+    }
+  },
+  {
+    "id": "example_030",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "Pollution affects health. Cities also need more parks.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 65,
+        "vocabulary": 60,
+        "organization": 50
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Add a transition to show how the second idea connects to the first."
+    }
+  },
+  {
+    "id": "example_031",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "This issue is very bad and creates many problems for society.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 60,
+        "vocabulary": 58,
+        "organization": 57
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Replace vague words like 'bad' and 'many problems' with more specific descriptions to improve clarity."
+    }
+  },
+  {
+    "id": "example_032",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "Online education has advantages. Students can learn from anywhere. Teachers can share resources easily.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 65,
+        "vocabulary": 62,
+        "organization": 58
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Consider combining related ideas and adding transitions to improve the flow between sentences."
+    }
+  },
+  {
+    "id": "example_033",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "First, climate change affects crops. Also, temperature changes. Another thing is rainfall.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 67,
+        "vocabulary": 63,
+        "organization": 55
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Group the temperature and rainfall ideas together so the paragraph has a clearer cause-effect structure."
+    }
+  },
+  {
+    "id": "example_034",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "Social media changes opinions. People see posts. They believe things.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 61,
+        "vocabulary": 58,
+        "organization": 57
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Add a linking phrase to show how seeing posts can lead people to believe or share ideas."
+    }
+  },
+  {
+    "id": "example_035",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "The city was dirty. People got sick. There were many problems.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 60,
+        "vocabulary": 55,
+        "organization": 58
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Combine or link two related sentences so the paragraph flows more smoothly."
+    }
+  },
+  {
+    "id": "example_036",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "The essay first explains the problem, then gives the conclusion, then gives the main evidence.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 70,
+        "vocabulary": 62,
+        "organization": 50
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Move the main evidence before the conclusion so the argument develops in a more logical order."
+    }
+  },
+  {
+    "id": "example_037",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "The implications of this issue are many and it affects society in different ways.",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 80,
+        "vocabulary": 82,
+        "organization": 76
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Replace the broad phrase 'different ways' with a precise social impact you want to emphasize."
+    }
+  },
+  {
+    "id": "example_038",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "Technology has changed how we communicate and this has had effects on society.",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 82,
+        "vocabulary": 80,
+        "organization": 78
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Replace 'effects on society' with one specific social change you want to argue, so the sentence has a clearer claim."
+    }
+  },
+  {
+    "id": "example_039",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 80,
+        "vocabulary": 84,
+        "organization": 79
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Draft a working thesis, then note one likely counterargument you will need to address."
+    }
+  },
+  {
+    "id": "example_040",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "The effects of automation on employment",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 84,
+        "vocabulary": 79,
+        "organization": 82
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Narrow your focus to one sector affected by automation, then outline the evidence you will use to support your claim."
+    }
+  },
+  {
+    "id": "example_041",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "Mental health awareness in universities",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 79,
+        "vocabulary": 83,
+        "organization": 81
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Identify who your audience is, then decide which supporting points will be most persuasive for that reader."
+    }
+  },
+  {
+    "id": "example_042",
+    "type": "example",
+    "input": {
+      "stage": "PLANNING",
+      "content": "Data privacy regulations",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 81,
+        "vocabulary": 85,
+        "organization": 77
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Outline your main argument alongside one opposing view, so you can plan where to address it in your essay."
+    }
+  },
+  {
+    "id": "example_043",
+    "type": "example",
+    "input": {
+      "stage": "IMPLEMENTATION",
+      "content": "Automation is reducing the number of manufacturing jobs.",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 82,
+        "vocabulary": 85,
+        "organization": 77
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Support this claim with a specific statistic or study, then briefly acknowledge one counterargument before moving on."
+    }
+  },
+  {
+    "id": "example_044",
+    "type": "example",
+    "input": {
+      "stage": "IMPLEMENTATION",
+      "content": "University students often experience high levels of stress.",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 79,
+        "vocabulary": 81,
+        "organization": 80
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Connect this claim to a specific cause, such as workload or financial pressure, and support it with evidence."
+    }
+  },
+  {
+    "id": "example_045",
+    "type": "example",
+    "input": {
+      "stage": "IMPLEMENTATION",
+      "content": "Data privacy laws protect individuals from misuse of personal information.",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 83,
+        "vocabulary": 80,
+        "organization": 78
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Add a real example of a data privacy law in action, then explain how it addresses a specific type of misuse."
+    }
+  },
+  {
+    "id": "example_046",
+    "type": "example",
+    "input": {
+      "stage": "IMPLEMENTATION",
+      "content": "Some argue automation creates new jobs, but this overlooks the transition period.",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 85,
+        "vocabulary": 82,
+        "organization": 81
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Develop this counterargument further by explaining what happens to workers during that transition period."
+    }
+  },
+  {
+    "id": "example_047",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "This has led to a lot of changes in how people work and live.",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 82,
+        "vocabulary": 84,
+        "organization": 78
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Replace the vague phrase 'a lot of changes' with the specific change you want the reader to focus on."
+    }
+  },
+  {
+    "id": "example_048",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "Automation affects jobs. It also affects the economy in general ways.",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 80,
+        "vocabulary": 83,
+        "organization": 76
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Combine these two sentences and replace 'general ways' with the precise economic effect you mean."
+    }
+  },
+  {
+    "id": "example_049",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "Some people think privacy laws help, but others disagree, and it's a complicated issue overall.",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 84,
+        "vocabulary": 81,
+        "organization": 79
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "State your own position clearly instead of describing the debate as 'complicated,' then briefly explain why."
+    }
+  },
+  {
+    "id": "example_050",
+    "type": "example",
+    "input": {
+      "stage": "REVISION",
+      "content": "Stress impacts students. Universities should help. This is important for everyone.",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 78,
+        "vocabulary": 82,
+        "organization": 80
+      },
+      "feedback_history": []
+    },
+    "output": {
+      "feedback": "Combine these short sentences and clarify what specific support universities should provide, instead of saying it's 'important for everyone.'"
+    }
+  }
+]

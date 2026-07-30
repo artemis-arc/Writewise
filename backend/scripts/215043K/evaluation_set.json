@@ -1,0 +1,545 @@
+[
+  {
+    "id": "eval_planning_001",
+    "input_query": {
+      "stage": "PLANNING",
+      "content": "",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 40,
+        "vocabulary": 35,
+        "organization": 45
+      }
+    },
+    "expected_feedbacks": [
+      "Start by writing your topic in one sentence, then list two ideas you could explain.",
+      "Write your topic in one sentence, then note two points you want to cover.",
+      "Begin by writing one sentence about your topic, then list two ideas to develop."
+    ]
+  },
+  {
+    "id": "eval_planning_002",
+    "input_query": {
+      "stage": "PLANNING",
+      "content": "Social media affects students.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 62,
+        "vocabulary": 58,
+        "organization": 50
+      }
+    },
+    "expected_feedbacks": [
+      "List three possible effects of social media on students, then choose the strongest one to explain first.",
+      "Write down two or three effects of social media on students, then decide which one to focus on.",
+      "Identify two effects of social media on students and choose the most important one as your main point."
+    ]
+  },
+  {
+    "id": "eval_planning_003",
+    "input_query": {
+      "stage": "PLANNING",
+      "content": "AI in education",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 82,
+        "vocabulary": 78,
+        "organization": 84
+      }
+    },
+    "expected_feedbacks": [
+      "Identify your main argument about AI in education, then outline two supporting points.",
+      "State your central claim about AI in education, then list two key arguments that support it.",
+      "Develop a focused thesis about AI in education and identify two supporting arguments to outline."
+    ]
+  },
+  {
+    "id": "eval_planning_004",
+    "input_query": {
+      "stage": "PLANNING",
+      "content": "Climate change",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 38,
+        "vocabulary": 40,
+        "organization": 35
+      }
+    },
+    "expected_feedbacks": [
+      "Choose one part of climate change to focus on, then list two effects you could explain.",
+      "Pick one effect of climate change and write two points about it.",
+      "Select one aspect of climate change, then write down two things you know about it."
+    ]
+  },
+  {
+    "id": "eval_planning_005",
+    "input_query": {
+      "stage": "PLANNING",
+      "content": "Remote work advantages and disadvantages",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 68,
+        "vocabulary": 63,
+        "organization": 55
+      }
+    },
+    "expected_feedbacks": [
+      "Make two columns for advantages and disadvantages, then add two points under each side.",
+      "List two advantages and two disadvantages of remote work before deciding your main argument.",
+      "Divide your ideas into two groups, advantages and disadvantages, and add two points to each group."
+    ]
+  },
+  {
+    "id": "eval_planning_006",
+    "input_query": {
+      "stage": "PLANNING",
+      "content": "I don't know what to write about pollution.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 42,
+        "vocabulary": 39,
+        "organization": 41
+      }
+    },
+    "expected_feedbacks": [
+      "Start with one simple question about pollution, then list two possible answers you could explain.",
+      "Write one question about pollution, then think of two answers you could develop.",
+      "Ask yourself one question about pollution and write two ideas that could answer it."
+    ]
+  },
+  {
+    "id": "eval_planning_007",
+    "input_query": {
+      "stage": "PLANNING",
+      "content": "The topic is online learning.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 65,
+        "vocabulary": 60,
+        "organization": 62
+      }
+    },
+    "expected_feedbacks": [
+      "Decide whether your paragraph will focus on a benefit, a problem, or a comparison before drafting.",
+      "Choose one angle for your paragraph, such as a benefit, a problem, or a comparison, before you start writing.",
+      "Before drafting, decide if you will argue for a benefit, a challenge, or a comparison related to online learning."
+    ]
+  },
+  {
+    "id": "eval_planning_008",
+    "input_query": {
+      "stage": "PLANNING",
+      "content": "Genetic engineering ethics",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 78,
+        "vocabulary": 82,
+        "organization": 76
+      }
+    },
+    "expected_feedbacks": [
+      "Choose one ethical issue and one opposing viewpoint to organize your argument before writing.",
+      "Select one ethical concern in genetic engineering and identify a counterargument to structure your essay.",
+      "Identify one ethical debate in genetic engineering and outline both sides before drafting your argument."
+    ]
+  },
+  {
+    "id": "eval_planning_009",
+    "input_query": {
+      "stage": "PLANNING",
+      "content": "My essay is about healthy food.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 36,
+        "vocabulary": 34,
+        "organization": 39
+      }
+    },
+    "expected_feedbacks": [
+      "Write your main idea about healthy food, then list two reasons why it is important.",
+      "Write one sentence saying what you think about healthy food, then add two reasons.",
+      "State your main point about healthy food in one sentence, then list two supporting reasons."
+    ]
+  },
+  {
+    "id": "eval_planning_010",
+    "input_query": {
+      "stage": "PLANNING",
+      "content": "Globalization and culture",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 70,
+        "vocabulary": 55,
+        "organization": 64
+      }
+    },
+    "expected_feedbacks": [
+      "List one positive and one negative effect of globalization on culture before choosing your main focus.",
+      "Write one benefit and one drawback of globalization on culture, then decide which one to argue.",
+      "Identify one positive and one negative cultural effect of globalization before deciding your main argument."
+    ]
+  },
+  {
+    "id": "eval_implementation_001",
+    "input_query": {
+      "stage": "IMPLEMENTATION",
+      "content": "Technology is useful in education.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 45,
+        "vocabulary": 40,
+        "organization": 42
+      }
+    },
+    "expected_feedbacks": [
+      "Write one sentence explaining how technology helps learning, then add one example from school or class.",
+      "Add one sentence showing how technology supports learning, then give one classroom example.",
+      "Explain in one sentence how technology helps students learn, then include a specific example."
+    ]
+  },
+  {
+    "id": "eval_implementation_002",
+    "input_query": {
+      "stage": "IMPLEMENTATION",
+      "content": "AI improves diagnosis accuracy.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 65,
+        "vocabulary": 70,
+        "organization": 60
+      }
+    },
+    "expected_feedbacks": [
+      "Add one example or study that shows how AI improves diagnosis accuracy.",
+      "Include one specific example or research finding that demonstrates how AI increases diagnosis accuracy.",
+      "Support your claim by adding one real example of AI improving medical diagnosis accuracy."
+    ]
+  },
+  {
+    "id": "eval_implementation_003",
+    "input_query": {
+      "stage": "IMPLEMENTATION",
+      "content": "Remote work has advantages.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 38,
+        "vocabulary": 42,
+        "organization": 45
+      }
+    },
+    "expected_feedbacks": [
+      "Add one sentence naming a specific advantage of remote work, then explain why it is useful.",
+      "Write one sentence about a specific benefit of remote work and explain how it helps workers.",
+      "Name one advantage of remote work in a sentence, then add one sentence explaining why it matters."
+    ]
+  },
+  {
+    "id": "eval_implementation_004",
+    "input_query": {
+      "stage": "IMPLEMENTATION",
+      "content": "Social media influences public opinion.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 63,
+        "vocabulary": 68,
+        "organization": 59
+      }
+    },
+    "expected_feedbacks": [
+      "Add one mechanism, such as sharing or comments, to explain how social media influences public opinion.",
+      "Explain one specific way, like sharing posts or trending topics, that social media shapes public opinion.",
+      "Include one example of how a social media feature, such as likes or shares, affects what people think."
+    ]
+  },
+  {
+    "id": "eval_implementation_005",
+    "input_query": {
+      "stage": "IMPLEMENTATION",
+      "content": "Climate change affects agriculture.",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 78,
+        "vocabulary": 76,
+        "organization": 86
+      }
+    },
+    "expected_feedbacks": [
+      "Add one cause-effect explanation showing how climate change changes crop growth or yield.",
+      "Include one specific example of how a climate change effect, such as drought or flooding, impacts crop production.",
+      "Strengthen your paragraph by explaining one direct way climate change reduces or alters agricultural output."
+    ]
+  },
+  {
+    "id": "eval_implementation_006",
+    "input_query": {
+      "stage": "IMPLEMENTATION",
+      "content": "Exercise is good for students.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 41,
+        "vocabulary": 37,
+        "organization": 44
+      }
+    },
+    "expected_feedbacks": [
+      "Add one example of how exercise helps students, then explain the benefit in one more sentence.",
+      "Write one example showing how exercise benefits students, then add a sentence explaining why.",
+      "Give one specific example of exercise helping students and explain the benefit it provides."
+    ]
+  },
+  {
+    "id": "eval_implementation_007",
+    "input_query": {
+      "stage": "IMPLEMENTATION",
+      "content": "The study shows that sleep affects memory.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 66,
+        "vocabulary": 64,
+        "organization": 58
+      }
+    },
+    "expected_feedbacks": [
+      "After mentioning the study, add one sentence explaining how the evidence supports your point about memory.",
+      "Add one sentence connecting the study's findings to your argument about how sleep affects memory.",
+      "Follow the study reference with one sentence explaining what it proves about sleep and memory."
+    ]
+  },
+  {
+    "id": "eval_implementation_008",
+    "input_query": {
+      "stage": "IMPLEMENTATION",
+      "content": "Genetic engineering can help prevent disease.",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 80,
+        "vocabulary": 84,
+        "organization": 78
+      }
+    },
+    "expected_feedbacks": [
+      "Add a brief explanation of how genetic engineering prevents disease, then connect it to the ethical issue you are discussing.",
+      "Explain one specific way genetic engineering prevents disease and link that explanation to your ethical argument.",
+      "Include a sentence showing how genetic engineering reduces disease risk, then tie this to the ethical concern in your essay."
+    ]
+  },
+  {
+    "id": "eval_implementation_009",
+    "input_query": {
+      "stage": "IMPLEMENTATION",
+      "content": "Online learning has benefits.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 48,
+        "vocabulary": 44,
+        "organization": 41
+      }
+    },
+    "expected_feedbacks": [
+      "Add one sentence naming a specific benefit of online learning, then give one example.",
+      "Write one sentence about a specific benefit of online learning and follow it with an example.",
+      "Name one benefit of online learning and add one example that shows it clearly."
+    ]
+  },
+  {
+    "id": "eval_implementation_010",
+    "input_query": {
+      "stage": "IMPLEMENTATION",
+      "content": "Public transport reduces traffic.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 69,
+        "vocabulary": 62,
+        "organization": 61
+      }
+    },
+    "expected_feedbacks": [
+      "Add one sentence explaining why public transport reduces traffic, then include a simple example.",
+      "Explain one reason public transport reduces traffic and give one real-world example.",
+      "Write one sentence about how public transport lowers traffic, then add a supporting example."
+    ]
+  },
+  {
+    "id": "eval_revision_001",
+    "input_query": {
+      "stage": "REVISION",
+      "content": "Pollution affects health. Cities also need more parks.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 65,
+        "vocabulary": 60,
+        "organization": 50
+      }
+    },
+    "expected_feedbacks": [
+      "Add a transition to show how the second idea connects to the first.",
+      "Add a transition to clarify the relationship between pollution affecting health and the need for more parks.",
+      "Insert a linking phrase between the two sentences to connect the ideas.",
+      "Use a transition word or phrase to show the link between the health effect and the need for parks."
+    ]
+  },
+  {
+    "id": "eval_revision_002",
+    "input_query": {
+      "stage": "REVISION",
+      "content": "The solution is very good and will help everyone.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 40,
+        "vocabulary": 36,
+        "organization": 42
+      }
+    },
+    "expected_feedbacks": [
+      "Replace vague words like 'very good' with a specific reason why the solution works.",
+      "Replace 'very good' with a specific description of what makes the solution effective.",
+      "Change vague phrases like 'very good' to a precise explanation of the solution's benefit."
+    ]
+  },
+  {
+    "id": "eval_revision_003",
+    "input_query": {
+      "stage": "REVISION",
+      "content": "The city was dirty. People got sick. There were many problems.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 60,
+        "vocabulary": 55,
+        "organization": 58
+      }
+    },
+    "expected_feedbacks": [
+      "Combine or link two related sentences so the paragraph flows more smoothly.",
+      "Connect two of these short sentences with a linking word to improve the flow.",
+      "Join two related sentences using a transition so the ideas connect more clearly.",
+      "Add a linking word between two of these sentences to show how the ideas relate."
+    ]
+  },
+  {
+    "id": "eval_revision_004",
+    "input_query": {
+      "stage": "REVISION",
+      "content": "AI is useful. AI is helpful. AI is good for hospitals.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 42,
+        "vocabulary": 36,
+        "organization": 48
+      }
+    },
+    "expected_feedbacks": [
+      "Remove repeated ideas and keep one clear sentence that explains how AI helps hospitals.",
+      "Combine these sentences into one clear statement about how AI specifically benefits hospitals.",
+      "Replace the three repeated sentences with one sentence that explains what AI does for hospitals."
+    ]
+  },
+  {
+    "id": "eval_revision_005",
+    "input_query": {
+      "stage": "REVISION",
+      "content": "Remote work is good because it is good and many people like it.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 44,
+        "vocabulary": 38,
+        "organization": 43
+      }
+    },
+    "expected_feedbacks": [
+      "Replace repeated words like 'good' with more specific words that explain the actual benefit.",
+      "Replace the repeated word 'good' with a specific benefit of remote work.",
+      "Change the word 'good' to a precise description of what makes remote work beneficial."
+    ]
+  },
+  {
+    "id": "eval_revision_006",
+    "input_query": {
+      "stage": "REVISION",
+      "content": "First, climate change affects crops. Also, temperature changes. Another thing is rainfall.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 67,
+        "vocabulary": 63,
+        "organization": 55
+      }
+    },
+    "expected_feedbacks": [
+      "Group the temperature and rainfall ideas together so the paragraph has a clearer cause-effect structure.",
+      "Combine the temperature and rainfall points into one sentence to show they are related causes.",
+      "Reorganize the ideas so that temperature and rainfall are grouped as causes of the effect on crops."
+    ]
+  },
+  {
+    "id": "eval_revision_007",
+    "input_query": {
+      "stage": "REVISION",
+      "content": "Social media changes opinions. People see posts. They believe things.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 61,
+        "vocabulary": 58,
+        "organization": 57
+      }
+    },
+    "expected_feedbacks": [
+      "Add a linking phrase to show how seeing posts can lead people to believe or share ideas.",
+      "Connect the sentences with a transition to show that seeing posts causes people to form beliefs.",
+      "Add a linking word or phrase to show the cause-effect relationship between seeing posts and believing things.",
+      "Combine these sentences using a transition that shows how posts influence what people believe."
+    ]
+  },
+  {
+    "id": "eval_revision_008",
+    "input_query": {
+      "stage": "REVISION",
+      "content": "The implications of this issue are many and it affects society in different ways.",
+      "profile_context": {
+        "writer_level": "high",
+        "mechanics": 80,
+        "vocabulary": 82,
+        "organization": 76
+      }
+    },
+    "expected_feedbacks": [
+      "Replace the broad phrase 'different ways' with a precise social impact you want to emphasize.",
+      "Replace 'different ways' with one specific social consequence you want to argue.",
+      "Change 'affects society in different ways' to name one specific impact you want to focus on."
+    ]
+  },
+  {
+    "id": "eval_revision_009",
+    "input_query": {
+      "stage": "REVISION",
+      "content": "The essay first explains the problem, then gives the conclusion, then gives the main evidence.",
+      "profile_context": {
+        "writer_level": "medium",
+        "mechanics": 70,
+        "vocabulary": 62,
+        "organization": 50
+      }
+    },
+    "expected_feedbacks": [
+      "Move the main evidence before the conclusion so the argument develops in a more logical order.",
+      "Reorder your sections so the evidence comes before the conclusion.",
+      "Place your evidence section before the conclusion so the argument builds logically."
+    ]
+  },
+  {
+    "id": "eval_revision_010",
+    "input_query": {
+      "stage": "REVISION",
+      "content": "This is very important and it has a lot of effects and it is something we should think about.",
+      "profile_context": {
+        "writer_level": "low",
+        "mechanics": 39,
+        "vocabulary": 37,
+        "organization": 40
+      }
+    },
+    "expected_feedbacks": [
+      "Split this long sentence into two shorter sentences and replace vague words like 'important' with a specific reason.",
+      "Break this sentence into two parts and replace vague words like 'important' with a clear reason.",
+      "Divide this into two sentences and change 'very important' to a specific explanation of why it matters."
+    ]
+  }
+]
