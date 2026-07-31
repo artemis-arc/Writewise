@@ -15,9 +15,19 @@ router = APIRouter(prefix="/api/v1/stage-classification", tags=["stage-classific
 def _classify_event(
     bundle, payload: StageClassificationRequest
 ) -> StageClassificationResponse:
-    stage = predict(bundle, [payload.before_text], [payload.after_text])[0]
+    timestamps = [payload.timestamp]
+    stage = predict(
+        bundle, [payload.before_text], [payload.after_text], timestamps=timestamps
+    )[0]
     confidence = float(
-        max(predict_proba(bundle, [payload.before_text], [payload.after_text])[0])
+        max(
+            predict_proba(
+                bundle,
+                [payload.before_text],
+                [payload.after_text],
+                timestamps=timestamps,
+            )[0]
+        )
     )
     return StageClassificationResponse(stage=stage, confidence=confidence)
 

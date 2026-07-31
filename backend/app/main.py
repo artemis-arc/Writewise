@@ -16,6 +16,10 @@ from app.services._215098G.ml_pipeline import inference as stage_inference
 from app.services._215131E.scenario_retriever import ScenarioRetriever
 from app.services._215131E.srsd_scoring import SrsdScorer
 
+# Preserve the old startup seam so tests and local monkeypatches can override
+# the Module 2 loader without reaching into the inference module directly.
+load_stage_bundle = stage_inference.load_bundle
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -32,7 +36,7 @@ async def lifespan(app: FastAPI):
         settings.feedback_embedding_model, settings.feedback_kb_path
     )
     try:
-        app.state.stage_classifier_bundle = stage_inference.load_bundle(settings)
+        app.state.stage_classifier_bundle = load_stage_bundle(settings)
         app.state.stage_classifier_error = None
     except FileNotFoundError as exc:
         app.state.stage_classifier_bundle = None

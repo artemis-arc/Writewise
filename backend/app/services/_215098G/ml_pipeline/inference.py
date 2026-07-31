@@ -97,16 +97,26 @@ def assemble_features(
 
 
 def predict(
-    bundle: dict[str, Any], before_text: Sequence[Any], after_text: Sequence[Any]
+    bundle: dict[str, Any],
+    before_text: Sequence[Any],
+    after_text: Sequence[Any],
+    **_: Any,
 ) -> np.ndarray:
     """Predict writing-stage names for each before/after pair."""
     X = assemble_features(bundle, before_text, after_text)
-    y_pred = bundle["model"].predict(X)
+    y_pred = np.asarray(bundle["model"].predict(X))
+    if y_pred.dtype.kind in {"U", "S"}:
+        return y_pred
+    if y_pred.dtype.kind == "O" and y_pred.size and isinstance(y_pred[0], str):
+        return y_pred
     return np.asarray(bundle["label_classes"])[np.asarray(y_pred, dtype=int)]
 
 
 def predict_proba(
-    bundle: dict[str, Any], before_text: Sequence[Any], after_text: Sequence[Any]
+    bundle: dict[str, Any],
+    before_text: Sequence[Any],
+    after_text: Sequence[Any],
+    **_: Any,
 ) -> np.ndarray:
     """Class probabilities, column order matching bundle["label_classes"]."""
     X = assemble_features(bundle, before_text, after_text)
