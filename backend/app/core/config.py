@@ -19,7 +19,19 @@ class Settings(BaseSettings):
     srsd_embedding_model: str = "BAAI/bge-large-en-v1.5"
     srsd_dataset_path: Path = BASE_DIR / "data" / "215131E" / "srsd_dataset.json"
     srsd_checkpoint_path: Path = BASE_DIR / "data" / "215131E" / "srsd_model.pt"
-    srsd_max_upload_bytes: int = 25 * 1024 * 1024  # 25MB, matching the Upload screen's stated limit
+    srsd_max_upload_bytes: int = (
+        25 * 1024 * 1024
+    )  # 25MB, matching the Upload screen's stated limit
+
+    # --- Module 2: writing stage classification (215098G) ---
+    m2_model_path: Path = BASE_DIR / "data" / "215098G" / "model.joblib"
+    m2_vectorizer_path: Path = (
+        BASE_DIR / "data" / "215098G" / "vectorizer_tfidf_5k.joblib"
+    )
+    m2_scaler_path: Path = (
+        BASE_DIR / "data" / "215098G" / "scaler_edit_structure.joblib"
+    )
+    m2_label_encoder_path: Path = BASE_DIR / "data" / "215098G" / "label_encoder.joblib"
 
     feedback_embedding_model: str = "all-MiniLM-L6-v2"
 
