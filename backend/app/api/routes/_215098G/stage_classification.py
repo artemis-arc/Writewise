@@ -49,7 +49,9 @@ def _classify_event(
 
 
 def _record_stage_context(
-    request: Request, response: StageClassificationResponse, timestamp: float
+    request: Request,
+    response: StageClassificationResponse,
+    payload: StageClassificationRequest,
 ) -> None:
     stage_context = getattr(request.app.state, "stage_context", None)
     if stage_context is None:
@@ -58,7 +60,9 @@ def _record_stage_context(
     stage_context.record(
         stage=response.stage,
         confidence=response.confidence,
-        timestamp=timestamp,
+        timestamp=payload.timestamp,
+        before_text=payload.before_text,
+        after_text=payload.after_text,
     )
 
 
@@ -97,7 +101,7 @@ async def classify_stage(
 
     try:
         response = _classify_event(bundle, payload)
-        _record_stage_context(request, response, payload.timestamp)
+        _record_stage_context(request, response, payload)
         return response
     except FileNotFoundError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
@@ -141,7 +145,7 @@ async def classify_stage_batch(
         ) from exc
 
     for event, response in zip(payload.events, events, strict=True):
-        _record_stage_context(request, response, event.timestamp)
+        _record_stage_context(request, response, event)
 
     if events:
         logger.info(

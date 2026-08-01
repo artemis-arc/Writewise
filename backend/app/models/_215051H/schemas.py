@@ -4,14 +4,17 @@ from pydantic import BaseModel, Field
 class FeedbackScoringRequest(BaseModel):
     """
     Mirrors evaluate_feedback()'s signature in module_04_feedback_scoring_final_flow_v2.py.
-    No upstream module (stage tracking, revision history) exists yet, so every input the
-    scoring pipeline needs is passed explicitly rather than looked up server-side.
+
+    current_stage/previous_stage/current_content/previous_content are optional: when omitted,
+    the feedback-scoring endpoint fills them in from Module 2's stage-classification state
+    (the most recent /api/v1/stage-classification call's output stage and before/after text).
+    Pass them explicitly to override or when no stage-classification call has happened yet.
     """
 
-    current_stage: str = Field(min_length=1)
-    previous_stage: str = Field(min_length=1)
-    current_content: str = Field(min_length=1)
-    previous_content: str = ""
+    current_stage: str | None = Field(default=None, min_length=1)
+    previous_stage: str | None = Field(default=None, min_length=1)
+    current_content: str | None = Field(default=None, min_length=1)
+    previous_content: str | None = None
     given_feedback: str = Field(min_length=1)
     feedback_history: list[str] = Field(default_factory=list)
 
