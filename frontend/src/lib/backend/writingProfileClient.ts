@@ -1,12 +1,20 @@
 import { BACKEND_BASE_URL } from "@/lib/backend/config";
+import { getAuthHeader } from "@/lib/backend/authHeaders";
+import { BackendHttpError } from "@/lib/backend/errors";
 import type { WritingProfile } from "@/features/task-definition/types";
+
+interface BackendWritingProfileResponse {
+  mechanics: number;
+  organization: number;
+  overall: number;
+  submission_id?: string | null;
+}
 
 /**
  * Calls the FastAPI service in backend/ (app/api/routes/writing_profile.py), which wraps
  * the SRSD scoring model plus the mechanics evaluation pipeline. Organization is backed
- * by the trained model, mechanics now comes from the LLM scoring pipeline, and vocabulary
- * is still a backend placeholder (see backend/app/services/srsd_scoring.py) until labeled
- * data exists for that dimension.
+ * by the trained model and mechanics by the LLM scoring pipeline. Vocabulary is deferred
+ * to future work and intentionally not scored.
  */
 export async function fetchWritingProfile(
   file: File,
@@ -22,16 +30,26 @@ export async function fetchWritingProfile(
   try {
     const response = await fetch(`${BACKEND_BASE_URL}/api/v1/writing-profile`, {
       method: "POST",
+      headers: await getAuthHeader(),
       body: formData,
       signal: controller.signal,
     });
 
     if (!response.ok) {
       const detail = await response.json().catch(() => null);
-      throw new Error(detail?.detail ?? `Backend responded with ${response.status}`);
+      throw new BackendHttpError(
+        detail?.detail ?? `Backend responded with ${response.status}`,
+        response.status,
+      );
     }
 
-    return (await response.json()) as WritingProfile;
+    const data: BackendWritingProfileResponse = await response.json();
+    return {
+      mechanics: data.mechanics,
+      organization: data.organization,
+      overall: data.overall,
+      submissionId: data.submission_id ?? null,
+    };
   } finally {
     clearTimeout(timeoutId);
   }

@@ -8,6 +8,9 @@ from app.api.routes._215043K import feedback
 from app.api.routes._215051H import feedback_scoring
 from app.api.routes._215098G import stage_classification
 from app.api.routes._215131E import task_breakdown, writing_profile
+from app.api.routes.auth import router as auth_router
+from app.api.routes.history import router as history_router
+from app.api.routes.writings import router as writings_router
 from app.core.config import get_settings
 from app.services._215043K.engine import build_feedback_engine
 from app.services._215051H.clarity_scoring import ClarityScorer
@@ -71,6 +74,6 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(task_breakdown.router)
 app.include_router(writing_profile.router)
-app.include_router(feedback.router)
-app.include_router(stage_classification.router)
-app.include_router(feedback_scoring.router)
+app.include_router(auth_router.router)
+app.include_router(history_router.router)
+app.include_router(writings_router.router)

@@ -17,7 +17,6 @@ Writer Level: {profile['writer_level']}
 
 Conditions:
 Mechanics Range: {profile['mechanics_range']}
-Vocabulary Range: {profile['vocabulary_range']}
 Organization Range: {profile['organization_range']}
 
 Task Breakdown:

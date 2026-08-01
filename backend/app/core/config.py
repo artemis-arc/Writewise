@@ -65,6 +65,12 @@ class Settings(BaseSettings):
     clarity_semantic_model: str = "all-mpnet-base-v2"
     clarity_model_dir: Path = BASE_DIR / "data" / "215051H" / "clarity_model"
 
+    database_url: str
+    jwt_secret_key: str
+    jwt_algorithm: str = "HS256"
+    access_token_expire_minutes: int = 15
+    refresh_token_expire_days: int = 14
+
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 
