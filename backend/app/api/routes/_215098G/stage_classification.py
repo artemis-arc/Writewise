@@ -8,6 +8,7 @@ from app.models._215098G.schemas import (
     StageClassificationBatchResponse,
     StageClassificationRequest,
     StageClassificationResponse,
+    StageClassificationStateResponse,
 )
 from app.services._215098G.ml_pipeline.inference import predict, predict_proba
 
@@ -41,6 +42,31 @@ def _classify_event(
     return StageClassificationResponse(stage=stage, confidence=confidence)
 
 
+def _record_stage_context(
+    request: Request, response: StageClassificationResponse, timestamp: float
+) -> None:
+    stage_context = getattr(request.app.state, "stage_context", None)
+    if stage_context is None:
+        return
+
+    stage_context.record(
+        stage=response.stage,
+        confidence=response.confidence,
+        timestamp=timestamp,
+    )
+
+
+@router.get("/state")
+async def get_stage_classification_state(
+    request: Request,
+) -> StageClassificationStateResponse:
+    stage_context = getattr(request.app.state, "stage_context", None)
+    if stage_context is None:
+        return StageClassificationStateResponse()
+
+    return StageClassificationStateResponse.model_validate(stage_context.snapshot())
+
+
 @router.post(
     "",
     responses={
@@ -64,7 +90,9 @@ async def classify_stage(
         )
 
     try:
-        return _classify_event(bundle, payload)
+        response = _classify_event(bundle, payload)
+        _record_stage_context(request, response, payload.timestamp)
+        return response
     except FileNotFoundError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     except (KeyError, ValueError, IndexError) as exc:
@@ -105,6 +133,9 @@ async def classify_stage_batch(
             status_code=502,
             detail=f"Model response did not match the expected shape: {exc}",
         ) from exc
+
+    for event, response in zip(payload.events, events, strict=True):
+        _record_stage_context(request, response, event.timestamp)
 
     if events:
         logger.info(

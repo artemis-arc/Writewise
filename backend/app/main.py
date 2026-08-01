@@ -13,6 +13,7 @@ from app.services._215043K.engine import build_feedback_engine
 from app.services._215051H.clarity_scoring import ClarityScorer
 from app.services._215051H.feedback_retriever import FeedbackRetriever
 from app.services._215098G.ml_pipeline import inference as stage_inference
+from app.services._215098G.stage_context import StageContextStore
 from app.services._215131E.scenario_retriever import ScenarioRetriever
 from app.services._215131E.srsd_scoring import SrsdScorer
 
@@ -35,6 +36,7 @@ async def lifespan(app: FastAPI):
     app.state.feedback_retriever = FeedbackRetriever(
         settings.feedback_embedding_model, settings.feedback_kb_path
     )
+    app.state.stage_context = StageContextStore()
     try:
         app.state.stage_classifier_bundle = load_stage_bundle(settings)
         app.state.stage_classifier_error = None

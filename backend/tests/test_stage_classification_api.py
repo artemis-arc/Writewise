@@ -108,8 +108,17 @@ def test_stage_classification_success(monkeypatch):
             },
         )
 
+        state_response = client.get("/api/v1/stage-classification/state")
+
     assert response.status_code == 200
     assert response.json() == {"stage": "Planning", "confidence": 0.7}
+
+    assert state_response.status_code == 200
+    assert state_response.json()["latest"] == {
+        "stage": "Planning",
+        "confidence": 0.7,
+        "timestamp": 123.45,
+    }
 
 
 def test_stage_classification_missing_artifacts_returns_503(monkeypatch):
