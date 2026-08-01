@@ -53,27 +53,26 @@ This keeps one seam (`route.ts` + the backend client) that knows the FastAPI bac
 
 ## Running the project
 
-**Backend**
+The project now has a Postgres database and auth in front of it, so setup takes a few more steps than just `pip install` + `npm install`.
 
+**See [SETUP.md](SETUP.md) for the full walkthrough** — database (Docker), backend, frontend, first login, browsing the DB directly, and a troubleshooting table.
+
+Quick reference once you've done the one-time setup in SETUP.md:
+
+```bash
+# Postgres (if not already running)
+docker compose up -d postgres
+
+# Backend
+cd backend && .venv\Scripts\activate && uvicorn app.main:app --reload
+
+# Frontend (separate terminal)
+cd frontend && npm run dev
+```
+
+If you add a new SQLAlchemy model or change an existing one, generate and commit a migration:
 ```bash
 cd backend
-python -m venv .venv          # first time only
-.venv\Scripts\activate        # Windows
-pip install -r requirements.txt
-copy .env.example .env        # then fill in GEMINI_API_KEY etc.
-uvicorn app.main:app --reload
+alembic revision --autogenerate -m "short description"
+alembic upgrade head
 ```
-
-Runs at `http://localhost:8000`.
-
-**Frontend**
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Runs at `http://localhost:3000`. It talks to the backend at `http://localhost:8000` by default — set `TASK_DEFINITION_BACKEND_URL` in a `frontend/.env.local` if yours runs elsewhere.
-
-Run both at once (two terminals) to test end-to-end.
