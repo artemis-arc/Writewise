@@ -65,7 +65,7 @@ def _resolve_profile(
 # Deliberately `def`, not `async def`: one call runs up to four blocking network round
 # trips (two Gemini generations, two Module 4 evaluations). FastAPI runs sync routes in
 # a threadpool, so those seconds do not block the event loop and every other request
-# with it -- which an `async def` doing the same blocking work would.
+# with it -- which an `async def` doing the same blocking work would
 @router.post("", response_model=FeedbackResponse)
 def create_feedback(
     payload: FeedbackRequest,
