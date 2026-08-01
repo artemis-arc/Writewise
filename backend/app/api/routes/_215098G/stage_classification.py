@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import APIRouter, HTTPException, Request
 
 from app.api.routes._215098G.deps import get_stage_classifier_bundle
@@ -10,6 +12,7 @@ from app.models._215098G.schemas import (
 from app.services._215098G.ml_pipeline.inference import predict, predict_proba
 
 router = APIRouter(prefix="/api/v1/stage-classification", tags=["stage-classification"])
+logger = logging.getLogger("uvicorn.error")
 
 
 def _classify_event(
@@ -28,6 +31,12 @@ def _classify_event(
                 timestamps=timestamps,
             )[0]
         )
+    )
+    logger.info(
+        "Module 2 classified writing stage: stage=%s confidence=%.3f timestamp=%s",
+        stage,
+        confidence,
+        payload.timestamp,
     )
     return StageClassificationResponse(stage=stage, confidence=confidence)
 
@@ -96,6 +105,14 @@ async def classify_stage_batch(
             status_code=502,
             detail=f"Model response did not match the expected shape: {exc}",
         ) from exc
+
+    if events:
+        logger.info(
+            "Module 2 batch classification completed: events=%s latest_stage=%s latest_confidence=%.3f",
+            len(events),
+            events[-1].stage,
+            events[-1].confidence,
+        )
 
     return StageClassificationBatchResponse(
         events=events, latest=events[-1] if events else None

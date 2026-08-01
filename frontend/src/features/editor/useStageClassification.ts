@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Editor } from "@tiptap/react";
 import { M2_CONFIDENCE_CUTOFF, M2_DEBOUNCE_MS, STAGE_CLASSIFICATION_PROXY_PATH } from "@/lib/backend/config";
 
+const IS_DEV = process.env.NODE_ENV !== "production";
+
 export interface StageClassificationEventRecord {
   before_text: string;
   after_text: string;
@@ -23,6 +25,10 @@ export interface UseStageClassificationOptions {
 }
 
 async function postStageClassificationBatch(events: StageClassificationEventRecord[], signal?: AbortSignal) {
+  if (IS_DEV) {
+    console.log("[m2] sending batch", { count: events.length, events });
+  }
+
   const response = await fetch(STAGE_CLASSIFICATION_PROXY_PATH, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -35,15 +41,20 @@ async function postStageClassificationBatch(events: StageClassificationEventReco
     throw new Error(detail?.error ?? detail?.detail ?? `Proxy responded with ${response.status}`);
   }
 
-  return (await response.json()) as {
+  const payload = (await response.json()) as {
     events: Array<{ stage: string; confidence: number }>;
     latest: { stage: string; confidence: number } | null;
   };
+
+  if (IS_DEV) {
+    console.log("[m2] batch response", payload);
+  }
+
+  return payload;
 }
 
 export function useStageClassification(editor: Editor | null, options: UseStageClassificationOptions = {}) {
   const debounceMs = options.debounceMs ?? M2_DEBOUNCE_MS;
-  const confidenceCutoff = options.confidenceCutoff ?? M2_CONFIDENCE_CUTOFF;
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const bufferRef = useRef<StageClassificationEventRecord[]>([]);
   const lastTextRef = useRef("");
@@ -52,6 +63,13 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
   const needsFlushRef = useRef(false);
   const isMountedRef = useRef(false);
   const inFlightAbortRef = useRef<AbortController | null>(null);
+  const confidenceCutoffRef = useRef(options.confidenceCutoff ?? M2_CONFIDENCE_CUTOFF);
+  const onStageChangeRef = useRef(options.onStageChange);
+
+  useEffect(() => {
+    confidenceCutoffRef.current = options.confidenceCutoff ?? M2_CONFIDENCE_CUTOFF;
+    onStageChangeRef.current = options.onStageChange;
+  }, [options.confidenceCutoff, options.onStageChange]);
 
   const [signal, setSignal] = useState<StageClassificationSignal>({
     stage: null,
@@ -68,13 +86,13 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
       const nextSignal: StageClassificationSignal = {
         stage,
         confidence,
-        isConfident: confidence >= confidenceCutoff,
+        isConfident: confidence >= confidenceCutoffRef.current,
       };
 
       setSignal(nextSignal);
-      options.onStageChange?.(nextSignal);
+      onStageChangeRef.current?.(nextSignal);
     },
-    [confidenceCutoff, options],
+    [],
   );
 
   const flushBuffer = useCallback(async () => {
@@ -92,6 +110,10 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
       return;
     }
 
+    if (IS_DEV) {
+      console.log("[m2] flushing batch", { count: batch.length, batch });
+    }
+
     bufferRef.current = [];
     isSendingRef.current = true;
     const abortController = new AbortController();
@@ -101,6 +123,10 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
       const result = await postStageClassificationBatch(batch, abortController.signal);
       const latest = result.latest ?? result.events.at(-1) ?? null;
       if (latest) {
+        if (IS_DEV) {
+          console.log("[m2] latest classification", latest);
+        }
+
         publishSignal(latest.stage, latest.confidence);
       }
     } catch (error) {
@@ -117,6 +143,7 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
       if (isMountedRef.current && (bufferRef.current.length > 0 || needsFlushRef.current)) {
         needsFlushRef.current = false;
         debounceTimerRef.current = window.setTimeout(() => {
+          debounceTimerRef.current = null;
           void flushBuffer();
         }, debounceMs);
       } else {
@@ -127,10 +154,18 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
 
   const scheduleFlush = useCallback(() => {
     if (debounceTimerRef.current !== null) {
-      window.clearTimeout(debounceTimerRef.current);
+      return;
+    }
+
+    if (IS_DEV) {
+      console.info("[m2] debounce armed", { delayMs: debounceMs, bufferedEvents: bufferRef.current.length });
     }
 
     debounceTimerRef.current = window.setTimeout(() => {
+      debounceTimerRef.current = null;
+      if (IS_DEV) {
+        console.info("[m2] debounce fired", { bufferedEvents: bufferRef.current.length });
+      }
       void flushBuffer();
     }, debounceMs);
   }, [debounceMs, flushBuffer]);
@@ -139,6 +174,14 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
     (currentText: string, timestamp: number) => {
       const beforeText = lastTextRef.current;
       bufferRef.current.push({ before_text: beforeText, after_text: currentText, timestamp });
+      if (IS_DEV) {
+        console.info("[m2] queued event", {
+          bufferedEvents: bufferRef.current.length,
+          beforeTextLength: beforeText.length,
+          afterTextLength: currentText.length,
+          timestamp,
+        });
+      }
       lastTextRef.current = currentText;
       scheduleFlush();
     },
@@ -175,6 +218,8 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
       if (debounceTimerRef.current !== null) {
         window.clearTimeout(debounceTimerRef.current);
       }
+
+      debounceTimerRef.current = null;
 
       inFlightAbortRef.current?.abort();
       inFlightAbortRef.current = null;
