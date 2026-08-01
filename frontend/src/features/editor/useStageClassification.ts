@@ -24,6 +24,10 @@ export interface UseStageClassificationOptions {
   onStageChange?: (signal: StageClassificationSignal) => void;
 }
 
+function getUnixTimestamp() {
+  return Date.now();
+}
+
 async function postStageClassificationBatch(events: StageClassificationEventRecord[], signal?: AbortSignal) {
   if (IS_DEV) {
     console.log("[m2] sending batch", { count: events.length, events });
@@ -196,12 +200,12 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
     isMountedRef.current = true;
     lastTextRef.current = editor.getText();
 
-    const handleKeyUp = (event: KeyboardEvent) => {
-      recordEvent(editor.getText(), event.timeStamp);
+    const handleKeyUp = () => {
+      recordEvent(editor.getText(), getUnixTimestamp());
     };
 
-    const handleScroll = (event: Event) => {
-      recordEvent(editor.getText(), event.timeStamp);
+    const handleScroll = () => {
+      recordEvent(editor.getText(), getUnixTimestamp());
     };
 
     const editorDom = editor.view.dom;
