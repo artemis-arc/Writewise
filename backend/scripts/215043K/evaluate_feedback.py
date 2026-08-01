@@ -44,6 +44,11 @@ from app.services._215043K.q_table_store import QTableStore
 from app.services._215043K.retriever import FeedbackRetriever
 from app.services._215043K.rl_agent import ACTIONS, METRICS, N_STATES, RLAgent, calculate_reward
 from app.services._215043K.session_store import SessionStore
+from app.services._215051H.clarity_scoring import ClarityScorer  # noqa: E402
+from app.services._215051H.feedback_retriever import (  # noqa: E402
+    FeedbackRetriever as Module4Retriever,
+)
+from app.services._215098G.stage_context import StageContextStore  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 EVALUATION_SET_PATH = HERE / "evaluation_set.json"
@@ -64,7 +69,7 @@ NOTEBOOK_STUB_SCORES = {
 
 
 class _StubEvaluator:
-    def evaluate(self, feedback, stage, content, feedback_history):
+    def evaluate(self, feedback, feedback_history):
         return dict(NOTEBOOK_STUB_SCORES)
 
 
@@ -102,7 +107,7 @@ class TextScorer:
         }
 
 
-def build_engine(settings, args) -> FeedbackEngine:
+def build_engine(settings, args, stage_context) -> FeedbackEngine:
     # Deliberately not the paths the API serves from: an evaluation run updates the
     # Q-table on every case, and that learning should not land in the live table.
     return FeedbackEngine(
@@ -121,9 +126,10 @@ def build_engine(settings, args) -> FeedbackEngine:
         evaluator=_StubEvaluator()
         if args.stub_evaluator
         else Module4Evaluator(
-            settings.module4_base_url,
-            settings.module4_evaluate_path,
-            settings.module4_timeout_seconds,
+            Module4Retriever(settings.feedback_embedding_model, settings.feedback_kb_path),
+            ClarityScorer(settings.clarity_semantic_model, settings.clarity_model_dir),
+            settings,
+            stage_context=stage_context,
         ),
         sessions=SessionStore(args.sessions, settings.feedback_session_history_limit),
     )
@@ -149,7 +155,11 @@ def main() -> None:
         cases = cases[: args.limit]
     print(f"Loaded {len(cases)} evaluation cases")
 
-    engine = build_engine(settings, args)
+    # Module 4 now reads the stage and draft from Module 2's store rather than from the
+    # scoring call, and no classifier runs here -- so each case is recorded below exactly
+    # as a /api/v1/stage-classification call would have recorded it.
+    stage_context = StageContextStore()
+    engine = build_engine(settings, args, stage_context)
     scorer = TextScorer(settings.feedback_embedding_model)
 
     results = []
@@ -157,6 +167,12 @@ def main() -> None:
         query = case["input_query"]
         profile = query["profile_context"]
         references = case.get("expected_feedbacks") or [case["expected_feedback"]]
+        stage_context.record(
+            stage=query["stage"],
+            confidence=1.0,
+            timestamp=time.time(),
+            after_text=query["content"],
+        )
 
         for attempt in range(1, args.retries + 1):
             try:

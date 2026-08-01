@@ -1,81 +1,75 @@
-import httpx
+import asyncio
 
+from app.core.config import Settings
+from app.models._215051H.schemas import FeedbackScoringRequest
 from app.services._215043K.rl_agent import METRICS
+from app.services._215051H.clarity_scoring import ClarityModelNotTrainedError, ClarityScorer
+from app.services._215051H.feedback_retriever import FeedbackRetriever
+from app.services._215051H.feedback_scoring import StageContextSource, evaluate_feedback
 
 
 class Module4UnavailableError(RuntimeError):
-    """Module 4 could not be reached, or answered with something unusable."""
+    """Module 4 could not produce the six scores this turn needs."""
 
 
 class Module4Evaluator:
     """
-    Scores a generated piece of feedback on the six WRFEF measures by calling Module 4.
+    Scores a generated piece of feedback on the six WRFEF measures by running Module 4.
 
     In the notebook this was module4_evaluate(), a stub returning six constants -- which
     is why every episode in the notebook's evaluation run scored a reward of exactly -1
-    and the Q-table never learned anything. Pointing it at the real service is what turns
+    and the Q-table never learned anything. Pointing it at the real scorer is what turns
     the RL half of this module from scaffolding into something that trains.
 
-    The expected contract is a POST returning a JSON object with one 0-1 float per
-    measure in METRICS. If Module 4 settles on a different shape, this class is the only
-    thing that has to change.
+    Module 4 is called in process rather than over HTTP. It ships inside this same app, so
+    a POST to /api/v1/feedback-scoring would be the server calling itself: two extra round
+    trips per turn, a base URL that has to stay correct in every deployment, and -- because
+    that route is `async def` around blocking Gemini work -- each call would stall the event
+    loop for the whole app.
+
+    Only the feedback and the session's history are sent, because they are the only two
+    things this module owns. Module 4 resolves the stage and draft from Module 2's store
+    itself, so neither module carries the other's data around.
     """
 
-    def __init__(self, base_url: str, path: str, timeout_seconds: float):
-        self._url = f"{base_url.rstrip('/')}/{path.lstrip('/')}"
-        self._timeout = timeout_seconds
-
-    def evaluate(
+    def __init__(
         self,
-        feedback: str,
-        stage: str,
-        content: str,
-        feedback_history: list[str],
-    ) -> dict[str, float]:
+        retriever: FeedbackRetriever,
+        clarity_scorer: ClarityScorer,
+        settings: Settings,
+        stage_context: StageContextSource | None = None,
+    ):
+        self._retriever = retriever
+        self._clarity_scorer = clarity_scorer
+        self._settings = settings
+        self._stage_context = stage_context
+
+    def evaluate(self, feedback: str, feedback_history: list[str]) -> dict[str, float]:
         try:
-            response = httpx.post(
-                self._url,
-                json={
-                    "feedback": feedback,
-                    "stage": stage,
-                    "content": content,
-                    "feedback_history": feedback_history,
-                },
-                timeout=self._timeout,
+            # evaluate_feedback is `async def` but never awaits anything: its Gemini call
+            # and its clarity model are both blocking. Driving it with a private loop on
+            # this thread keeps that blocking where it already is -- on a threadpool
+            # worker -- instead of handing it to the loop serving every other request.
+            response = asyncio.run(
+                evaluate_feedback(
+                    FeedbackScoringRequest(
+                        given_feedback=feedback, feedback_history=feedback_history
+                    ),
+                    self._retriever,
+                    self._clarity_scorer,
+                    self._settings,
+                    stage_context=self._stage_context,
+                )
             )
-            response.raise_for_status()
-            payload = response.json()
-        except httpx.HTTPError as exc:
+        # MissingWritingContextError subclasses ValueError, so it is covered here too. The
+        # agent cannot pick an action without all six scores, and a Q-update without them
+        # would poison the table -- so every failure mode fails the turn rather than
+        # degrading it.
+        except (ClarityModelNotTrainedError, KeyError, ValueError, TypeError) as exc:
             raise Module4UnavailableError(
-                f"Could not reach Module 4's evaluator at {self._url}: {exc}"
+                f"Module 4 could not score this feedback: {exc}"
             ) from exc
 
-        return self._coerce(payload)
-
-    def _coerce(self, payload: object) -> dict[str, float]:
-        if not isinstance(payload, dict):
-            raise Module4UnavailableError(
-                f"Module 4 returned {type(payload).__name__}, expected an object of scores."
-            )
-
-        missing = [metric for metric in METRICS if metric not in payload]
-        if missing:
-            raise Module4UnavailableError(
-                f"Module 4's response is missing {', '.join(missing)}. "
-                f"All six measures are required to compute a state id."
-            )
-
-        scores: dict[str, float] = {}
-        for metric in METRICS:
-            try:
-                value = float(payload[metric])
-            except (TypeError, ValueError) as exc:
-                raise Module4UnavailableError(
-                    f"Module 4 returned a non-numeric {metric}: {payload[metric]!r}"
-                ) from exc
-
-            # Banding and the reward floor both assume a 0-1 scale; clamping here keeps
-            # an out-of-range score from silently landing in the wrong band.
-            scores[metric] = min(1.0, max(0.0, value))
-
-        return scores
+        # No validation or clamping needed: FeedbackScoringResponse declares all six
+        # measures required and ge=0/le=1, so Pydantic has already guaranteed the shape.
+        return {metric: getattr(response.dimensions, metric).score for metric in METRICS}

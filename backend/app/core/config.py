@@ -60,11 +60,6 @@ class Settings(BaseSettings):
     feedback_writer_level_low_cutoff: float = 50.0
     feedback_writer_level_medium_cutoff: float = 70.0
 
-    # Module 4 scores each generated piece of feedback; those scores are the RL reward.
-    module4_base_url: str = "http://localhost:8000"
-    module4_evaluate_path: str = "/api/v1/feedback-evaluation"
-    module4_timeout_seconds: float = 30.0
-
     # --- Module 4: feedback scoring (215051H) ---
     feedback_kb_path: Path = BASE_DIR / "data" / "215051H" / "feedback_kb.json"
     clarity_semantic_model: str = "all-mpnet-base-v2"

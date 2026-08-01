@@ -32,22 +32,30 @@ async def lifespan(app: FastAPI):
     app.state.srsd_scorer = SrsdScorer(
         settings.srsd_embedding_model, settings.srsd_checkpoint_path
     )
-    app.state.feedback_engine = build_feedback_engine(settings)
     app.state.feedback_retriever = FeedbackRetriever(
         settings.feedback_embedding_model, settings.feedback_kb_path
     )
+    # ClarityScorer tolerates a missing joblib checkpoint (not trained yet) instead of
+    # raising, so its absence doesn't take down the other modules' endpoints too.
+    app.state.clarity_scorer = ClarityScorer(
+        settings.clarity_semantic_model, settings.clarity_model_dir
+    )
+    # Backend-owned memory of what Module 2 last produced, so Modules 3 and 4 can fill in
+    # the writing context instead of making the client carry it around.
     app.state.stage_context = StageContextStore()
+    # Built after Module 4's three pieces because Module 3 scores its own output with them.
+    app.state.feedback_engine = build_feedback_engine(
+        settings,
+        module4_retriever=app.state.feedback_retriever,
+        clarity_scorer=app.state.clarity_scorer,
+        stage_context=app.state.stage_context,
+    )
     try:
         app.state.stage_classifier_bundle = load_stage_bundle(settings)
         app.state.stage_classifier_error = None
     except FileNotFoundError as exc:
         app.state.stage_classifier_bundle = None
         app.state.stage_classifier_error = exc
-    # ClarityScorer tolerates a missing joblib checkpoint (not trained yet) instead of
-    # raising, so its absence doesn't take down the other modules' endpoints too.
-    app.state.clarity_scorer = ClarityScorer(
-        settings.clarity_semantic_model, settings.clarity_model_dir
-    )
     yield
 
 

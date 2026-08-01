@@ -81,12 +81,9 @@ def generate_feedback(
         )
 
     def evaluate(feedback: str) -> dict[str, float]:
-        return engine.evaluator.evaluate(
-            feedback=feedback,
-            stage=stage,
-            content=content,
-            feedback_history=history,
-        )
+        # Module 4 resolves the stage and the draft from Module 2's store itself, so this
+        # turn only hands over the two things it owns.
+        return engine.evaluator.evaluate(feedback=feedback, feedback_history=history)
 
     # Baseline first, so the state the agent acts on describes this turn's actual
     # content rather than whatever the previous turn happened to leave behind.
