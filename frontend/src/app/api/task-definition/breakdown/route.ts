@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { taskBreakdownRequestSchema } from "@/features/task-definition/schema";
 import { fetchTaskBreakdown } from "@/lib/backend/taskBreakdownClient";
+import { BackendHttpError } from "@/lib/backend/errors";
 
 /**
  * Proxies to the FastAPI service in backend/ (task_define.ipynb's FAISS + Gemini
@@ -22,6 +23,11 @@ export async function POST(request: Request) {
     const breakdown = await fetchTaskBreakdown(parsed.data);
     return NextResponse.json(breakdown);
   } catch (error) {
+    if (error instanceof BackendHttpError && error.status === 401) {
+      return NextResponse.json({ error: "Your session has expired. Please log in again." }, {
+        status: 401,
+      });
+    }
     console.error("Failed to fetch task breakdown from backend:", error);
     return NextResponse.json(
       {

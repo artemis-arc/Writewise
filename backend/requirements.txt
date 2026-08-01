@@ -10,10 +10,9 @@ scikit-learn
 python-docx
 pypdf
 python-multipart
-textstat
-language-tool-python      # needs a local Java runtime (JRE 8+) -- see CONTRIBUTING.md
-xgboost
-spacy                     # after install: python -m spacy download en_core_web_sm
-nltk                       # tokenizer data downloads itself automatically on first use
-tenacity
-pandas
+sqlalchemy>=2.0
+alembic
+psycopg2-binary
+bcrypt
+python-jose[cryptography]
+pydantic[email]

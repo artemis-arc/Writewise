@@ -6,7 +6,6 @@
     "writing_profile": {
       "writer_level": "low",
       "mechanics_range": 42,
-      "vocabulary_range": 38,
       "organization_range": 45
     },
     "task_breakdown": [
@@ -23,10 +22,6 @@
         "Avoid long sentences",
         "Check grammar before submission"
       ],
-      "vocabulary": [
-        "Use academic words: impact, efficiency, implications, ethical concerns",
-        "Replace informal words with formal equivalents"
-      ],
       "organization": [
         "Use Introduction \u2192 Body \u2192 Conclusion",
         "Write in paragraphs",
@@ -41,7 +36,6 @@
     "writing_profile": {
       "writer_level": "low",
       "mechanics_range": 30,
-      "vocabulary_range": 30,
       "organization_range": 50
     },
     "task_breakdown": [
@@ -56,10 +50,6 @@
         "Use short simple sentences",
         "Follow basic sentence structure"
       ],
-      "vocabulary": [
-        "Use simple words",
-        "Avoid complex academic terms"
-      ],
       "organization": [
         "Use Intro \u2192 Points \u2192 Conclusion"
       ]
@@ -72,7 +62,6 @@
     "writing_profile": {
       "writer_level": "medium",
       "mechanics_range": 50,
-      "vocabulary_range": 75,
       "organization_range": 65
     },
     "task_breakdown": [
@@ -87,10 +76,6 @@
         "Check punctuation consistency",
         "Proofread before submission"
       ],
-      "vocabulary": [
-        "Use varied academic vocabulary",
-        "Avoid repetition"
-      ],
       "organization": [
         "Improve paragraph flow",
         "Use linking sentences"
@@ -104,7 +89,6 @@
     "writing_profile": {
       "writer_level": "high",
       "mechanics_range": 75,
-      "vocabulary_range": 80,
       "organization_range": 75
     },
     "task_breakdown": [
@@ -115,9 +99,6 @@
     "actions": {
       "mechanics": [
         "Maintain precision in writing"
-      ],
-      "vocabulary": [
-        "Use domain-specific terminology"
       ],
       "organization": [
         "Use argument \u2192 counterargument \u2192 synthesis structure"
@@ -131,7 +112,6 @@
     "writing_profile": {
       "writer_level": "low",
       "mechanics_range": 30,
-      "vocabulary_range": 40,
       "organization_range": 50
     },
     "task_breakdown": [
@@ -145,9 +125,6 @@
         "Avoid complex sentences",
         "Check grammar"
       ],
-      "vocabulary": [
-        "Replace informal words with academic ones"
-      ],
       "organization": [
         "Use clear paragraph structure"
       ]
@@ -160,7 +137,6 @@
     "writing_profile": {
       "writer_level": "high",
       "mechanics_range": 75,
-      "vocabulary_range": 75,
       "organization_range": 90
     },
     "task_breakdown": [
@@ -172,9 +148,6 @@
     "actions": {
       "mechanics": [
         "Use complex sentence structures"
-      ],
-      "vocabulary": [
-        "Use technical terms like crop yield, climatic variability"
       ],
       "organization": [
         "Use cause-effect structure"
@@ -188,7 +161,6 @@
     "writing_profile": {
       "writer_level": "low",
       "mechanics_range": 40,
-      "vocabulary_range": 50,
       "organization_range": 50
     },
     "task_breakdown": [
@@ -200,9 +172,6 @@
     "actions": {
       "mechanics": [
         "Use simple sentence templates"
-      ],
-      "vocabulary": [
-        "Use basic adjectives"
       ],
       "organization": [
         "Follow simple structure"
@@ -216,7 +185,6 @@
     "writing_profile": {
       "writer_level": "high",
       "mechanics_range": 80,
-      "vocabulary_range": 75,
       "organization_range": 90
     },
     "task_breakdown": [
@@ -228,9 +196,6 @@
     "actions": {
       "mechanics": [
         "No major corrections needed"
-      ],
-      "vocabulary": [
-        "Use expressive academic language"
       ],
       "organization": [
         "Use reflective structure"
@@ -244,7 +209,6 @@
     "writing_profile": {
       "writer_level": "medium",
       "mechanics_range": 75,
-      "vocabulary_range": 50,
       "organization_range": 65
     },
     "task_breakdown": [
@@ -258,10 +222,6 @@
       "mechanics": [
         "No major corrections needed"
       ],
-      "vocabulary": [
-        "Use academic words: cultural homogenization, global integration",
-        "Reduce repetition"
-      ],
       "organization": [
         "Improve paragraph linking"
       ]
@@ -274,7 +234,6 @@
     "writing_profile": {
       "writer_level": "very_low",
       "mechanics_range": 40,
-      "vocabulary_range": 40,
       "organization_range": 50
     },
     "task_breakdown": [
@@ -288,10 +247,6 @@
       "mechanics": [
         "Write one idea per sentence",
         "Strong grammar correction"
-      ],
-      "vocabulary": [
-        "Provide academic glossary",
-        "Use guided examples"
       ],
       "organization": [
         "Follow strict step-by-step structure"

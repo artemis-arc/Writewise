@@ -13,14 +13,15 @@ export interface TaskDefinitionInput {
 }
 
 /**
- * Mirrors the {mechanics, vocabulary, organization} scores SRSD_content_scoring.ipynb
- * will eventually produce from a writer's previous samples, plus a derived overall score.
+ * Mirrors the {mechanics, organization} scores SRSD_content_scoring.ipynb produces from
+ * a writer's previous samples, plus a derived overall score. Vocabulary is deferred to
+ * future work and intentionally not scored.
  */
 export interface WritingProfile {
-  vocabulary: number;
   mechanics: number;
   organization: number;
   overall: number;
+  submissionId?: string | null;
 }
 
 export interface TaskMilestone {
@@ -36,7 +37,6 @@ export interface TaskBreakdown {
   milestones: TaskMilestone[];
   actions: {
     mechanics: string[];
-    vocabulary: string[];
     organization: string[];
   };
 }

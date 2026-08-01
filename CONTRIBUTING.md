@@ -53,36 +53,26 @@ This keeps one seam (`route.ts` + the backend client) that knows the FastAPI bac
 
 ## Running the project
 
-**Backend**
+The project now has a Postgres database and auth in front of it, so setup takes a few more steps than just `pip install` + `npm install`.
 
+**See [SETUP.md](SETUP.md) for the full walkthrough** — database (Docker), backend, frontend, first login, browsing the DB directly, and a troubleshooting table.
+
+Quick reference once you've done the one-time setup in SETUP.md:
+
+```bash
+# Postgres (if not already running)
+docker compose up -d postgres
+
+# Backend
+cd backend && .venv\Scripts\activate && uvicorn app.main:app --reload
+
+# Frontend (separate terminal)
+cd frontend && npm run dev
+```
+
+If you add a new SQLAlchemy model or change an existing one, generate and commit a migration:
 ```bash
 cd backend
-python -m venv .venv          # first time only
-.venv\Scripts\activate        # Windows
-pip install -r requirements.txt
-copy .env.example .env        # then fill in GEMINI_API_KEY etc.
-uvicorn app.main:app --reload
+alembic revision --autogenerate -m "short description"
+alembic upgrade head
 ```
-
-Runs at `http://localhost:8000`.
-
-**One-time extra setup for the feedback-scoring module (`215051H`):** `pip install` alone isn't enough for two of its dependencies:
-
-- spaCy needs its English model downloaded separately: `python -m spacy download en_core_web_sm`
-- `language_tool_python` needs a local **Java runtime (JRE 8+)** installed, and downloads a ~260MB LanguageTool package the first time it runs. Without Java on PATH, `ClarityScorer` logs a warning at startup and the module falls back to reporting itself "not ready" (`POST /api/v1/feedback-scoring` returns `503`) instead of crashing the whole backend.
-
-(`nltk`'s tokenizer data downloads itself automatically on first use — no manual step needed there.)
-
-The trained clarity model itself (`clarity_model.json` + `clarity_calibrator.joblib`) isn't installed via pip at all — see `backend/app/data/215051H/clarity_model/README.md` for where it goes and how it's saved.
-
-**Frontend**
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Runs at `http://localhost:3000`. It talks to the backend at `http://localhost:8000` by default — set `TASK_DEFINITION_BACKEND_URL` in a `frontend/.env.local` if yours runs elsewhere.
-
-Run both at once (two terminals) to test end-to-end.
