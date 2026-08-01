@@ -184,7 +184,9 @@ def main() -> None:
                     writer_level=profile["writer_level"],
                     content=query["content"],
                     mechanics=profile["mechanics"],
-                    vocabulary=profile["vocabulary"],
+                    # Every case in evaluation_set.json carries one; .get() so the run
+                    # survives a set regenerated from Module 1, which does not score it.
+                    vocabulary=profile.get("vocabulary"),
                     organization=profile["organization"],
                     engine=engine,
                     settings=settings,

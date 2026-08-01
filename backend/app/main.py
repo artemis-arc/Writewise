@@ -74,6 +74,8 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(task_breakdown.router)
 app.include_router(writing_profile.router)
+app.include_router(feedback.router)
+app.include_router(feedback_scoring.router)
 app.include_router(auth_router.router)
 app.include_router(history_router.router)
 app.include_router(writings_router.router)

@@ -10,9 +10,14 @@ class WritingProfileScores(BaseModel):
     """Module 1's 0-100 rubric scores for this writer, as returned by /api/v1/writing-profile."""
 
     mechanics: float = Field(ge=0, le=100)
-    vocabulary: float = Field(ge=0, le=100)
     organization: float = Field(ge=0, le=100)
     overall: float = Field(ge=0, le=100)
+
+    # Module 1 does not score vocabulary -- it was dropped from submission_scores in
+    # migration 9eac39f7a87b. It stays optional here because the offline evaluation set
+    # still carries one per case, and the notebook's numbers were measured with it in
+    # the prompt. Live requests simply leave it out.
+    vocabulary: float | None = Field(default=None, ge=0, le=100)
 
 
 class FeedbackRequest(BaseModel):
@@ -24,7 +29,15 @@ class FeedbackRequest(BaseModel):
     # examples are keyed on a writer who has not typed anything yet.
     content: str = ""
 
-    writing_profile: WritingProfileScores
+    # Which of Module 1's (215131E) profile uploads to score against -- the id it
+    # returned from /api/v1/writing-profile. Omit it and the writer's most recent
+    # profile upload is used, which is what a client that only ever uploads once wants.
+    submission_id: str | None = None
+
+    # Escape hatch for evaluation: supply the scores directly and no profile is loaded
+    # for the authenticated writer at all. Normal callers send submission_id, or neither
+    # field, and let the backend read Module 1's own output.
+    writing_profile: WritingProfileScores | None = None
 
     # Module 2's (215098G) stage classification. Required: this module cannot pick a
     # knowledge base index without it, and there is nothing to fall back on. Until that

@@ -33,7 +33,9 @@ def generate_feedback(
     writer_level: str,
     content: str,
     mechanics: float,
-    vocabulary: float,
+    # None whenever the profile came from Module 1, which does not score vocabulary. The
+    # offline evaluation set still carries one, so the parameter stays.
+    vocabulary: float | None,
     organization: float,
     engine: FeedbackEngine,
     settings: Settings,
@@ -53,7 +55,7 @@ def generate_feedback(
     profile = {
         "writer_level": writer_level,
         "mechanics": mechanics,
-        "vocabulary": vocabulary,
+        "vocabulary": vocabulary,  # None when Module 1 did not score it
         "organization": organization,
     }
     history = engine.sessions.get(session_id).feedback_history
