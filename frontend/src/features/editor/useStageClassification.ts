@@ -2,9 +2,14 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Editor } from "@tiptap/react";
-import { M2_CONFIDENCE_CUTOFF, M2_DEBOUNCE_MS, STAGE_CLASSIFICATION_PROXY_PATH } from "@/lib/backend/config";
 
-const IS_DEV = process.env.NODE_ENV !== "production";
+const IS_DEV =
+  typeof window !== "undefined" &&
+  (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+
+const M2_DEBOUNCE_MS = 500;
+const M2_CONFIDENCE_CUTOFF = 0.6;
+const STAGE_CLASSIFICATION_PROXY_PATH = "/api/write/stage-classification";
 
 export interface StageClassificationEventRecord {
   before_text: string;
@@ -46,8 +51,20 @@ async function postStageClassificationBatch(events: StageClassificationEventReco
   }
 
   const payload = (await response.json()) as {
-    events: Array<{ stage: string; confidence: number }>;
-    latest: { stage: string; confidence: number } | null;
+    events: Array<{
+      stage: string;
+      confidence: number;
+      before_text: string;
+      after_text: string;
+      timestamp: number;
+    }>;
+    latest: {
+      stage: string;
+      confidence: number;
+      before_text: string;
+      after_text: string;
+      timestamp: number;
+    } | null;
   };
 
   if (IS_DEV) {

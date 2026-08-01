@@ -13,7 +13,7 @@ import { FormatPainter, getPainterState } from "@/features/editor/extensions/for
 import { isAllowedLinkHref } from "@/features/editor/links";
 import { KeystrokeLogger } from "@/features/editor/extensions/keystrokeLogger";
 import type { KeystrokeEvent } from "@/features/editor/extensions/keystrokeLogger";
-import { M2_CONFIDENCE_CUTOFF } from "@/lib/backend/config";
+import { M2_CONFIDENCE_CUTOFF } from "../../lib/backend/config";
 import { useStageClassification } from "@/features/editor/useStageClassification";
 
 const PLACEHOLDER = "Begin your intellectual exploration here...";
@@ -21,7 +21,10 @@ const PLACEHOLDER = "Begin your intellectual exploration here...";
 // Folds to `false` at build time, so production never registers the logger and
 // never runs a keyup handler. The extension module itself is still bundled --
 // it is a couple of hundred bytes of dead code, not a runtime cost.
-const IS_DEV = process.env.NODE_ENV !== "production";
+const IS_DEV =
+  (globalThis as typeof globalThis & {
+    process?: { env?: Record<string, string | undefined> };
+  }).process?.env?.NODE_ENV !== "production";
 
 export interface RichTextEditorStageSignal {
   stage: string | null;
@@ -109,7 +112,7 @@ export function RichTextEditor(props: Readonly<RichTextEditorProps>) {
     },
   });
 
-  const { scrollContainerRef, signal } = useStageClassification(editor, {
+  const { scrollContainerRef } = useStageClassification(editor, {
     confidenceCutoff: M2_CONFIDENCE_CUTOFF,
     onStageChange,
   });
@@ -144,14 +147,6 @@ export function RichTextEditor(props: Readonly<RichTextEditorProps>) {
       <div className="flex shrink-0 items-center justify-between border-t border-border-subtle px-6 py-2 text-xs text-foreground/50">
         <div className="flex items-center gap-3">
           <span>{(editorState?.words ?? 0).toLocaleString()} words</span>
-          <span className="rounded-full border border-border-subtle bg-surface-muted px-3 py-1 font-medium text-foreground/70">
-            {signal.stage ? `Stage: ${signal.stage}` : "Stage: waiting"}
-            {signal.confidence !== null && (
-              <span className={clsx("ml-2", signal.isConfident ? "text-foreground/70" : "text-amber-600")}>
-                {`(${Math.round(signal.confidence * 100)}%)`}
-              </span>
-            )}
-          </span>
         </div>
         {IS_DEV && (
           <span title="Keyup events written to the console (development only)">

@@ -111,13 +111,21 @@ def test_stage_classification_success(monkeypatch):
         state_response = client.get("/api/v1/stage-classification/state")
 
     assert response.status_code == 200
-    assert response.json() == {"stage": "Planning", "confidence": 0.7}
+    assert response.json() == {
+        "stage": "Planning",
+        "confidence": 0.7,
+        "before_text": "Draft outline",
+        "after_text": "Draft outline with sources",
+        "timestamp": 123.45,
+    }
 
     assert state_response.status_code == 200
     assert state_response.json()["latest"] == {
         "stage": "Planning",
         "confidence": 0.7,
         "timestamp": 123.45,
+        "before_text": "Draft outline",
+        "after_text": "Draft outline with sources",
     }
 
 
@@ -190,10 +198,28 @@ def test_stage_classification_batch_success(monkeypatch):
     assert response.status_code == 200
     assert response.json() == {
         "events": [
-            {"stage": "Planning", "confidence": 0.7},
-            {"stage": "Revision", "confidence": 0.7},
+            {
+                "stage": "Planning",
+                "confidence": 0.7,
+                "before_text": "Draft outline",
+                "after_text": "Draft outline with sources",
+                "timestamp": 1.0,
+            },
+            {
+                "stage": "Revision",
+                "confidence": 0.7,
+                "before_text": "Draft outline with sources",
+                "after_text": "Draft outline with sources and edits",
+                "timestamp": 2.0,
+            },
         ],
-        "latest": {"stage": "Revision", "confidence": 0.7},
+        "latest": {
+            "stage": "Revision",
+            "confidence": 0.7,
+            "before_text": "Draft outline with sources",
+            "after_text": "Draft outline with sources and edits",
+            "timestamp": 2.0,
+        },
     }
 
 
