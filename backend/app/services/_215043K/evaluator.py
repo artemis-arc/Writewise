@@ -17,9 +17,9 @@ class Module4Evaluator:
     Scores a generated piece of feedback on the six WRFEF measures by running Module 4.
 
     In the notebook this was module4_evaluate(), a stub returning six constants -- which
-    is why every episode in the notebook's evaluation run scored a reward of exactly -1
-    and the Q-table never learned anything. Pointing it at the real scorer is what turns
-    the RL half of this module from scaffolding into something that trains.
+    is why every episode in the notebook's evaluation run scored the identical reward and
+    the Q-table never learned anything. Pointing it at the real scorer is what turns the
+    RL half of this module from scaffolding into something that trains.
 
     Module 4 is called in process rather than over HTTP. It ships inside this same app, so
     a POST to /api/v1/feedback-scoring would be the server calling itself: two extra round

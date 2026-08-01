@@ -18,7 +18,9 @@ class FeedbackResult:
     stage: str
     writer_level: str
     scores: dict[str, float]
-    reward: int
+    # Continuous since the reward stopped being binarised: roughly [-0.7, +0.3], or
+    # exactly -1.0 when a measure tripped the floor. See rl_agent.calculate_reward().
+    reward: float
     action: str
     action_index: int
     baseline_state: int

@@ -53,6 +53,7 @@ def build_feedback_engine(
             alpha=settings.feedback_alpha,
             gamma=settings.feedback_gamma,
             epsilon=settings.feedback_epsilon,
+            reward_lambda=settings.feedback_reward_lambda,
             seed=settings.feedback_rl_seed,
         ),
         evaluator=Module4Evaluator(

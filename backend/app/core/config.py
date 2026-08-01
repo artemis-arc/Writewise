@@ -52,6 +52,11 @@ class Settings(BaseSettings):
     feedback_epsilon: float = 0.2
     feedback_rl_seed: int | None = None  # set to make action selection reproducible
 
+    # Focal-style reward weighting: how strongly a weak measure amplifies its own weight
+    # in calculate_reward(). 0.0 is the documented ablation -- it collapses the dynamic
+    # weights back to the static BASE_WEIGHTS, which is the A/B baseline for this change.
+    feedback_reward_lambda: float = 1.0
+
     # The writing stage is Module 2's (215098G) output and arrives on the request, so
     # there is nothing to configure for it here.
 

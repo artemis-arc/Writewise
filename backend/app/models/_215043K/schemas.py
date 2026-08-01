@@ -72,7 +72,9 @@ class FeedbackDiagnostics(BaseModel):
     used_rl_action: bool
     baseline_state: int
     final_state: int
-    reward: int
+    # Shaped and continuous: roughly [-0.7, +0.3] on the normal path, or exactly -1.0
+    # when a measure fell below the catastrophic floor.
+    reward: float
     scores: FeedbackScores
     strategies: list[str]
 
