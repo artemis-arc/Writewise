@@ -112,7 +112,7 @@ export function RichTextEditor(props: Readonly<RichTextEditorProps>) {
     },
   });
 
-  const { scrollContainerRef, signal } = useStageClassification(editor, {
+  const { scrollContainerRef } = useStageClassification(editor, {
     confidenceCutoff: M2_CONFIDENCE_CUTOFF,
     onStageChange,
   });
@@ -147,14 +147,6 @@ export function RichTextEditor(props: Readonly<RichTextEditorProps>) {
       <div className="flex shrink-0 items-center justify-between border-t border-border-subtle px-6 py-2 text-xs text-foreground/50">
         <div className="flex items-center gap-3">
           <span>{(editorState?.words ?? 0).toLocaleString()} words</span>
-          <span className="rounded-full border border-border-subtle bg-surface-muted px-3 py-1 font-medium text-foreground/70">
-            {signal.stage ? `Stage: ${signal.stage}` : "Stage: waiting"}
-            {signal.confidence !== null && (
-              <span className={clsx("ml-2", signal.isConfident ? "text-foreground/70" : "text-amber-600")}>
-                {`(${Math.round(signal.confidence * 100)}%)`}
-              </span>
-            )}
-          </span>
         </div>
         {IS_DEV && (
           <span title="Keyup events written to the console (development only)">
