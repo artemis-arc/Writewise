@@ -7,6 +7,8 @@ class StageSignalRecord:
     stage: str
     confidence: float
     timestamp: float
+    before_text: str = ""
+    after_text: str = ""
 
 
 @dataclass
@@ -27,10 +29,19 @@ class StageContextStore:
         self._state = StageContextState()
 
     def record(
-        self, stage: str, confidence: float, timestamp: float
+        self,
+        stage: str,
+        confidence: float,
+        timestamp: float,
+        before_text: str = "",
+        after_text: str = "",
     ) -> StageSignalRecord:
         record = StageSignalRecord(
-            stage=stage, confidence=confidence, timestamp=timestamp
+            stage=stage,
+            confidence=confidence,
+            timestamp=timestamp,
+            before_text=before_text,
+            after_text=after_text,
         )
         with self._lock:
             self._state.latest = record
