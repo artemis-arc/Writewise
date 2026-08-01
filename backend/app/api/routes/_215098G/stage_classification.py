@@ -58,6 +58,7 @@ def _record_stage_context(
         return
 
     stage_context.record(
+        session_id=payload.session_id,
         stage=response.stage,
         confidence=response.confidence,
         timestamp=payload.timestamp,
@@ -68,13 +69,16 @@ def _record_stage_context(
 
 @router.get("/state")
 async def get_stage_classification_state(
+    session_id: str,
     request: Request,
 ) -> StageClassificationStateResponse:
     stage_context = getattr(request.app.state, "stage_context", None)
     if stage_context is None:
         return StageClassificationStateResponse()
 
-    return StageClassificationStateResponse.model_validate(stage_context.snapshot())
+    return StageClassificationStateResponse.model_validate(
+        stage_context.snapshot(session_id)
+    )
 
 
 @router.post(

@@ -11,6 +11,7 @@ class FeedbackScoringRequest(BaseModel):
     Pass them explicitly to override or when no stage-classification call has happened yet.
     """
 
+    session_id: str = Field(min_length=1, max_length=128)
     current_stage: str | None = Field(default=None, min_length=1)
     previous_stage: str | None = Field(default=None, min_length=1)
     current_content: str | None = Field(default=None, min_length=1)

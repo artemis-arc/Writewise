@@ -5,6 +5,7 @@ import {
 } from "@/lib/backend/config";
 
 export interface StageClassificationRequest {
+  session_id: string;
   before_text: string;
   after_text: string;
   timestamp: number;
@@ -19,6 +20,7 @@ export interface StageClassificationResponse {
 }
 
 export interface StageClassificationBatchRequest {
+  session_id: string;
   events: StageClassificationRequest[];
 }
 

@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException, Request
 
 from app.api.routes._215051H.deps import get_clarity_scorer, get_feedback_retriever
@@ -26,7 +28,7 @@ def _fill_from_stage_context(
     if stage_context is None:
         return payload
 
-    snapshot = stage_context.snapshot()
+    snapshot = stage_context.snapshot(payload.session_id)
     latest = snapshot["latest"]
     if latest is None:
         return payload
@@ -48,13 +50,20 @@ def _fill_from_stage_context(
     )
 
 
-@router.post("", response_model=FeedbackScoringResponse)
+@router.post(
+    "",
+    responses={
+        422: {"description": "Stage context is unavailable for this session."},
+        502: {"description": "Model returned an unexpected shape."},
+        503: {"description": "Clarity model is not trained."},
+    },
+)
 async def create_feedback_score(
     payload: FeedbackScoringRequest,
     request: Request,
-    retriever: FeedbackRetriever = Depends(get_feedback_retriever),
-    clarity_scorer: ClarityScorer = Depends(get_clarity_scorer),
-    settings: Settings = Depends(get_settings),
+    retriever: Annotated[FeedbackRetriever, Depends(get_feedback_retriever)],
+    clarity_scorer: Annotated[ClarityScorer, Depends(get_clarity_scorer)],
+    settings: Annotated[Settings, Depends(get_settings)],
 ) -> FeedbackScoringResponse:
     payload = _fill_from_stage_context(payload, request)
     if not payload.current_stage or not payload.current_content:
@@ -63,7 +72,7 @@ async def create_feedback_score(
             detail=(
                 "current_stage/current_content were not provided and no "
                 "stage-classification data is available yet. Call "
-                "/api/v1/stage-classification first or supply these fields explicitly."
+                "/api/v1/stage-classification first for this session or supply these fields explicitly."
             ),
         )
 

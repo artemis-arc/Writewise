@@ -10,11 +10,17 @@ const IS_DEV =
 const M2_DEBOUNCE_MS = 500;
 const M2_CONFIDENCE_CUTOFF = 0.6;
 const STAGE_CLASSIFICATION_PROXY_PATH = "/api/write/stage-classification";
+const STAGE_CLASSIFICATION_SESSION_STORAGE_KEY = "writewise.stage-classification.session-id";
 
 export interface StageClassificationEventRecord {
   before_text: string;
   after_text: string;
   timestamp: number;
+}
+
+export interface StageClassificationBatchRequest {
+  session_id: string;
+  events: StageClassificationEventRecord[];
 }
 
 export interface StageClassificationSignal {
@@ -33,15 +39,39 @@ function getUnixTimestamp() {
   return Date.now();
 }
 
-async function postStageClassificationBatch(events: StageClassificationEventRecord[], signal?: AbortSignal) {
+function getOrCreateStageClassificationSessionId() {
+  if (typeof window === "undefined") {
+    return "server";
+  }
+
+  const existing = window.sessionStorage.getItem(STAGE_CLASSIFICATION_SESSION_STORAGE_KEY);
+  if (existing) {
+    return existing;
+  }
+
+  const nextSessionId = window.crypto.randomUUID();
+  window.sessionStorage.setItem(STAGE_CLASSIFICATION_SESSION_STORAGE_KEY, nextSessionId);
+  return nextSessionId;
+}
+
+async function postStageClassificationBatch(
+  sessionId: string,
+  events: StageClassificationEventRecord[],
+  signal?: AbortSignal,
+) {
   if (IS_DEV) {
     console.log("[m2] sending batch", { count: events.length, events });
   }
 
+  const requestBody: StageClassificationBatchRequest = {
+    session_id: sessionId,
+    events,
+  };
+
   const response = await fetch(STAGE_CLASSIFICATION_PROXY_PATH, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ events }),
+    body: JSON.stringify(requestBody),
     signal,
   });
 
@@ -76,6 +106,7 @@ async function postStageClassificationBatch(events: StageClassificationEventReco
 
 export function useStageClassification(editor: Editor | null, options: UseStageClassificationOptions = {}) {
   const debounceMs = options.debounceMs ?? M2_DEBOUNCE_MS;
+  const sessionIdRef = useRef(getOrCreateStageClassificationSessionId());
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const bufferRef = useRef<StageClassificationEventRecord[]>([]);
   const lastTextRef = useRef("");
@@ -141,7 +172,7 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
     inFlightAbortRef.current = abortController;
 
     try {
-      const result = await postStageClassificationBatch(batch, abortController.signal);
+      const result = await postStageClassificationBatch(sessionIdRef.current, batch, abortController.signal);
       const latest = result.latest ?? result.events.at(-1) ?? null;
       if (latest) {
         if (IS_DEV) {

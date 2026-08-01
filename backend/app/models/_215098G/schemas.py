@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 
 
 class StageClassificationRequest(BaseModel):
+    session_id: str = Field(min_length=1, max_length=128)
     before_text: str
     after_text: str
     timestamp: float
@@ -16,6 +17,7 @@ class StageClassificationResponse(BaseModel):
 
 
 class StageClassificationBatchRequest(BaseModel):
+    session_id: str = Field(min_length=1, max_length=128)
     events: list[StageClassificationRequest] = Field(min_length=1)
 
 

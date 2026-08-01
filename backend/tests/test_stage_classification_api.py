@@ -102,13 +102,17 @@ def test_stage_classification_success(monkeypatch):
         response = client.post(
             "/api/v1/stage-classification",
             json={
+                "session_id": "session-1",
                 "before_text": "Draft outline",
                 "after_text": "Draft outline with sources",
                 "timestamp": 123.45,
             },
         )
 
-        state_response = client.get("/api/v1/stage-classification/state")
+        state_response = client.get(
+            "/api/v1/stage-classification/state",
+            params={"session_id": "session-1"},
+        )
 
     assert response.status_code == 200
     assert response.json() == {
@@ -142,6 +146,7 @@ def test_stage_classification_missing_artifacts_returns_503(monkeypatch):
         response = client.post(
             "/api/v1/stage-classification",
             json={
+                "session_id": "session-1",
                 "before_text": "Draft outline",
                 "after_text": "Draft outline with sources",
                 "timestamp": 123.45,
@@ -180,6 +185,7 @@ def test_stage_classification_batch_success(monkeypatch):
         response = client.post(
             "/api/v1/stage-classification/batch",
             json={
+                "session_id": "session-1",
                 "events": [
                     {
                         "before_text": "Draft outline",
@@ -220,6 +226,62 @@ def test_stage_classification_batch_success(monkeypatch):
             "after_text": "Draft outline with sources and edits",
             "timestamp": 2.0,
         },
+    }
+
+
+def test_stage_classification_state_is_session_scoped(monkeypatch):
+    _patch_stage_bundle(
+        monkeypatch,
+        predict_result=["Planning"],
+        proba_result=np.array([[0.05, 0.7, 0.25]]),
+    )
+
+    with TestClient(main_module.app) as client:
+        client.post(
+            "/api/v1/stage-classification",
+            json={
+                "session_id": "session-1",
+                "before_text": "Draft outline",
+                "after_text": "Draft outline with sources",
+                "timestamp": 1.0,
+            },
+        )
+
+        client.post(
+            "/api/v1/stage-classification",
+            json={
+                "session_id": "session-2",
+                "before_text": "Second draft",
+                "after_text": "Second draft with edits",
+                "timestamp": 2.0,
+            },
+        )
+
+        session_one_state = client.get(
+            "/api/v1/stage-classification/state",
+            params={"session_id": "session-1"},
+        )
+        session_two_state = client.get(
+            "/api/v1/stage-classification/state",
+            params={"session_id": "session-2"},
+        )
+
+    assert session_one_state.status_code == 200
+    assert session_one_state.json()["latest"] == {
+        "stage": "Planning",
+        "confidence": 0.7,
+        "timestamp": 1.0,
+        "before_text": "Draft outline",
+        "after_text": "Draft outline with sources",
+    }
+
+    assert session_two_state.status_code == 200
+    assert session_two_state.json()["latest"] == {
+        "stage": "Planning",
+        "confidence": 0.7,
+        "timestamp": 2.0,
+        "before_text": "Second draft",
+        "after_text": "Second draft with edits",
     }
 
 
