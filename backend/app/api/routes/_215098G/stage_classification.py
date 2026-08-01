@@ -39,7 +39,13 @@ def _classify_event(
         confidence,
         payload.timestamp,
     )
-    return StageClassificationResponse(stage=stage, confidence=confidence)
+    return StageClassificationResponse(
+        stage=stage,
+        confidence=confidence,
+        before_text=payload.before_text,
+        after_text=payload.after_text,
+        timestamp=payload.timestamp,
+    )
 
 
 def _record_stage_context(
