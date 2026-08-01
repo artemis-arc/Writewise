@@ -10,6 +10,9 @@ class StageClassificationRequest(BaseModel):
 class StageClassificationResponse(BaseModel):
     stage: str
     confidence: float = Field(ge=0, le=1)
+    before_text: str
+    after_text: str
+    timestamp: float
 
 
 class StageClassificationBatchRequest(BaseModel):
@@ -25,6 +28,8 @@ class StageSignalSnapshot(BaseModel):
     stage: str
     confidence: float = Field(ge=0, le=1)
     timestamp: float
+    before_text: str
+    after_text: str
 
 
 class StageClassificationStateResponse(BaseModel):

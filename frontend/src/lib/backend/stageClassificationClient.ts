@@ -13,6 +13,9 @@ export interface StageClassificationRequest {
 export interface StageClassificationResponse {
   stage: string;
   confidence: number;
+  before_text: string;
+  after_text: string;
+  timestamp: number;
 }
 
 export interface StageClassificationBatchRequest {

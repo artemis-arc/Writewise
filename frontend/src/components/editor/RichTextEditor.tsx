@@ -13,7 +13,7 @@ import { FormatPainter, getPainterState } from "@/features/editor/extensions/for
 import { isAllowedLinkHref } from "@/features/editor/links";
 import { KeystrokeLogger } from "@/features/editor/extensions/keystrokeLogger";
 import type { KeystrokeEvent } from "@/features/editor/extensions/keystrokeLogger";
-import { M2_CONFIDENCE_CUTOFF } from "@/lib/backend/config";
+import { M2_CONFIDENCE_CUTOFF } from "../../lib/backend/config";
 import { useStageClassification } from "@/features/editor/useStageClassification";
 
 const PLACEHOLDER = "Begin your intellectual exploration here...";
@@ -21,7 +21,10 @@ const PLACEHOLDER = "Begin your intellectual exploration here...";
 // Folds to `false` at build time, so production never registers the logger and
 // never runs a keyup handler. The extension module itself is still bundled --
 // it is a couple of hundred bytes of dead code, not a runtime cost.
-const IS_DEV = process.env.NODE_ENV !== "production";
+const IS_DEV =
+  (globalThis as typeof globalThis & {
+    process?: { env?: Record<string, string | undefined> };
+  }).process?.env?.NODE_ENV !== "production";
 
 export interface RichTextEditorStageSignal {
   stage: string | null;
