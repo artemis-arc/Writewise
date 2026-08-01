@@ -32,10 +32,10 @@ export const taskDefinitionSchema = z.object({
 export type TaskDefinitionFormValues = z.infer<typeof taskDefinitionSchema>;
 
 export const writingProfileSchema = z.object({
-  vocabulary: z.number().min(0).max(100),
   mechanics: z.number().min(0).max(100),
   organization: z.number().min(0).max(100),
   overall: z.number().min(0).max(100),
+  submissionId: z.string().nullable().optional(),
 });
 
 export const taskBreakdownRequestSchema = taskDefinitionSchema.extend({

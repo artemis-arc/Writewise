@@ -25,8 +25,8 @@ export function submitTask(
 
 /**
  * Scores the uploaded manuscript via the FastAPI service in backend/. Organization is backed
- * by the SRSD model, mechanics comes from the Gemini evaluation pipeline, and vocabulary is
- * still a backend placeholder until labeled data exists for that dimension.
+ * by the SRSD model and mechanics comes from the Gemini evaluation pipeline. Vocabulary is
+ * deferred to future work and intentionally not scored.
  */
 export function getWritingProfile(
   file: File,

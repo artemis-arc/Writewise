@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { fetchWritingProfile } from "@/lib/backend/writingProfileClient";
+import { BackendHttpError } from "@/lib/backend/errors";
 
 /**
  * Proxies the uploaded manuscript to the FastAPI service in backend/, which extracts
@@ -19,6 +20,11 @@ export async function POST(request: Request) {
     const writingProfile = await fetchWritingProfile(file);
     return NextResponse.json(writingProfile);
   } catch (error) {
+    if (error instanceof BackendHttpError && error.status === 401) {
+      return NextResponse.json({ error: "Your session has expired. Please log in again." }, {
+        status: 401,
+      });
+    }
     console.error("Failed to fetch writing profile from backend:", error);
     return NextResponse.json(
       {

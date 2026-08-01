@@ -1,4 +1,6 @@
 import { BACKEND_BASE_URL } from "@/lib/backend/config";
+import { getAuthHeader } from "@/lib/backend/authHeaders";
+import { BackendHttpError } from "@/lib/backend/errors";
 import type { TaskBreakdownRequestValues } from "@/features/task-definition/schema";
 import type { TaskBreakdown, TaskMilestone } from "@/features/task-definition/types";
 
@@ -10,7 +12,6 @@ interface BackendMilestone {
 
 interface BackendActionSet {
   mechanics: string[];
-  vocabulary: string[];
   organization: string[];
 }
 
@@ -43,23 +44,26 @@ export async function fetchTaskBreakdown(
   try {
     const response = await fetch(`${BACKEND_BASE_URL}/api/v1/task-breakdown`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...(await getAuthHeader()) },
       body: JSON.stringify({
         task: input.question,
         academic_level: input.academicLevel,
         citation_style: input.citationStyle,
         writing_profile: {
           mechanics: input.writingProfile.mechanics,
-          vocabulary: input.writingProfile.vocabulary,
           organization: input.writingProfile.organization,
         },
+        submission_id: input.writingProfile.submissionId ?? null,
       }),
       signal: controller.signal,
     });
 
     if (!response.ok) {
       const detail = await response.json().catch(() => null);
-      throw new Error(detail?.detail ?? `Backend responded with ${response.status}`);
+      throw new BackendHttpError(
+        detail?.detail ?? `Backend responded with ${response.status}`,
+        response.status,
+      );
     }
 
     const data: BackendTaskBreakdownResponse = await response.json();
