@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: writewise
+      POSTGRES_PASSWORD: writewise
+      POSTGRES_DB: writewise
+    ports:
+      - "55432:5432"
+    volumes:
+      - writewise_pgdata:/var/lib/postgresql/data
+
+volumes:
+  writewise_pgdata:

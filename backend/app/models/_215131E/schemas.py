@@ -2,10 +2,9 @@ from pydantic import BaseModel, Field
 
 
 class WritingProfileScores(BaseModel):
-    """0-100 scores, matching the shape SRSD_content_scoring.ipynb is expected to eventually produce."""
+    """0-100 scores. Vocabulary is deferred to future work and intentionally not scored here."""
 
     mechanics: float = Field(ge=0, le=100)
-    vocabulary: float = Field(ge=0, le=100)
     organization: float = Field(ge=0, le=100)
 
 
@@ -14,6 +13,7 @@ class TaskBreakdownRequest(BaseModel):
     academic_level: str
     citation_style: str = "APA7"
     writing_profile: WritingProfileScores
+    submission_id: str | None = None
 
 
 class Milestone(BaseModel):
@@ -24,17 +24,17 @@ class Milestone(BaseModel):
 
 class ActionSet(BaseModel):
     mechanics: list[str]
-    vocabulary: list[str]
     organization: list[str]
 
 
 class TaskBreakdownResponse(BaseModel):
     milestones: list[Milestone]
     actions: ActionSet
+    task_definition_id: str | None = None
 
 
 class WritingProfileResponse(BaseModel):
-    vocabulary: float = Field(ge=0, le=100)
     mechanics: float = Field(ge=0, le=100)
     organization: float = Field(ge=0, le=100)
     overall: float = Field(ge=0, le=100)
+    submission_id: str | None = None

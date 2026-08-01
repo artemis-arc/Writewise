@@ -51,12 +51,10 @@ Academic Level: {payload.academic_level}
 Citation Style: {payload.citation_style}
 Writing Scores:
 - Mechanics: {profile.mechanics}
-- Vocabulary: {profile.vocabulary}
 - Organization: {profile.organization}
 
 Writing Support Action Banks:
 - Mechanics (choose 1-2 based on the Mechanics score): {json.dumps(action_bank['mechanics'])}
-- Vocabulary (choose 1-2 based on the Vocabulary score): {json.dumps(action_bank['vocabulary'])}
 - Organization (use as provided): {json.dumps(action_bank['organization'])}
 
 INSTRUCTIONS:
@@ -67,7 +65,7 @@ INSTRUCTIONS:
 OUTPUT SCHEMA (STRICT JSON):
 {{
   "milestones": [{{"title": "string", "description": "string"}}],
-  "actions": {{"mechanics": ["string"], "vocabulary": ["string"], "organization": ["string"]}}
+  "actions": {{"mechanics": ["string"], "organization": ["string"]}}
 }}
 """
 
@@ -81,7 +79,6 @@ async def generate_task_breakdown(
         f"Job: {payload.task}\n"
         f"Academic level: {payload.academic_level}\n"
         f"Writing profile: mechanics={payload.writing_profile.mechanics}, "
-        f"vocabulary={payload.writing_profile.vocabulary}, "
         f"organization={payload.writing_profile.organization}"
     )
     scenario = retriever.retrieve_best_match(query, payload.academic_level)

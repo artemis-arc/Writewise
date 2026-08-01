@@ -5,13 +5,6 @@ from sentence_transformers import SentenceTransformer
 
 from app.services._215131E.srsd_model import RubricScorer
 
-# Dummy values for the two dimensions not yet backed by a trained, labeled model.
-# See srsd_model.py / SRSD_content_scoring.ipynb: the dataset only has one label per
-# sample, so only "organization" is real -- vocabulary/mechanics stay placeholders
-# until labeled data exists for them.
-DUMMY_VOCABULARY_SCORE = 82
-DUMMY_MECHANICS_SCORE = 75
-
 
 class SrsdScorer:
     """

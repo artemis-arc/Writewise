@@ -21,6 +21,12 @@ class Settings(BaseSettings):
     srsd_checkpoint_path: Path = BASE_DIR / "data" / "215131E" / "srsd_model.pt"
     srsd_max_upload_bytes: int = 25 * 1024 * 1024  # 25MB, matching the Upload screen's stated limit
 
+    database_url: str
+    jwt_secret_key: str
+    jwt_algorithm: str = "HS256"
+    access_token_expire_minutes: int = 15
+    refresh_token_expire_days: int = 14
+
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 
