@@ -1,0 +1,38 @@
+[
+  {
+    "id": "eval_planning_001",
+    "stage": "PLANNING",
+    "writer_level": "low",
+    "generated_feedback": "List several potential topics or ideas you could write about for your essay. Then, choose the strongest one to develop.",
+    "action": "No additional instruction",
+    "used_rl_action": false,
+    "module4_reward": -1,
+    "semantic_similarity": 0.7460957765579224,
+    "rouge_l": 0.3529411764705882,
+    "final_score": 0.6674648565404555
+  },
+  {
+    "id": "eval_planning_002",
+    "stage": "PLANNING",
+    "writer_level": "medium",
+    "generated_feedback": "List three specific effects social media has on students, then select the one you want to discuss first.",
+    "action": "Give one clear, specific next step the student can act on immediately",
+    "used_rl_action": true,
+    "module4_reward": -1,
+    "semantic_similarity": 0.8769637942314148,
+    "rouge_l": 0.5,
+    "final_score": 0.8015710353851319
+  },
+  {
+    "id": "eval_planning_003",
+    "stage": "PLANNING",
+    "writer_level": "high",
+    "generated_feedback": "Write a thesis statement about AI in education, then outline the main idea and key supporting points for each paragraph, including your introduction and conclusion.",
+    "action": "Keep the feedback to one or two sentences",
+    "used_rl_action": true,
+    "module4_reward": -1,
+    "semantic_similarity": 0.8418307304382324,
+    "rouge_l": 0.4,
+    "final_score": 0.753464584350586
+  }
+]
