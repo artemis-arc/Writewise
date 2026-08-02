@@ -12,9 +12,12 @@ Run from backend/:
     .venv\\Scripts\\python.exe scripts\\215043K\\evaluate_feedback.py --stub-evaluator
 
 --stub-evaluator swaps in the constants the notebook's module4_evaluate() returned. It
-exists to reproduce the notebook's baseline; those constants score a reward of -1 on
-every case, so a run with it tells you nothing about the agent. Drop the flag once
+exists to reproduce the notebook's baseline; being constants they score the same reward
+on every case, so a run with it tells you nothing about the agent. Drop the flag once
 Module 4 is reachable.
+
+--reward-lambda 0 runs the static-weighting ablation described in rl_agent.calculate_reward(),
+for A/B-ing it against the default dynamic weighting.
 
 Needs one extra package the API itself does not:  pip install rouge-score
 """
@@ -42,8 +45,13 @@ from app.services._215043K.evaluator import Module4Evaluator
 from app.services._215043K.pipeline import generate_feedback
 from app.services._215043K.q_table_store import QTableStore
 from app.services._215043K.retriever import FeedbackRetriever
-from app.services._215043K.rl_agent import ACTIONS, METRICS, N_STATES, RLAgent, calculate_reward
+from app.services._215043K.rl_agent import ACTIONS, METRICS, N_STATES, RLAgent
 from app.services._215043K.session_store import SessionStore
+from app.services._215051H.clarity_scoring import ClarityScorer  # noqa: E402
+from app.services._215051H.feedback_retriever import (  # noqa: E402
+    FeedbackRetriever as Module4Retriever,
+)
+from app.services._215098G.stage_context import StageContextStore  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 EVALUATION_SET_PATH = HERE / "evaluation_set.json"
@@ -52,7 +60,9 @@ SEMANTIC_WEIGHT = 0.8
 ROUGE_WEIGHT = 0.2
 
 # What module4_evaluate() returned in the notebook, kept only so --stub-evaluator can
-# reproduce that run exactly. These six numbers are why it reported a reward of -1.0000.
+# reproduce that run exactly. These six numbers average out below the 0.7 line, which is
+# why that run reported a flat -1.0000 under the old binarised reward -- the shaped one
+# scores them around -0.14, negative but no longer indistinguishable from broken output.
 NOTEBOOK_STUB_SCORES = {
     "relevance": 0.82,
     "clarity": 0.45,
@@ -64,7 +74,7 @@ NOTEBOOK_STUB_SCORES = {
 
 
 class _StubEvaluator:
-    def evaluate(self, feedback, stage, content, feedback_history):
+    def evaluate(self, feedback, feedback_history):
         return dict(NOTEBOOK_STUB_SCORES)
 
 
@@ -102,7 +112,7 @@ class TextScorer:
         }
 
 
-def build_engine(settings, args) -> FeedbackEngine:
+def build_engine(settings, args, stage_context) -> FeedbackEngine:
     # Deliberately not the paths the API serves from: an evaluation run updates the
     # Q-table on every case, and that learning should not land in the live table.
     return FeedbackEngine(
@@ -116,14 +126,16 @@ def build_engine(settings, args) -> FeedbackEngine:
             alpha=settings.feedback_alpha,
             gamma=settings.feedback_gamma,
             epsilon=settings.feedback_epsilon,
+            reward_lambda=args.reward_lambda,
             seed=args.seed,
         ),
         evaluator=_StubEvaluator()
         if args.stub_evaluator
         else Module4Evaluator(
-            settings.module4_base_url,
-            settings.module4_evaluate_path,
-            settings.module4_timeout_seconds,
+            Module4Retriever(settings.feedback_embedding_model, settings.feedback_kb_path),
+            ClarityScorer(settings.clarity_semantic_model, settings.clarity_model_dir),
+            settings,
+            stage_context=stage_context,
         ),
         sessions=SessionStore(args.sessions, settings.feedback_session_history_limit),
     )
@@ -138,18 +150,28 @@ def main() -> None:
     parser.add_argument("--retries", type=int, default=3, help="attempts per case before skipping")
     parser.add_argument("--limit", type=int, help="run only the first N cases (for a quick check)")
     parser.add_argument("--seed", type=int, default=42, help="seed for epsilon-greedy exploration")
+    parser.add_argument("--reward-lambda", type=float, default=None,
+                        help="reward weighting lambda; 0 is the static-weighting ablation "
+                             "(default: settings.feedback_reward_lambda)")
     parser.add_argument("--q-table", type=Path, default=HERE / "eval_q_table.json")
     parser.add_argument("--sessions", type=Path, default=HERE / "eval_sessions.json")
     parser.add_argument("--out", type=Path, default=HERE / "evaluation_results.json")
     args = parser.parse_args()
 
     settings = get_settings()
+    if args.reward_lambda is None:
+        args.reward_lambda = settings.feedback_reward_lambda
+
     cases = json.loads(EVALUATION_SET_PATH.read_text(encoding="utf-8"))
     if args.limit:
         cases = cases[: args.limit]
     print(f"Loaded {len(cases)} evaluation cases")
 
-    engine = build_engine(settings, args)
+    # Module 4 now reads the stage and draft from Module 2's store rather than from the
+    # scoring call, and no classifier runs here -- so each case is recorded below exactly
+    # as a /api/v1/stage-classification call would have recorded it.
+    stage_context = StageContextStore()
+    engine = build_engine(settings, args, stage_context)
     scorer = TextScorer(settings.feedback_embedding_model)
 
     results = []
@@ -157,6 +179,12 @@ def main() -> None:
         query = case["input_query"]
         profile = query["profile_context"]
         references = case.get("expected_feedbacks") or [case["expected_feedback"]]
+        stage_context.record(
+            stage=query["stage"],
+            confidence=1.0,
+            timestamp=time.time(),
+            after_text=query["content"],
+        )
 
         for attempt in range(1, args.retries + 1):
             try:
@@ -168,7 +196,9 @@ def main() -> None:
                     writer_level=profile["writer_level"],
                     content=query["content"],
                     mechanics=profile["mechanics"],
-                    vocabulary=profile["vocabulary"],
+                    # Every case in evaluation_set.json carries one; .get() so the run
+                    # survives a set regenerated from Module 1, which does not score it.
+                    vocabulary=profile.get("vocabulary"),
                     organization=profile["organization"],
                     engine=engine,
                     settings=settings,
@@ -193,11 +223,13 @@ def main() -> None:
             "generated_feedback": result.feedback,
             "action": result.action,
             "used_rl_action": result.used_rl_action,
-            "module4_reward": calculate_reward(result.scores),
+            # The reward the Q-update actually ran on, rather than a second call to
+            # calculate_reward() that would have to be handed the same lambda again.
+            "module4_reward": result.reward,
             **text_scores,
         })
         print(f"[{index}/{len(cases)}] {case['id']} | score {text_scores['final_score']:.4f} "
-              f"| reward {results[-1]['module4_reward']:+d} | {result.action}")
+              f"| reward {results[-1]['module4_reward']:+.4f} | {result.action}")
 
         if index < len(cases):
             time.sleep(args.delay)

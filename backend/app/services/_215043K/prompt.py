@@ -8,15 +8,40 @@ FEEDBACK_HISTORY_LIMIT = 3
 
 
 def format_query(stage: str, content: str, profile: dict) -> str:
-    """The string that gets embedded for retrieval -- profile plus the draft itself."""
-    return (
-        f"Stage: {stage} | "
-        f"Writer Level: {profile['writer_level']} | "
-        f"Mechanics: {profile['mechanics']} | "
-        f"Vocabulary: {profile['vocabulary']} | "
-        f"Organization: {profile['organization']} | "
-        f"Content: {content}"
-    )
+    """
+    The string that gets embedded for retrieval -- profile plus the draft itself.
+
+    Vocabulary is omitted rather than rendered as None when Module 1 (215131E) did not
+    score it. With a value present the string is byte for byte what the notebook
+    embedded, which is what keeps the evaluation numbers comparable.
+    """
+    segments = [
+        f"Stage: {stage}",
+        f"Writer Level: {profile['writer_level']}",
+        f"Mechanics: {profile['mechanics']}",
+    ]
+    if profile.get("vocabulary") is not None:
+        segments.append(f"Vocabulary: {profile['vocabulary']}")
+    segments.append(f"Organization: {profile['organization']}")
+    segments.append(f"Content: {content}")
+    return " | ".join(segments)
+
+
+def _profile_block(profile: dict) -> str:
+    """
+    The writer's half of the Student Context header.
+
+    Same omission rule as format_query: a "Vocabulary Score: None/100" line reads to the
+    model as a measurement, and when Module 1 skipped vocabulary there is none behind it.
+    """
+    lines = [
+        f"- Writer Level: {profile['writer_level']}",
+        f"- Mechanics Score: {profile['mechanics']}/100",
+    ]
+    if profile.get("vocabulary") is not None:
+        lines.append(f"- Vocabulary Score: {profile['vocabulary']}/100")
+    lines.append(f"- Organization Score: {profile['organization']}/100")
+    return "\n".join(lines)
 
 
 def _strategy_block(retrieval: RetrievalResult) -> str:
@@ -79,10 +104,7 @@ def build_prompt(
 
 Student Context:
 - Writing Stage: {stage}
-- Writer Level: {profile['writer_level']}
-- Mechanics Score: {profile['mechanics']}/100
-- Vocabulary Score: {profile['vocabulary']}/100
-- Organization Score: {profile['organization']}/100
+{_profile_block(profile)}
 - Student's current text: "{content}"
 
 Here are similar examples of good instructional feedback:

@@ -6,6 +6,9 @@ from app.services._215043K.q_table_store import QTableStore
 from app.services._215043K.retriever import FeedbackRetriever
 from app.services._215043K.rl_agent import ACTIONS, N_STATES, RLAgent
 from app.services._215043K.session_store import SessionStore
+from app.services._215051H.clarity_scoring import ClarityScorer
+from app.services._215051H.feedback_retriever import FeedbackRetriever as Module4Retriever
+from app.services._215051H.feedback_scoring import StageContextSource
 
 
 @dataclass(frozen=True)
@@ -21,10 +24,19 @@ class FeedbackEngine:
     sessions: SessionStore
 
 
-def build_feedback_engine(settings: Settings) -> FeedbackEngine:
+def build_feedback_engine(
+    settings: Settings,
+    module4_retriever: Module4Retriever,
+    clarity_scorer: ClarityScorer,
+    stage_context: StageContextSource | None = None,
+) -> FeedbackEngine:
     """
     Called once at startup. Embedding the 50 knowledge base entries and the 44 strategy
     examples, and reading back the Q-table, all happen here so no request pays for them.
+
+    Module 4's retriever and clarity scorer are built by the same lifespan and passed in
+    rather than rebuilt here -- both load a sentence-transformer, and the evaluator wants
+    the very same objects the /api/v1/feedback-scoring route serves from.
     """
     return FeedbackEngine(
         retriever=FeedbackRetriever(
@@ -41,12 +53,14 @@ def build_feedback_engine(settings: Settings) -> FeedbackEngine:
             alpha=settings.feedback_alpha,
             gamma=settings.feedback_gamma,
             epsilon=settings.feedback_epsilon,
+            reward_lambda=settings.feedback_reward_lambda,
             seed=settings.feedback_rl_seed,
         ),
         evaluator=Module4Evaluator(
-            base_url=settings.module4_base_url,
-            path=settings.module4_evaluate_path,
-            timeout_seconds=settings.module4_timeout_seconds,
+            retriever=module4_retriever,
+            clarity_scorer=clarity_scorer,
+            settings=settings,
+            stage_context=stage_context,
         ),
         sessions=SessionStore(
             path=settings.feedback_sessions_path,

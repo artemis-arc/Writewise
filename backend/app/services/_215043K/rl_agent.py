@@ -45,9 +45,10 @@ ACTIONS = (
 
 NO_ACTION_INDEX = ACTIONS.index(NO_ACTION)
 
-# Weights and gates from calculate_reward() in the notebook: a single measure below the
-# floor fails the feedback outright, otherwise the weighted average has to clear the band.
-REWARD_WEIGHTS = {
+# Per-measure importance before any dynamic reweighting, unchanged from the notebook's
+# calculate_reward(): actionability and stage alignment are what WRFEF treats as the
+# defining properties of writing feedback, so they carry half again the weight.
+BASE_WEIGHTS = {
     "relevance": 1.0,
     "clarity": 1.0,
     "actionability": 1.5,
@@ -55,7 +56,15 @@ REWARD_WEIGHTS = {
     "improvement_impact": 1.0,
     "consistency_with_history": 1.0,
 }
+
+# A single measure this far below adequate fails the feedback outright, whatever the
+# other five look like -- kept from the notebook as a catastrophic override.
 REWARD_FLOOR = 0.3
+
+# What the reward is centred on. Numerically BAND_THRESHOLD, and for the same reason --
+# WRFEF puts the adequate/good line at 0.7 -- but it is a separate constant because it
+# plays a different role: the state bands still gate on 0.7, the reward no longer does.
+REWARD_CENTER = BAND_THRESHOLD
 
 
 def band(score: float) -> int:
@@ -97,11 +106,45 @@ def all_states() -> list[dict]:
     return environments
 
 
-def calculate_reward(scores: dict[str, float]) -> int:
-    if any(scores[metric] < REWARD_FLOOR for metric in REWARD_WEIGHTS):
-        return -1
-    weighted = sum(scores[metric] * weight for metric, weight in REWARD_WEIGHTS.items())
-    return 1 if weighted / sum(REWARD_WEIGHTS.values()) >= BAND_THRESHOLD else -1
+def dynamic_weight(base_weight: float, score: float, lam: float) -> float:
+    """
+    Focal-style reweighting: the weaker a measure scores, the more of the reward it owns.
+    At lam=0 this is the identity and the weights stay static -- see calculate_reward().
+    """
+    return base_weight * (1 + lam * (1 - score))
+
+
+def calculate_reward(scores: dict[str, float], lam: float) -> float:
+    """
+    Continuous reward for one piece of feedback, centred on WRFEF's 0.7 "adequate" line.
+
+    Two things changed from the notebook's version. The weights are now dynamic: a measure
+    that scores badly is weighted up, so the agent is pushed at whatever is actually weak
+    on this turn rather than at a fixed average. And the result is no longer binarised at
+    0.7 -- it is the signed distance from it, so 0.69 and 0.05 stop being the same signal.
+    Range is roughly [-0.7, +0.3], since weighted_score is a weighted mean of six scores
+    in [0, 1] and is therefore itself in [0, 1].
+
+    lam = 0 is the documented ablation: dynamic_weight() degenerates to BASE_WEIGHTS and
+    this reduces exactly to the old static weighted average, pre-binarisation. That makes
+    static-vs-dynamic weighting an A/B with everything else held constant.
+
+    The floor is the one thing that stays binary. A measure below REWARD_FLOOR means the
+    feedback is broken rather than merely weak, and averaging cannot be allowed to hide
+    that behind five good scores -- so it short-circuits to the full -1.0 penalty.
+    """
+    if any(scores[metric] < REWARD_FLOOR for metric in BASE_WEIGHTS):
+        return -1.0
+
+    weights = {
+        metric: dynamic_weight(base, scores[metric], lam)
+        for metric, base in BASE_WEIGHTS.items()
+    }
+    weighted_score = sum(
+        scores[metric] * weight for metric, weight in weights.items()
+    ) / sum(weights.values())
+
+    return weighted_score - REWARD_CENTER
 
 
 class RLAgent:
@@ -117,12 +160,14 @@ class RLAgent:
         alpha: float,
         gamma: float,
         epsilon: float,
+        reward_lambda: float,
         seed: int | None = None,
     ):
         self._store = store
         self._alpha = alpha
         self._gamma = gamma
         self._epsilon = epsilon
+        self._reward_lambda = reward_lambda
         self._random = random.Random(seed)
 
     @property
@@ -140,9 +185,9 @@ class RLAgent:
             return self._random.randrange(len(ACTIONS))
         return int(np.argmax(row))
 
-    def learn(self, scores: dict[str, float], state: int, action: int, next_state: int) -> int:
+    def learn(self, scores: dict[str, float], state: int, action: int, next_state: int) -> float:
         """Applies the Q-update and returns the reward it was driven by."""
-        reward = calculate_reward(scores)
+        reward = calculate_reward(scores, self._reward_lambda)
         table = self._store.table
 
         current = table[state, action]
