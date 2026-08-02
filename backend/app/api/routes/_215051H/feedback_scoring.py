@@ -20,7 +20,6 @@ router = APIRouter(prefix="/api/v1/feedback-scoring", tags=["feedback-scoring"])
 
 @router.post(
     "",
-    response_model=FeedbackScoringResponse,
     responses={
         422: {"description": "No writing context supplied and none recorded upstream."},
         502: {"description": "The scoring model answered with something unusable."},
@@ -37,11 +36,12 @@ async def create_feedback_score(
     try:
         # Resolving the writing context is the service's job now, so the in-process
         # caller (Module 3) gets exactly the same fill this endpoint does.
-        return await evaluate_feedback(
+        return evaluate_feedback(
             payload,
             retriever,
             clarity_scorer,
             settings,
+            session_id=payload.session_id,
             stage_context=getattr(request.app.state, "stage_context", None),
         )
     except ClarityModelNotTrainedError as exc:

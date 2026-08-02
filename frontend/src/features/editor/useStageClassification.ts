@@ -110,6 +110,7 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const bufferRef = useRef<StageClassificationEventRecord[]>([]);
   const lastTextRef = useRef("");
+  const lastPublishedStageRef = useRef<string | null>(null);
   const debounceTimerRef = useRef<number | null>(null);
   const isSendingRef = useRef(false);
   const needsFlushRef = useRef(false);
@@ -143,6 +144,40 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
 
       setSignal(nextSignal);
       onStageChangeRef.current?.(nextSignal);
+
+      const previousStage = lastPublishedStageRef.current;
+      lastPublishedStageRef.current = stage;
+
+      if (previousStage !== null && previousStage !== stage) {
+        const content = lastTextRef.current;
+        void fetch("/api/write/feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            session_id: sessionIdRef.current,
+            stage,
+            content,
+          }),
+        })
+          .then(async (response) => {
+            if (response.ok) {
+              if (IS_DEV) {
+                console.info("[m3] auto-triggered feedback", await response.json());
+              }
+              return;
+            }
+
+            if (response.status === 422) {
+              return;
+            }
+
+            const detail = await response.json().catch(() => null);
+            console.warn("[m3] auto-trigger failed", detail ?? response.status);
+          })
+          .catch((error) => {
+            console.warn("[m3] auto-trigger failed", error);
+          });
+      }
     },
     [],
   );
