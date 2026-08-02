@@ -29,10 +29,19 @@ export interface StageClassificationSignal {
   isConfident: boolean;
 }
 
+export interface StageTransition {
+  sessionId: string;
+  previousStage: string;
+  stage: string;
+  content: string;
+}
+
 export interface UseStageClassificationOptions {
   debounceMs?: number;
   confidenceCutoff?: number;
   onStageChange?: (signal: StageClassificationSignal) => void;
+  /** Fired once per stage change -- what Module 3 hangs its feedback request off. */
+  onStageTransition?: (transition: StageTransition) => void;
 }
 
 function getUnixTimestamp() {
@@ -118,11 +127,13 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
   const inFlightAbortRef = useRef<AbortController | null>(null);
   const confidenceCutoffRef = useRef(options.confidenceCutoff ?? M2_CONFIDENCE_CUTOFF);
   const onStageChangeRef = useRef(options.onStageChange);
+  const onStageTransitionRef = useRef(options.onStageTransition);
 
   useEffect(() => {
     confidenceCutoffRef.current = options.confidenceCutoff ?? M2_CONFIDENCE_CUTOFF;
     onStageChangeRef.current = options.onStageChange;
-  }, [options.confidenceCutoff, options.onStageChange]);
+    onStageTransitionRef.current = options.onStageTransition;
+  }, [options.confidenceCutoff, options.onStageChange, options.onStageTransition]);
 
   const [signal, setSignal] = useState<StageClassificationSignal>({
     stage: null,
@@ -149,34 +160,16 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
       lastPublishedStageRef.current = stage;
 
       if (previousStage !== null && previousStage !== stage) {
-        const content = lastTextRef.current;
-        void fetch("/api/write/feedback", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            session_id: sessionIdRef.current,
-            stage,
-            content,
-          }),
-        })
-          .then(async (response) => {
-            if (response.ok) {
-              if (IS_DEV) {
-                console.info("[m3] auto-triggered feedback", await response.json());
-              }
-              return;
-            }
+        if (IS_DEV) {
+          console.info("[m3] stage transition", { previousStage, stage });
+        }
 
-            if (response.status === 422) {
-              return;
-            }
-
-            const detail = await response.json().catch(() => null);
-            console.warn("[m3] auto-trigger failed", detail ?? response.status);
-          })
-          .catch((error) => {
-            console.warn("[m3] auto-trigger failed", error);
-          });
+        onStageTransitionRef.current?.({
+          sessionId: sessionIdRef.current,
+          previousStage,
+          stage,
+          content: lastTextRef.current,
+        });
       }
     },
     [],

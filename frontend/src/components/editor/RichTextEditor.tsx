@@ -15,6 +15,9 @@ import { KeystrokeLogger } from "@/features/editor/extensions/keystrokeLogger";
 import type { KeystrokeEvent } from "@/features/editor/extensions/keystrokeLogger";
 import { M2_CONFIDENCE_CUTOFF } from "../../lib/backend/config";
 import { useStageClassification } from "@/features/editor/useStageClassification";
+import type { StageTransition } from "@/features/editor/useStageClassification";
+import { useFeedback } from "@/features/editor/useFeedback";
+import { FeedbackPanel } from "@/components/editor/FeedbackPanel";
 
 const PLACEHOLDER = "Begin your intellectual exploration here...";
 
@@ -112,9 +115,24 @@ export function RichTextEditor(props: Readonly<RichTextEditorProps>) {
     },
   });
 
+  const feedback = useFeedback();
+  const { requestFeedback } = feedback;
+
+  const handleStageTransition = useCallback(
+    (transition: StageTransition) => {
+      requestFeedback({
+        sessionId: transition.sessionId,
+        stage: transition.stage,
+        content: transition.content,
+      });
+    },
+    [requestFeedback],
+  );
+
   const { scrollContainerRef } = useStageClassification(editor, {
     confidenceCutoff: M2_CONFIDENCE_CUTOFF,
     onStageChange,
+    onStageTransition: handleStageTransition,
   });
 
   const editorState = useEditorState({
@@ -133,15 +151,25 @@ export function RichTextEditor(props: Readonly<RichTextEditorProps>) {
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-surface">
       {editor && <EditorToolbar editor={editor} />}
 
-      <div
-        ref={scrollContainerRef}
-        className={clsx(
-          "min-h-0 flex-1 overflow-y-auto px-8 py-6",
-          // Signals that the next selection will be painted rather than just made.
-          editorState?.isPainterArmed && "manuscript-painting",
-        )}
-      >
-        <EditorContent editor={editor} className="h-full" />
+      <div className="flex min-h-0 flex-1 overflow-hidden">
+        <div
+          ref={scrollContainerRef}
+          className={clsx(
+            "min-h-0 flex-1 overflow-y-auto px-8 py-6",
+            // Signals that the next selection will be painted rather than just made.
+            editorState?.isPainterArmed && "manuscript-painting",
+          )}
+        >
+          <EditorContent editor={editor} className="h-full" />
+        </div>
+
+        <FeedbackPanel
+          status={feedback.status}
+          pendingStage={feedback.pendingStage}
+          history={feedback.history}
+          error={feedback.error}
+          onDismissError={feedback.dismissError}
+        />
       </div>
 
       <div className="flex shrink-0 items-center justify-between border-t border-border-subtle px-6 py-2 text-xs text-foreground/50">

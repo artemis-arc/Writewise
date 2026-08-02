@@ -72,6 +72,12 @@ def _resolve_profile(
 # trips (two Gemini generations, two Module 4 evaluations). FastAPI runs sync routes in
 # a threadpool, so those seconds do not block the event loop and every other request
 # with it -- which an `async def` doing the same blocking work would.
+#
+# TODO: an SSE variant of this route would let the editor render the feedback as it is
+# written rather than after the whole pipeline finishes -- the frontend panel currently
+# shows a placeholder for those seconds. It would forward Gemini's own token stream as
+# text deltas, then emit the scores and diagnostics as a final event, since the RL
+# action and Module 4 measures are only decided once the feedback is complete.
 @router.post(
     "",
     responses={
