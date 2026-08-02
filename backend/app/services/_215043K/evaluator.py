@@ -43,9 +43,26 @@ class Module4Evaluator:
     that route is `async def` around blocking Gemini work -- each call would stall the event
     loop for the whole app.
 
-    Only the feedback and the session's history are sent, because they are the only two
-    things this module owns. Module 4 resolves the stage and draft from Module 2's store
-    itself, so neither module carries the other's data around.
+    The stage and draft the feedback was generated from are sent as previous_stage and
+    previous_content. Before, nothing was sent and evaluate_feedback() resolved all four
+    context fields from Module 2's store -- but that store keeps moving. A turn runs up to
+    four Gemini calls and the editor reclassifies on a 500ms debounce throughout, so by
+    scoring time Module 2's `latest` was a newer draft, and sometimes a newer stage, than
+    the one the feedback was actually written about. Sending them fixes that half: the
+    position this feedback addresses is now stated rather than guessed at, and it is the
+    same on both of a turn's two evaluations.
+
+    current_stage and current_content are deliberately still left out, so
+    fill_from_stage_context() supplies them from Module 2 and they mean what they say --
+    where the student is now, as against where they were when the feedback was written.
+
+    Two consequences follow from that, both intended. The WRFEF rubric asks about the
+    learner's "current" writing problem and stage, so relevance and stage_alignment are
+    graded against Module 2's live position rather than the pinned one, and can still
+    differ between a turn's baseline and post-action evaluations. And a session Module 2
+    has no record of -- any session at all after a restart, since StageContextStore is
+    memory-only -- leaves current_stage unset, which evaluate_feedback() rejects outright:
+    that surfaces as Module4UnavailableError and a 503 rather than a degraded score.
     """
 
     def __init__(
@@ -61,19 +78,35 @@ class Module4Evaluator:
         self._stage_context = stage_context
 
     def evaluate(
-        self, feedback: str, feedback_history: list[str], session_id: str
-    ) -> EvaluationResult:
+        self,
+        feedback: str,
+        feedback_history: list[str],
+        session_id: str,
+        stage: str,
+        content: str,
+    ) -> dict[str, float]:
+        """`stage` and `content` are the ones the feedback was generated from."""
         try:
             response = evaluate_feedback(
                 FeedbackScoringRequest(
                     session_id=session_id,
                     given_feedback=feedback,
                     feedback_history=feedback_history,
+                    # The position this feedback was written about, which by the time it
+                    # is scored is the one the student has already moved on from.
+                    previous_stage=stage,
+                    previous_content=content,
+                    # current_stage/current_content are deliberately not sent, so
+                    # evaluate_feedback() fills them from Module 2 -- see the class
+                    # docstring for what that buys and what it costs.
                 ),
                 self._retriever,
                 self._clarity_scorer,
                 self._settings,
                 session_id=session_id,
+                # Required, not optional: current_stage/current_content are left out of
+                # the payload above precisely so this fills them, and evaluate_feedback()
+                # raises on an unset current_stage.
                 stage_context=self._stage_context,
             )
         # MissingWritingContextError subclasses ValueError, so it is covered here too. The

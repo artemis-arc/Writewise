@@ -74,7 +74,10 @@ NOTEBOOK_STUB_SCORES = {
 
 
 class _StubEvaluator:
-    def evaluate(self, feedback, feedback_history):
+    # **kwargs rather than the real signature: the stub ignores every input by
+    # definition, and spelling the arguments out again only means this breaks the next
+    # time Module4Evaluator.evaluate() gains one -- as it did for session_id.
+    def evaluate(self, **_kwargs):
         return dict(NOTEBOOK_STUB_SCORES)
 
 
@@ -167,9 +170,11 @@ def main() -> None:
         cases = cases[: args.limit]
     print(f"Loaded {len(cases)} evaluation cases")
 
-    # Module 4 now reads the stage and draft from Module 2's store rather than from the
-    # scoring call, and no classifier runs here -- so each case is recorded below exactly
-    # as a /api/v1/stage-classification call would have recorded it.
+    # Module 3 sends the stage and draft it generated from as previous_stage/
+    # previous_content, but current_stage/current_content still come from Module 2 -- and
+    # no classifier runs here. So each case is recorded below exactly as a
+    # /api/v1/stage-classification call would have recorded it; without that,
+    # evaluate_feedback() finds no current_stage and fails every case.
     stage_context = StageContextStore()
     engine = build_engine(settings, args, stage_context)
     scorer = TextScorer(settings.feedback_embedding_model)
@@ -179,7 +184,10 @@ def main() -> None:
         query = case["input_query"]
         profile = query["profile_context"]
         references = case.get("expected_feedbacks") or [case["expected_feedback"]]
+        # Keyed by the same session_id generate_feedback() is called with below, so
+        # fill_from_stage_context() finds this case rather than an empty snapshot.
         stage_context.record(
+            session_id=f"eval-{case['id']}",
             stage=query["stage"],
             confidence=1.0,
             timestamp=time.time(),

@@ -59,6 +59,10 @@ def generate_feedback(
     That is four LLM round trips in the regenerate path, all on the request's critical
     path, which is deliberate -- it keeps the served pipeline identical to the one the
     notebook's evaluation numbers were measured on.
+
+    Module 4 is handed the stage and draft explicitly rather than resolving them from
+    Module 2, so every score in the turn describes the same draft the feedback was
+    generated from.
     """
     profile = {
         "writer_level": writer_level,
@@ -90,13 +94,18 @@ def generate_feedback(
             settings,
         )
 
-    def evaluate(feedback: str) -> EvaluationResult:
-        # Module 4 resolves the stage and the draft from Module 2's store itself, so this
-        # turn only hands over the two things it owns.
+    def evaluate(feedback: str) -> dict[str, float]:
+        # The same stage and draft build_prompt() saw, handed to Module 4 as the position
+        # this feedback addresses. It would otherwise infer one from Module 2's store,
+        # which has moved on -- the student keeps typing through the four Gemini calls
+        # this turn makes -- and score the feedback against text it was never written
+        # about. Module 4 still reads its own current_* from Module 2 on top of this.
         return engine.evaluator.evaluate(
             feedback=feedback,
             feedback_history=history,
             session_id=session_id,
+            stage=stage,
+            content=content,
         )
 
     # Baseline first, so the state the agent acts on describes this turn's actual
