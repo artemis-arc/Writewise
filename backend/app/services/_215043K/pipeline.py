@@ -18,7 +18,9 @@ class FeedbackResult:
     stage: str
     writer_level: str
     scores: dict[str, float]
-    reward: int
+    # Continuous since the reward stopped being binarised: roughly [-0.7, +0.3], or
+    # exactly -1.0 when a measure tripped the floor. See rl_agent.calculate_reward().
+    reward: float
     action: str
     action_index: int
     baseline_state: int
@@ -33,7 +35,9 @@ def generate_feedback(
     writer_level: str,
     content: str,
     mechanics: float,
-    vocabulary: float,
+    # None whenever the profile came from Module 1, which does not score vocabulary. The
+    # offline evaluation set still carries one, so the parameter stays.
+    vocabulary: float | None,
     organization: float,
     engine: FeedbackEngine,
     settings: Settings,
@@ -53,7 +57,7 @@ def generate_feedback(
     profile = {
         "writer_level": writer_level,
         "mechanics": mechanics,
-        "vocabulary": vocabulary,
+        "vocabulary": vocabulary,  # None when Module 1 did not score it
         "organization": organization,
     }
     history = engine.sessions.get(session_id).feedback_history
@@ -81,12 +85,9 @@ def generate_feedback(
         )
 
     def evaluate(feedback: str) -> dict[str, float]:
-        return engine.evaluator.evaluate(
-            feedback=feedback,
-            stage=stage,
-            content=content,
-            feedback_history=history,
-        )
+        # Module 4 resolves the stage and the draft from Module 2's store itself, so this
+        # turn only hands over the two things it owns.
+        return engine.evaluator.evaluate(feedback=feedback, feedback_history=history)
 
     # Baseline first, so the state the agent acts on describes this turn's actual
     # content rather than whatever the previous turn happened to leave behind.
