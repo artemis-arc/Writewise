@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+from typing import Any, cast
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,6 +16,7 @@ from app.core.config import get_settings
 from app.services._215043K.engine import build_feedback_engine
 from app.services._215051H.clarity_scoring import ClarityScorer
 from app.services._215051H.feedback_retriever import FeedbackRetriever
+from app.services._215098G.boundary_detector import BoundaryDetector
 from app.services._215098G.ml_pipeline import inference as stage_inference
 from app.services._215098G.stage_context import StageContextStore
 from app.services._215131E.scenario_retriever import ScenarioRetriever
@@ -46,12 +48,16 @@ async def lifespan(app: FastAPI):
     # Backend-owned memory of what Module 2 last produced, so Modules 3 and 4 can fill in
     # the writing context instead of making the client carry it around.
     app.state.stage_context = StageContextStore()
+    app.state.boundary_detector = BoundaryDetector(
+        stage_context=app.state.stage_context,
+        pause_threshold=settings.m2_boundary_pause_threshold,
+    )
     # Built after Module 4's three pieces because Module 3 scores its own output with them.
     app.state.feedback_engine = build_feedback_engine(
         settings,
         module4_retriever=app.state.feedback_retriever,
         clarity_scorer=app.state.clarity_scorer,
-        stage_context=app.state.stage_context,
+        stage_context=cast(Any, app.state.stage_context),
     )
     try:
         app.state.stage_classifier_bundle = load_stage_bundle(settings)

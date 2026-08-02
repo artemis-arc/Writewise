@@ -69,6 +69,14 @@ def _record_stage_context(
     )
 
 
+def _detect_boundary(request: Request, session_id: str) -> None:
+    boundary_detector = getattr(request.app.state, "boundary_detector", None)
+    if boundary_detector is None:
+        return
+
+    boundary_detector.detect(session_id)
+
+
 @router.get("/state")
 async def get_stage_classification_state(
     session_id: str,
@@ -108,6 +116,7 @@ async def classify_stage(
     try:
         response = _classify_event(bundle, payload)
         _record_stage_context(request, response, payload.session_id, payload)
+        _detect_boundary(request, payload.session_id)
         return response
     except FileNotFoundError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
@@ -152,6 +161,7 @@ async def classify_stage_batch(
 
     for event, response in zip(payload.events, events, strict=True):
         _record_stage_context(request, response, payload.session_id, event)
+        _detect_boundary(request, payload.session_id)
 
     if events:
         logger.info(
