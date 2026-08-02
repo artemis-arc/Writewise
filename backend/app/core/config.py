@@ -32,6 +32,9 @@ class Settings(BaseSettings):
         BASE_DIR / "data" / "215098G" / "scaler_edit_structure.joblib"
     )
     m2_label_encoder_path: Path = BASE_DIR / "data" / "215098G" / "label_encoder.joblib"
+    # Engineering parameter: pause threshold used to emit a transition trigger, not a
+    # cognitive threshold or any fixed claim about writer intent.
+    m2_boundary_pause_threshold: float = 2.0
 
     feedback_embedding_model: str = "all-MiniLM-L6-v2"
 

@@ -17,6 +17,12 @@ class StageContextState:
     history: list[StageSignalRecord] = field(default_factory=list)
 
 
+@dataclass
+class SessionStageContextState:
+    latest: StageSignalRecord | None = None
+    history: list[StageSignalRecord] = field(default_factory=list)
+
+
 class StageContextStore:
     """Backend-owned in-memory record of the latest Module 2 outputs."""
 
@@ -26,10 +32,14 @@ class StageContextStore:
 
         self._history_limit = history_limit
         self._lock = threading.Lock()
-        self._state = StageContextState()
+        self._sessions: dict[str, SessionStageContextState] = {}
+
+    def _get_session_state(self, session_id: str) -> SessionStageContextState:
+        return self._sessions.setdefault(session_id, SessionStageContextState())
 
     def record(
         self,
+        session_id: str,
         stage: str,
         confidence: float,
         timestamp: float,
@@ -44,16 +54,21 @@ class StageContextStore:
             after_text=after_text,
         )
         with self._lock:
-            self._state.latest = record
-            self._state.history.append(record)
-            del self._state.history[: -self._history_limit]
+            state = self._get_session_state(session_id)
+            state.latest = record
+            state.history.append(record)
+            del state.history[: -self._history_limit]
         return record
 
-    def snapshot(self) -> dict[str, object]:
+    def snapshot(self, session_id: str) -> dict[str, object]:
         with self._lock:
+            state = self._sessions.get(session_id)
+            if state is None:
+                return {"latest": None, "history": []}
+
             return {
-                "latest": self._state.latest.__dict__
-                if self._state.latest is not None
+                "latest": state.latest.__dict__
+                if state.latest is not None
                 else None,
-                "history": [item.__dict__ for item in self._state.history],
+                "history": [item.__dict__ for item in state.history],
             }

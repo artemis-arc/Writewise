@@ -27,7 +27,7 @@ class StageContextSource(Protocol):
     Module 2's package, and so a test can pass any object with a snapshot().
     """
 
-    def snapshot(self) -> dict: ...
+    def snapshot(self, session_id: str) -> dict: ...
 
 
 class MissingWritingContextError(ValueError):
@@ -40,7 +40,9 @@ class MissingWritingContextError(ValueError):
 
 
 def fill_from_stage_context(
-    payload: FeedbackScoringRequest, stage_context: StageContextSource | None
+    payload: FeedbackScoringRequest,
+    stage_context: StageContextSource | None,
+    session_id: str,
 ) -> FeedbackScoringRequest:
     """
     Fill missing stage/content fields from Module 2's stage-classification state.
@@ -62,7 +64,7 @@ def fill_from_stage_context(
     if stage_context is None:
         return payload
 
-    snapshot = stage_context.snapshot()
+    snapshot = stage_context.snapshot(session_id)
     latest = snapshot["latest"]
     if latest is None:
         return payload
@@ -101,7 +103,8 @@ def _build_prompt(payload: FeedbackScoringRequest, retrieved_context: str) -> st
     )
 
     rubric_lines = "\n\n".join(
-        f"{dimension} (0.0-1.0 scale):\n" + "\n".join(f"  {band}: {desc}" for band, desc in bands.items())
+        f"{dimension} (0.0-1.0 scale):\n"
+        + "\n".join(f"  {band}: {desc}" for band, desc in bands.items())
         for dimension, bands in SCORING_RUBRIC.items()
     )
 
@@ -210,11 +213,12 @@ Previous Feedback:
 """
 
 
-async def evaluate_feedback(
+def evaluate_feedback(
     payload: FeedbackScoringRequest,
     retriever: FeedbackRetriever,
     clarity_scorer: ClarityScorer,
     settings: Settings,
+    session_id: str,
     stage_context: StageContextSource | None = None,
 ) -> FeedbackScoringResponse:
     """
@@ -225,7 +229,7 @@ async def evaluate_feedback(
     explicitly, so neither the HTTP route nor Module 3 has to carry Module 2's data around
     by hand. Pass stage_context=None to score strictly what is in the payload.
     """
-    payload = fill_from_stage_context(payload, stage_context)
+    payload = fill_from_stage_context(payload, stage_context, session_id)
 
     if not payload.current_stage:
         raise MissingWritingContextError(
@@ -259,7 +263,9 @@ async def evaluate_feedback(
         except json.JSONDecodeError as exc:
             last_error = exc
     if data is None:
-        raise ValueError(f"Gemini did not return valid JSON after {attempts} attempts: {last_error}")
+        raise ValueError(
+            f"Gemini did not return valid JSON after {attempts} attempts: {last_error}"
+        )
 
     scores: dict[str, DimensionScore] = {}
     for dim in DIMENSIONS:
@@ -274,7 +280,12 @@ async def evaluate_feedback(
     llm_clarity_reasoning = scores["clarity"].reasoning
     scores["clarity"] = DimensionScore(
         score=round(ml_score, 3),
-        reasoning=ml_reasoning + (f" LLM contextual note: {llm_clarity_reasoning}" if llm_clarity_reasoning else ""),
+        reasoning=ml_reasoning
+        + (
+            f" LLM contextual note: {llm_clarity_reasoning}"
+            if llm_clarity_reasoning
+            else ""
+        ),
     )
 
     overall = sum(scores[dim].score * WRFEF_WEIGHTS[dim] for dim in DIMENSIONS)

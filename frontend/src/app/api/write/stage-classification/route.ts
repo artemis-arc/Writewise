@@ -2,8 +2,16 @@ import { NextResponse } from "next/server";
 import { BACKEND_BASE_URL, STAGE_CLASSIFICATION_BATCH_BACKEND_PATH } from "@/lib/backend/config";
 
 export async function POST(request: Request) {
-  const body = (await request.json().catch(() => null)) as { events?: unknown[] } | null;
+  const body = (await request.json().catch(() => null)) as {
+    session_id?: unknown;
+    events?: unknown[];
+  } | null;
+  const sessionId = typeof body?.session_id === "string" ? body.session_id : null;
   const events = body?.events ?? null;
+
+  if (!sessionId) {
+    return NextResponse.json({ error: "A session_id is required." }, { status: 400 });
+  }
 
   if (!events || events.length === 0) {
     return NextResponse.json({ error: "At least one event is required." }, { status: 400 });
@@ -13,7 +21,7 @@ export async function POST(request: Request) {
     const response = await fetch(`${BACKEND_BASE_URL}${STAGE_CLASSIFICATION_BATCH_BACKEND_PATH}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ events }),
+      body: JSON.stringify({ session_id: sessionId, events }),
     });
 
     if (!response.ok) {

@@ -3,6 +3,7 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { AuthUser } from "@/features/auth/types";
+import { clearTaskAnalysis } from "@/features/task-definition/storage";
 
 type AuthStatus = "loading" | "authenticated" | "unauthenticated";
 
@@ -82,6 +83,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(async () => {
     await fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
+    // The cached task breakdown is the writer's own work -- it should not be
+    // waiting in the tab for whoever signs in next.
+    clearTaskAnalysis();
     setUser(null);
     setStatus("unauthenticated");
   }, []);

@@ -1,4 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException
+import logging
+from typing import Annotated, cast
+
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 
 from app.api.routes._215043K.deps import get_feedback_engine
@@ -11,7 +14,9 @@ from app.models._215043K.schemas import (
     FeedbackRequest,
     FeedbackResponse,
     FeedbackScores,
+    WriterLevel,
     WritingProfileScores,
+    WritingStage,
 )
 from app.services._215043K.engine import FeedbackEngine
 from app.services._215043K.evaluator import Module4UnavailableError
@@ -23,6 +28,7 @@ from app.services._215043K.profile import (
 )
 
 router = APIRouter(prefix="/api/v1/feedback", tags=["feedback"])
+logger = logging.getLogger("uvicorn.error")
 
 
 def _resolve_profile(
@@ -65,15 +71,57 @@ def _resolve_profile(
 # Deliberately `def`, not `async def`: one call runs up to four blocking network round
 # trips (two Gemini generations, two Module 4 evaluations). FastAPI runs sync routes in
 # a threadpool, so those seconds do not block the event loop and every other request
-# with it -- which an `async def` doing the same blocking work would
-@router.post("", response_model=FeedbackResponse)
+# with it -- which an `async def` doing the same blocking work would.
+#
+# TODO: an SSE variant of this route would let the editor render the feedback as it is
+# written rather than after the whole pipeline finishes -- the frontend panel currently
+# shows a placeholder for those seconds. It would forward Gemini's own token stream as
+# text deltas, then emit the scores and diagnostics as a final event, since the RL
+# action and Module 4 measures are only decided once the feedback is complete.
+@router.post(
+    "",
+    responses={
+        400: {"description": "Invalid submission identifier."},
+        404: {"description": "No writing profile found for that submission."},
+        409: {"description": "No writing profile yet for this session."},
+        422: {
+            "description": "No Module 2 boundary trigger is available for this session yet."
+        },
+        503: {"description": "Module 4 is unavailable."},
+    },
+)
 def create_feedback(
     payload: FeedbackRequest,
-    engine: FeedbackEngine = Depends(get_feedback_engine),
-    settings: Settings = Depends(get_settings),
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
+    request: Request,
+    engine: Annotated[FeedbackEngine, Depends(get_feedback_engine)],
+    settings: Annotated[Settings, Depends(get_settings)],
+    current_user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
 ) -> FeedbackResponse:
+    boundary_detector = getattr(request.app.state, "boundary_detector", None)
+    boundary_trigger = (
+        boundary_detector.latest_trigger(payload.session_id)
+        if boundary_detector is not None
+        else None
+    )
+    if boundary_trigger is None:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                "No Module 2 boundary trigger is available for this session yet. "
+                "Call /api/v1/stage-classification until a stage transition fires."
+            ),
+        )
+
+    logger.info(
+        "Module 3 triggered by Module 2 boundary: session_id=%s timestamp=%s stage_before_transition=%s new_stage=%s pause_seconds=%.3f",
+        boundary_trigger.session_id,
+        boundary_trigger.timestamp,
+        boundary_trigger.stage_before_transition,
+        boundary_trigger.stage_after_transition,
+        boundary_trigger.pause_seconds,
+    )
+
     profile = _resolve_profile(payload, current_user, db)
     print("Resolved profile:")
     print(profile.model_dump())
@@ -100,14 +148,18 @@ def create_feedback(
             settings=settings,
         )
     except Module4UnavailableError as exc:
+        logger.exception(
+            "Module 3 feedback generation failed: session_id=%s",
+            payload.session_id,
+        )
         # The RL agent cannot pick an action without Module 4's six scores, and a
         # Q-update without them would poison the table -- so fail rather than degrade.
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
     return FeedbackResponse(
         feedback=result.feedback,
-        stage=result.stage,
-        writer_level=result.writer_level,
+        stage=cast(WritingStage, result.stage),
+        writer_level=cast(WriterLevel, result.writer_level),
         diagnostics=FeedbackDiagnostics(
             action=result.action,
             action_index=result.action_index,

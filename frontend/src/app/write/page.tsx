@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { TopBar } from "@/components/layout/TopBar";
-import { RichTextEditor } from "@/components/editor/RichTextEditor";
+import { WritingEditor } from "@/components/editor/WritingEditor";
 
 export const metadata: Metadata = {
   title: "Write | WriteWise",
@@ -12,7 +12,7 @@ export default function WritePage() {
     <div className="flex flex-1 flex-col overflow-hidden">
       <TopBar />
 
-      <RichTextEditor />
+      <WritingEditor />
     </div>
   );
 }

@@ -16,6 +16,7 @@ class FeedbackScoringRequest(BaseModel):
     215043K) gets it as well as anyone POSTing to /api/v1/feedback-scoring.
     """
 
+    session_id: str = Field(min_length=1, max_length=128)
     current_stage: str | None = Field(default=None, min_length=1)
     previous_stage: str | None = Field(default=None, min_length=1)
     # No min_length: "" is a real answer at the start of PLANNING, where the student has

@@ -1,9 +1,10 @@
-import asyncio
-
 from app.core.config import Settings
 from app.models._215051H.schemas import FeedbackScoringRequest
 from app.services._215043K.rl_agent import METRICS
-from app.services._215051H.clarity_scoring import ClarityModelNotTrainedError, ClarityScorer
+from app.services._215051H.clarity_scoring import (
+    ClarityModelNotTrainedError,
+    ClarityScorer,
+)
 from app.services._215051H.feedback_retriever import FeedbackRetriever
 from app.services._215051H.feedback_scoring import StageContextSource, evaluate_feedback
 
@@ -44,22 +45,21 @@ class Module4Evaluator:
         self._settings = settings
         self._stage_context = stage_context
 
-    def evaluate(self, feedback: str, feedback_history: list[str]) -> dict[str, float]:
+    def evaluate(
+        self, feedback: str, feedback_history: list[str], session_id: str
+    ) -> dict[str, float]:
         try:
-            # evaluate_feedback is `async def` but never awaits anything: its Gemini call
-            # and its clarity model are both blocking. Driving it with a private loop on
-            # this thread keeps that blocking where it already is -- on a threadpool
-            # worker -- instead of handing it to the loop serving every other request.
-            response = asyncio.run(
-                evaluate_feedback(
-                    FeedbackScoringRequest(
-                        given_feedback=feedback, feedback_history=feedback_history
-                    ),
-                    self._retriever,
-                    self._clarity_scorer,
-                    self._settings,
-                    stage_context=self._stage_context,
-                )
+            response = evaluate_feedback(
+                FeedbackScoringRequest(
+                    session_id=session_id,
+                    given_feedback=feedback,
+                    feedback_history=feedback_history,
+                ),
+                self._retriever,
+                self._clarity_scorer,
+                self._settings,
+                session_id=session_id,
+                stage_context=self._stage_context,
             )
         # MissingWritingContextError subclasses ValueError, so it is covered here too. The
         # agent cannot pick an action without all six scores, and a Q-update without them
@@ -72,4 +72,6 @@ class Module4Evaluator:
 
         # No validation or clamping needed: FeedbackScoringResponse declares all six
         # measures required and ge=0/le=1, so Pydantic has already guaranteed the shape.
-        return {metric: getattr(response.dimensions, metric).score for metric in METRICS}
+        return {
+            metric: getattr(response.dimensions, metric).score for metric in METRICS
+        }

@@ -10,11 +10,17 @@ const IS_DEV =
 const M2_DEBOUNCE_MS = 500;
 const M2_CONFIDENCE_CUTOFF = 0.6;
 const STAGE_CLASSIFICATION_PROXY_PATH = "/api/write/stage-classification";
+const STAGE_CLASSIFICATION_SESSION_STORAGE_KEY = "writewise.stage-classification.session-id";
 
 export interface StageClassificationEventRecord {
   before_text: string;
   after_text: string;
   timestamp: number;
+}
+
+export interface StageClassificationBatchRequest {
+  session_id: string;
+  events: StageClassificationEventRecord[];
 }
 
 export interface StageClassificationSignal {
@@ -23,25 +29,58 @@ export interface StageClassificationSignal {
   isConfident: boolean;
 }
 
+export interface StageTransition {
+  sessionId: string;
+  previousStage: string;
+  stage: string;
+  content: string;
+}
+
 export interface UseStageClassificationOptions {
   debounceMs?: number;
   confidenceCutoff?: number;
   onStageChange?: (signal: StageClassificationSignal) => void;
+  /** Fired once per stage change -- what Module 3 hangs its feedback request off. */
+  onStageTransition?: (transition: StageTransition) => void;
 }
 
 function getUnixTimestamp() {
   return Date.now();
 }
 
-async function postStageClassificationBatch(events: StageClassificationEventRecord[], signal?: AbortSignal) {
+function getOrCreateStageClassificationSessionId() {
+  if (typeof window === "undefined") {
+    return "server";
+  }
+
+  const existing = window.sessionStorage.getItem(STAGE_CLASSIFICATION_SESSION_STORAGE_KEY);
+  if (existing) {
+    return existing;
+  }
+
+  const nextSessionId = window.crypto.randomUUID();
+  window.sessionStorage.setItem(STAGE_CLASSIFICATION_SESSION_STORAGE_KEY, nextSessionId);
+  return nextSessionId;
+}
+
+async function postStageClassificationBatch(
+  sessionId: string,
+  events: StageClassificationEventRecord[],
+  signal?: AbortSignal,
+) {
   if (IS_DEV) {
     console.log("[m2] sending batch", { count: events.length, events });
   }
 
+  const requestBody: StageClassificationBatchRequest = {
+    session_id: sessionId,
+    events,
+  };
+
   const response = await fetch(STAGE_CLASSIFICATION_PROXY_PATH, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ events }),
+    body: JSON.stringify(requestBody),
     signal,
   });
 
@@ -76,9 +115,11 @@ async function postStageClassificationBatch(events: StageClassificationEventReco
 
 export function useStageClassification(editor: Editor | null, options: UseStageClassificationOptions = {}) {
   const debounceMs = options.debounceMs ?? M2_DEBOUNCE_MS;
+  const sessionIdRef = useRef(getOrCreateStageClassificationSessionId());
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const bufferRef = useRef<StageClassificationEventRecord[]>([]);
   const lastTextRef = useRef("");
+  const lastPublishedStageRef = useRef<string | null>(null);
   const debounceTimerRef = useRef<number | null>(null);
   const isSendingRef = useRef(false);
   const needsFlushRef = useRef(false);
@@ -86,11 +127,13 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
   const inFlightAbortRef = useRef<AbortController | null>(null);
   const confidenceCutoffRef = useRef(options.confidenceCutoff ?? M2_CONFIDENCE_CUTOFF);
   const onStageChangeRef = useRef(options.onStageChange);
+  const onStageTransitionRef = useRef(options.onStageTransition);
 
   useEffect(() => {
     confidenceCutoffRef.current = options.confidenceCutoff ?? M2_CONFIDENCE_CUTOFF;
     onStageChangeRef.current = options.onStageChange;
-  }, [options.confidenceCutoff, options.onStageChange]);
+    onStageTransitionRef.current = options.onStageTransition;
+  }, [options.confidenceCutoff, options.onStageChange, options.onStageTransition]);
 
   const [signal, setSignal] = useState<StageClassificationSignal>({
     stage: null,
@@ -112,6 +155,22 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
 
       setSignal(nextSignal);
       onStageChangeRef.current?.(nextSignal);
+
+      const previousStage = lastPublishedStageRef.current;
+      lastPublishedStageRef.current = stage;
+
+      if (previousStage !== null && previousStage !== stage) {
+        if (IS_DEV) {
+          console.info("[m3] stage transition", { previousStage, stage });
+        }
+
+        onStageTransitionRef.current?.({
+          sessionId: sessionIdRef.current,
+          previousStage,
+          stage,
+          content: lastTextRef.current,
+        });
+      }
     },
     [],
   );
@@ -141,7 +200,7 @@ export function useStageClassification(editor: Editor | null, options: UseStageC
     inFlightAbortRef.current = abortController;
 
     try {
-      const result = await postStageClassificationBatch(batch, abortController.signal);
+      const result = await postStageClassificationBatch(sessionIdRef.current, batch, abortController.signal);
       const latest = result.latest ?? result.events.at(-1) ?? null;
       if (latest) {
         if (IS_DEV) {

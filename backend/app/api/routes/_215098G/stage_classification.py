@@ -6,6 +6,7 @@ from app.api.routes._215098G.deps import get_stage_classifier_bundle
 from app.models._215098G.schemas import (
     StageClassificationBatchRequest,
     StageClassificationBatchResponse,
+    StageClassificationInput,
     StageClassificationRequest,
     StageClassificationResponse,
     StageClassificationStateResponse,
@@ -17,7 +18,7 @@ logger = logging.getLogger("uvicorn.error")
 
 
 def _classify_event(
-    bundle, payload: StageClassificationRequest
+    bundle, payload: StageClassificationInput
 ) -> StageClassificationResponse:
     timestamps = [payload.timestamp]
     stage = predict(
@@ -51,13 +52,15 @@ def _classify_event(
 def _record_stage_context(
     request: Request,
     response: StageClassificationResponse,
-    payload: StageClassificationRequest,
+    session_id: str,
+    payload: StageClassificationInput,
 ) -> None:
     stage_context = getattr(request.app.state, "stage_context", None)
     if stage_context is None:
         return
 
     stage_context.record(
+        session_id=session_id,
         stage=response.stage,
         confidence=response.confidence,
         timestamp=payload.timestamp,
@@ -66,15 +69,26 @@ def _record_stage_context(
     )
 
 
+def _detect_boundary(request: Request, session_id: str) -> None:
+    boundary_detector = getattr(request.app.state, "boundary_detector", None)
+    if boundary_detector is None:
+        return
+
+    boundary_detector.detect(session_id)
+
+
 @router.get("/state")
 async def get_stage_classification_state(
+    session_id: str,
     request: Request,
 ) -> StageClassificationStateResponse:
     stage_context = getattr(request.app.state, "stage_context", None)
     if stage_context is None:
         return StageClassificationStateResponse()
 
-    return StageClassificationStateResponse.model_validate(stage_context.snapshot())
+    return StageClassificationStateResponse.model_validate(
+        stage_context.snapshot(session_id)
+    )
 
 
 @router.post(
@@ -101,7 +115,8 @@ async def classify_stage(
 
     try:
         response = _classify_event(bundle, payload)
-        _record_stage_context(request, response, payload)
+        _record_stage_context(request, response, payload.session_id, payload)
+        _detect_boundary(request, payload.session_id)
         return response
     except FileNotFoundError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
@@ -145,7 +160,8 @@ async def classify_stage_batch(
         ) from exc
 
     for event, response in zip(payload.events, events, strict=True):
-        _record_stage_context(request, response, event)
+        _record_stage_context(request, response, payload.session_id, event)
+        _detect_boundary(request, payload.session_id)
 
     if events:
         logger.info(

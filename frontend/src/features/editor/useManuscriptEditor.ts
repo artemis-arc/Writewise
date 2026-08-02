@@ -1,20 +1,17 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
+import { useEditor } from "@tiptap/react";
+import type { Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { CharacterCount, Placeholder } from "@tiptap/extensions";
 import { Color, FontFamily, FontSize, TextStyle } from "@tiptap/extension-text-style";
 import { TableKit } from "@tiptap/extension-table";
 import { TextAlign } from "@tiptap/extension-text-align";
-import clsx from "clsx";
-import { EditorToolbar } from "@/components/editor/EditorToolbar";
-import { FormatPainter, getPainterState } from "@/features/editor/extensions/formatPainter";
-import { isAllowedLinkHref } from "@/features/editor/links";
+import { FormatPainter } from "@/features/editor/extensions/formatPainter";
 import { KeystrokeLogger } from "@/features/editor/extensions/keystrokeLogger";
 import type { KeystrokeEvent } from "@/features/editor/extensions/keystrokeLogger";
-import { M2_CONFIDENCE_CUTOFF } from "../../lib/backend/config";
-import { useStageClassification } from "@/features/editor/useStageClassification";
+import { isAllowedLinkHref } from "@/features/editor/links";
 
 const PLACEHOLDER = "Begin your intellectual exploration here...";
 
@@ -26,26 +23,36 @@ const IS_DEV =
     process?: { env?: Record<string, string | undefined> };
   }).process?.env?.NODE_ENV !== "production";
 
-export interface RichTextEditorStageSignal {
-  stage: string | null;
-  confidence: number | null;
-  isConfident: boolean;
+export interface UseManuscriptEditorOptions {
+  /** Called with the editor's plain text on every document change -- what autosave listens to. */
+  onTextChange?: (text: string) => void;
 }
 
-interface RichTextEditorProps {
-  readonly onStageChange?: (signal: RichTextEditorStageSignal) => void;
+export interface UseManuscriptEditorResult {
+  editor: Editor | null;
+  /** Keyups recorded by the dev-only logger. Always 0 in production. */
+  keystrokeCount: number;
 }
 
 function formatInterval(interval: number | null) {
   return interval === null ? "first" : `+${Math.round(interval)}ms`;
 }
 
-export function RichTextEditor(props: Readonly<RichTextEditorProps>) {
-  const { onStageChange } = props;
+/**
+ * The manuscript editor instance and its extension set, in one place so every
+ * surface that shows a manuscript -- the standalone /write page and the task
+ * definition wizard's writing step -- gets the same document model, toolbar
+ * capabilities and instrumentation.
+ */
+export function useManuscriptEditor(
+  options: UseManuscriptEditorOptions = {},
+): UseManuscriptEditorResult {
+  const { onTextChange } = options;
+
   // Only the count is React state. The events themselves accumulate in the
   // extension's storage (`editor.storage.keystrokeLogger.events`), keeping the
   // growing array out of the render path entirely.
-  const [loggedCount, setLoggedCount] = useState(0);
+  const [keystrokeCount, setKeystrokeCount] = useState(0);
 
   const handleKeystroke = useCallback((event: KeystrokeEvent) => {
     // `console.log` rather than `console.debug` on purpose: debug maps to the
@@ -57,7 +64,7 @@ export function RichTextEditor(props: Readonly<RichTextEditorProps>) {
       event,
     );
 
-    setLoggedCount((count) => count + 1);
+    setKeystrokeCount((count) => count + 1);
   }, []);
 
   const editor = useEditor({
@@ -110,51 +117,11 @@ export function RichTextEditor(props: Readonly<RichTextEditorProps>) {
         "aria-label": "Manuscript",
       },
     },
+
+    // Autosave persists `contentText`, so it gets the plain text rather than the
+    // marked-up document -- the same shape the plain textarea used to send.
+    onUpdate: onTextChange ? ({ editor: instance }) => onTextChange(instance.getText()) : undefined,
   });
 
-  const { scrollContainerRef } = useStageClassification(editor, {
-    confidenceCutoff: M2_CONFIDENCE_CUTOFF,
-    onStageChange,
-  });
-
-  const editorState = useEditorState({
-    editor,
-    selector: ({ editor: instance }) => ({
-      words: instance?.storage.characterCount.words() ?? 0,
-      characters: instance?.storage.characterCount.characters() ?? 0,
-      isPainterArmed: instance ? getPainterState(instance.state) !== null : false,
-    }),
-  });
-
-  return (
-    // `min-h-0` lets this pane shrink inside the page's flex column, which is
-    // what confines the overflow to the scroll container below rather than
-    // pushing the status bar off-screen.
-    <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-surface">
-      {editor && <EditorToolbar editor={editor} />}
-
-      <div
-        ref={scrollContainerRef}
-        className={clsx(
-          "min-h-0 flex-1 overflow-y-auto px-8 py-6",
-          // Signals that the next selection will be painted rather than just made.
-          editorState?.isPainterArmed && "manuscript-painting",
-        )}
-      >
-        <EditorContent editor={editor} className="h-full" />
-      </div>
-
-      <div className="flex shrink-0 items-center justify-between border-t border-border-subtle px-6 py-2 text-xs text-foreground/50">
-        <div className="flex items-center gap-3">
-          <span>{(editorState?.words ?? 0).toLocaleString()} words</span>
-        </div>
-        {IS_DEV && (
-          <span title="Keyup events written to the console (development only)">
-            {loggedCount.toLocaleString()} keyups logged
-          </span>
-        )}
-        <span>{(editorState?.characters ?? 0).toLocaleString()} characters</span>
-      </div>
-    </div>
-  );
+  return { editor, keystrokeCount };
 }
