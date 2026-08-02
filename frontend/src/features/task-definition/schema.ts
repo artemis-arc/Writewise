@@ -12,6 +12,7 @@ export const citationStyles = [
   { value: "MLA", label: "MLA" },
   { value: "Chicago", label: "Chicago" },
   { value: "Harvard", label: "Harvard" },
+  { value: "IEEE", label: "IEEE" },
 ] as const;
 
 export const taskDefinitionSchema = z.object({
@@ -26,7 +27,7 @@ export const taskDefinitionSchema = z.object({
     "postgraduate",
     "doctoral",
   ]),
-  citationStyle: z.enum(["APA7", "MLA", "Chicago", "Harvard"]),
+  citationStyle: z.enum(["APA7", "MLA", "Chicago", "Harvard", "IEEE"]),
 });
 
 export type TaskDefinitionFormValues = z.infer<typeof taskDefinitionSchema>;

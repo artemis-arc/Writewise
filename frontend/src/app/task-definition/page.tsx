@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { TopBar } from "@/components/layout/TopBar";
 import { TaskForm } from "@/components/task-definition/TaskForm";
-import { VocabularyStep } from "@/components/task-definition/VocabularyStep";
 import { UploadStep } from "@/components/task-definition/UploadStep";
 import { AnalysisSummary } from "@/components/task-definition/AnalysisSummary";
 import { WritingEditor } from "@/components/editor/WritingEditor";
@@ -12,9 +11,9 @@ import { ProgressBar } from "@/components/ui/ProgressBar";
 import { useTaskDefinitionAnalysis } from "@/features/task-definition/hooks/useTaskDefinitionAnalysis";
 import type { TaskDefinitionFormValues } from "@/features/task-definition/schema";
 
-export type TaskDefinitionStep = "tasks" | "vocabulary" | "upload" | "analysis" | "editor";
+export type TaskDefinitionStep = "tasks" | "upload" | "analysis" | "editor";
 
-const STEP_ORDER: TaskDefinitionStep[] = ["tasks", "vocabulary", "upload", "analysis"];
+const STEP_ORDER: TaskDefinitionStep[] = ["tasks", "upload", "analysis"];
 
 export default function TaskDefinitionPage() {
   const [wizardStep, setWizardStep] = useState<TaskDefinitionStep>("tasks");
@@ -30,7 +29,7 @@ export default function TaskDefinitionPage() {
 
   const handleTaskSubmit = (values: TaskDefinitionFormValues) => {
     setFormValues(values);
-    setWizardStep("vocabulary");
+    setWizardStep("upload");
   };
 
   const handleUploadNext = (file: File) => {
@@ -91,18 +90,11 @@ export default function TaskDefinitionPage() {
           <TaskForm defaultValues={formValues} isSubmitting={false} onSubmit={handleTaskSubmit} />
         )}
 
-        {status !== "error" && currentStep === "vocabulary" && (
-          <VocabularyStep
-            onNext={() => setWizardStep("upload")}
-            onBack={() => setWizardStep("tasks")}
-          />
-        )}
-
         {status !== "error" && currentStep === "upload" && (
           <UploadStep
             isSubmitting={status === "loading"}
             onNext={handleUploadNext}
-            onBack={() => setWizardStep("vocabulary")}
+            onBack={() => setWizardStep("tasks")}
           />
         )}
 

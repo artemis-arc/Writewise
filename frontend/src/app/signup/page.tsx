@@ -32,7 +32,7 @@ export default function SignupPage() {
     setIsSubmitting(true);
     try {
       await signup(values.email, values.password, values.displayName);
-      router.push("/dashboard");
+      router.push("/profile");
     } catch (error) {
       setFormError(error instanceof Error ? error.message : "Signup failed.");
     } finally {

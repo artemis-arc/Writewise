@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { ACCESS_COOKIE_NAME, REFRESH_COOKIE_NAME } from "@/lib/auth/cookies";
 
-const PROTECTED_ROUTES = ["/task-definition", "/dashboard", "/profile"];
+const PROTECTED_ROUTES = ["/task-definition", "/profile"];
 const AUTH_ROUTES = ["/login", "/signup"];
 
 /**
@@ -20,12 +20,12 @@ export function proxy(request: NextRequest) {
   }
 
   if (AUTH_ROUTES.includes(pathname) && hasSession) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/profile", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/task-definition/:path*", "/dashboard/:path*", "/profile/:path*", "/login", "/signup"],
+  matcher: ["/task-definition/:path*", "/profile/:path*", "/login", "/signup"],
 };

@@ -32,7 +32,7 @@ export default function LoginPage() {
     setIsSubmitting(true);
     try {
       await login(values.email, values.password);
-      router.push("/dashboard");
+      router.push("/profile");
     } catch (error) {
       setFormError(error instanceof Error ? error.message : "Login failed.");
     } finally {

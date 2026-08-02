@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { TopBar } from "@/components/layout/TopBar";
 import { Button, buttonClassNames } from "@/components/ui/Button";
@@ -9,6 +10,8 @@ export default function LandingPage() {
       <TopBar />
 
       <main className="flex flex-1 flex-col items-center justify-center gap-8 px-6 py-24 text-center overflow-y-auto">
+        <Image src="/logo-icon.png" alt="Write Wise" width={96} height={96} priority className="h-20 w-20" />
+
         <div className="flex flex-col gap-3">
           <p className="max-w-md text-balance text-foreground/70">
             Elevate your manuscript with AI-powered{" "}

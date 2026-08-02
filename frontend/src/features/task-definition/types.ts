@@ -4,7 +4,7 @@ export type AcademicLevel =
   | "postgraduate"
   | "doctoral";
 
-export type CitationStyle = "APA7" | "MLA" | "Chicago" | "Harvard";
+export type CitationStyle = "APA7" | "MLA" | "Chicago" | "Harvard" | "IEEE";
 
 export interface TaskDefinitionInput {
   question: string;
