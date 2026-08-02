@@ -1,5 +1,7 @@
+from dataclasses import dataclass
+
 from app.core.config import Settings
-from app.models._215051H.schemas import FeedbackScoringRequest
+from app.models._215051H.schemas import DimensionScore, FeedbackScoringRequest
 from app.services._215043K.rl_agent import METRICS
 from app.services._215051H.clarity_scoring import (
     ClarityModelNotTrainedError,
@@ -11,6 +13,19 @@ from app.services._215051H.feedback_scoring import StageContextSource, evaluate_
 
 class Module4UnavailableError(RuntimeError):
     """Module 4 could not produce the six scores this turn needs."""
+
+
+@dataclass(frozen=True)
+class EvaluationResult:
+    """
+    Both views of one Module 4 pass: `scores` is the plain float dict the RL state/reward
+    math (get_state_id, is_fully_banded, agent.learn) already expects, and `dimensions` is
+    the same six measures with their reasoning text kept, for anyone who wants to see why
+    a score landed where it did (e.g. surfacing it to the browser console).
+    """
+
+    scores: dict[str, float]
+    dimensions: dict[str, DimensionScore]
 
 
 class Module4Evaluator:
@@ -47,7 +62,7 @@ class Module4Evaluator:
 
     def evaluate(
         self, feedback: str, feedback_history: list[str], session_id: str
-    ) -> dict[str, float]:
+    ) -> EvaluationResult:
         try:
             response = evaluate_feedback(
                 FeedbackScoringRequest(
@@ -72,6 +87,6 @@ class Module4Evaluator:
 
         # No validation or clamping needed: FeedbackScoringResponse declares all six
         # measures required and ge=0/le=1, so Pydantic has already guaranteed the shape.
-        return {
-            metric: getattr(response.dimensions, metric).score for metric in METRICS
-        }
+        dimensions = {metric: getattr(response.dimensions, metric) for metric in METRICS}
+        scores = {metric: dimensions[metric].score for metric in METRICS}
+        return EvaluationResult(scores=scores, dimensions=dimensions)

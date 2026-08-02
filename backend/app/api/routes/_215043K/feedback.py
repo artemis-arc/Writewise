@@ -168,6 +168,7 @@ def create_feedback(
             final_state=result.final_state,
             reward=result.reward,
             scores=FeedbackScores(**result.scores),
+            dimension_details=result.dimensions,
             strategies=result.strategies,
         ),
     )

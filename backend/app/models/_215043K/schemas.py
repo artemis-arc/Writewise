@@ -2,6 +2,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from app.models._215051H.schemas import DimensionScore
+
 WriterLevel = Literal["low", "medium", "high"]
 WritingStage = Literal["PLANNING", "IMPLEMENTATION", "REVISION"]
 
@@ -76,6 +78,10 @@ class FeedbackDiagnostics(BaseModel):
     # when a measure fell below the catastrophic floor.
     reward: float
     scores: FeedbackScores
+    # The same six measures as `scores`, each with its reasoning text kept -- lets a
+    # caller (e.g. the browser console) see *why* a score landed where it did, not just
+    # the plain number the RL state math uses.
+    dimension_details: dict[str, DimensionScore]
     strategies: list[str]
 
 

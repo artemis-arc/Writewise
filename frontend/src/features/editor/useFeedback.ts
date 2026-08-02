@@ -19,6 +19,12 @@ export interface FeedbackScores {
   consistency_with_history: number;
 }
 
+/** One of the six WRFEF measures, score plus the model's reasoning for it. */
+export interface DimensionDetail {
+  score: number;
+  reasoning: string;
+}
+
 export interface FeedbackDiagnostics {
   action: string;
   action_index: number;
@@ -27,6 +33,8 @@ export interface FeedbackDiagnostics {
   final_state: number;
   reward: number;
   scores: FeedbackScores;
+  /** Same six measures as `scores`, each with the reasoning text kept. */
+  dimension_details: Record<string, DimensionDetail>;
   strategies: string[];
 }
 
@@ -63,6 +71,54 @@ export interface UseFeedbackResult {
   error: string | null;
   requestFeedback: (input: FeedbackRequestInput) => void;
   dismissError: () => void;
+}
+
+const DIMENSION_LABELS: Record<string, string> = {
+  relevance: "Relevance",
+  clarity: "Clarity",
+  actionability: "Actionability",
+  stage_alignment: "Stage Alignment",
+  improvement_impact: "Improvement Impact",
+  consistency_with_history: "Consistency with History",
+};
+
+/**
+ * Logs Module 4's six-dimension score breakdown (score + reasoning per dimension) to the
+ * browser console in a clearly labeled, easy-to-scan table, plus the RL diagnostics that
+ * drove which feedback text was actually shown. Dev-only (see IS_DEV) since this is purely
+ * a debugging aid -- nothing here is read back by the UI.
+ */
+function logFeedbackScores(payload: FeedbackResponse) {
+  const { diagnostics } = payload;
+
+  console.groupCollapsed(
+    `%c[m4] feedback scored -- stage=${payload.stage} overall reward=${diagnostics.reward.toFixed(3)}`,
+    "color:#2a78d6;font-weight:600;",
+  );
+
+  const rows = Object.entries(diagnostics.dimension_details).reduce<
+    Record<string, { score: string; reasoning: string }>
+  >((acc, [key, detail]) => {
+    acc[DIMENSION_LABELS[key] ?? key] = {
+      score: `${(detail.score * 100).toFixed(1)} / 100`,
+      reasoning: detail.reasoning,
+    };
+    return acc;
+  }, {});
+
+  console.table(rows);
+
+  console.info("RL diagnostics:", {
+    action: diagnostics.action,
+    usedRlAction: diagnostics.used_rl_action,
+    baselineState: diagnostics.baseline_state,
+    finalState: diagnostics.final_state,
+    reward: diagnostics.reward,
+    strategies: diagnostics.strategies,
+  });
+
+  console.info("Full response payload:", payload);
+  console.groupEnd();
 }
 
 function messageForStatus(status: number, detail: string | null) {
@@ -181,7 +237,7 @@ export function useFeedback(): UseFeedbackResult {
         }
 
         if (IS_DEV) {
-          console.info("[m3] feedback", payload);
+          logFeedbackScores(payload);
         }
 
         const entry: FeedbackEntry = {

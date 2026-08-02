@@ -1,7 +1,9 @@
 from dataclasses import dataclass
 
 from app.core.config import Settings
+from app.models._215051H.schemas import DimensionScore
 from app.services._215043K.engine import FeedbackEngine
+from app.services._215043K.evaluator import EvaluationResult
 from app.services._215043K.gemini_client import generate_text
 from app.services._215043K.prompt import build_prompt, format_query
 from app.services._215043K.rl_agent import (
@@ -18,6 +20,10 @@ class FeedbackResult:
     stage: str
     writer_level: str
     scores: dict[str, float]
+    # The same six measures as `scores`, but with each dimension's reasoning text kept
+    # instead of discarded -- useful for anyone inspecting *why* a score landed where it
+    # did (e.g. logging it to the browser console), not just the RL state math.
+    dimensions: dict[str, DimensionScore]
     # Continuous since the reward stopped being binarised: roughly [-0.7, +0.3], or
     # exactly -1.0 when a measure tripped the floor. See rl_agent.calculate_reward().
     reward: float
@@ -84,7 +90,7 @@ def generate_feedback(
             settings,
         )
 
-    def evaluate(feedback: str) -> dict[str, float]:
+    def evaluate(feedback: str) -> EvaluationResult:
         # Module 4 resolves the stage and the draft from Module 2's store itself, so this
         # turn only hands over the two things it owns.
         return engine.evaluator.evaluate(
@@ -96,10 +102,10 @@ def generate_feedback(
     # Baseline first, so the state the agent acts on describes this turn's actual
     # content rather than whatever the previous turn happened to leave behind.
     baseline_feedback = generate(None)
-    baseline_scores = evaluate(baseline_feedback)
-    baseline_state = get_state_id(stage, baseline_scores)
+    baseline_result = evaluate(baseline_feedback)
+    baseline_state = get_state_id(stage, baseline_result.scores)
 
-    if is_fully_banded(baseline_scores):
+    if is_fully_banded(baseline_result.scores):
         action_index = NO_ACTION_INDEX
     else:
         action_index = engine.agent.select_action(baseline_state)
@@ -112,23 +118,26 @@ def generate_feedback(
         # re-score the identical thing. The notebook did exactly that, burning two of
         # its four calls on a round trip that could not change the outcome.
         final_feedback = baseline_feedback
-        final_scores = baseline_scores
+        final_result = baseline_result
         final_state = baseline_state
         used_rl_action = False
     else:
         final_feedback = generate(ACTIONS[action_index])
-        final_scores = evaluate(final_feedback)
-        final_state = get_state_id(stage, final_scores)
+        final_result = evaluate(final_feedback)
+        final_state = get_state_id(stage, final_result.scores)
         used_rl_action = True
 
-    reward = engine.agent.learn(final_scores, baseline_state, action_index, final_state)
+    reward = engine.agent.learn(
+        final_result.scores, baseline_state, action_index, final_state
+    )
     engine.sessions.record_turn(session_id, final_feedback, final_state)
 
     return FeedbackResult(
         feedback=final_feedback,
         stage=stage,
         writer_level=writer_level,
-        scores=final_scores,
+        scores=final_result.scores,
+        dimensions=final_result.dimensions,
         reward=reward,
         action=ACTIONS[action_index],
         action_index=action_index,
