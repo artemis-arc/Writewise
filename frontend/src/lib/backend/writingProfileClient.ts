@@ -3,6 +3,8 @@ import { getAuthHeader } from "@/lib/backend/authHeaders";
 import { BackendHttpError } from "@/lib/backend/errors";
 import type { WritingProfile } from "@/features/task-definition/types";
 
+const WRITING_PROFILE_TIMEOUT_MS = 120_000;
+
 interface BackendWritingProfileResponse {
   mechanics: number;
   organization: number;
@@ -21,7 +23,7 @@ export async function fetchWritingProfile(
   signal?: AbortSignal,
 ): Promise<WritingProfile> {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 60_000);
+  const timeoutId = setTimeout(() => controller.abort(), WRITING_PROFILE_TIMEOUT_MS);
   signal?.addEventListener("abort", () => controller.abort());
 
   const formData = new FormData();

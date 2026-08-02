@@ -20,6 +20,16 @@ export async function POST(request: Request) {
     const writingProfile = await fetchWritingProfile(file);
     return NextResponse.json(writingProfile);
   } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") {
+      return NextResponse.json(
+        {
+          error:
+            "Scoring the uploaded document took too long. Try a smaller file or try again.",
+        },
+        { status: 504 },
+      );
+    }
+
     if (error instanceof BackendHttpError && error.status === 401) {
       return NextResponse.json({ error: "Your session has expired. Please log in again." }, {
         status: 401,
