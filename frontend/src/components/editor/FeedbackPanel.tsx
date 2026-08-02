@@ -83,11 +83,11 @@ export function FeedbackPanel(props: Readonly<FeedbackPanelProps>) {
   const hasContent = isGenerating || latest !== undefined || error !== null;
 
   return (
-    <aside
-      className={clsx(
-        "flex w-80 shrink-0 flex-col border-l border-border-subtle bg-surface",
-        !isOpen && "w-auto",
-      )}
+    // A section of the editor's right rail, not a panel of its own: the rail owns
+    // the width and the border, so this and the task guide stack without fighting
+    // over the same corner of the screen.
+    <section
+      className={clsx("flex min-h-0 flex-col", isOpen && "flex-1")}
       aria-label="Writing feedback"
     >
       <button
@@ -191,6 +191,6 @@ export function FeedbackPanel(props: Readonly<FeedbackPanelProps>) {
           )}
         </div>
       )}
-    </aside>
+    </section>
   );
 }

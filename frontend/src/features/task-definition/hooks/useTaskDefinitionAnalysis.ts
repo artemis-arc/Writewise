@@ -6,6 +6,7 @@ import {
   getWritingProfile,
   submitTask,
 } from "@/features/task-definition/services/taskDefinitionService";
+import { clearTaskAnalysis, saveTaskAnalysis } from "@/features/task-definition/storage";
 import type {
   TaskDefinitionAnalysis,
   TaskDefinitionInput,
@@ -47,7 +48,14 @@ export function useTaskDefinitionAnalysis(): UseTaskDefinitionAnalysisResult {
       const writingProfile = await getWritingProfile(writingSample, controller.signal);
       const breakdown = await getTaskBreakdown(input, writingProfile, controller.signal);
 
-      setAnalysis({ taskId, writingProfile, breakdown });
+      const nextAnalysis = { taskId, writingProfile, breakdown };
+
+      // Also parked in session storage so the milestones and guidance follow the
+      // writer to /write, which has no wizard state to inherit and no backend
+      // endpoint to re-read a breakdown from.
+      saveTaskAnalysis(nextAnalysis);
+
+      setAnalysis(nextAnalysis);
       setStatus("success");
     } catch (err) {
       if (err instanceof DOMException && err.name === "AbortError") {
@@ -64,6 +72,7 @@ export function useTaskDefinitionAnalysis(): UseTaskDefinitionAnalysisResult {
 
   const reset = useCallback(() => {
     abortRef.current?.abort();
+    clearTaskAnalysis();
     setStatus("idle");
     setAnalysis(null);
     setError(null);
